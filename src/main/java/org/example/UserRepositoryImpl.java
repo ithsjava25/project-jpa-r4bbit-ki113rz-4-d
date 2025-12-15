@@ -37,7 +37,19 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean deleteUser(Long id) {
+        try (EntityManagerFactory emf = cfg.createEntityManagerFactory()) {
+
+            emf.runInTransaction(em -> {
+                User user = em.find(User.class, id);
+                if (user != null) {
+                    em.remove(user);
+                }
+            });
+        return true;
+    } catch (Exception e) {
+        e.printStackTrace();
         return false;
+        }
     }
 
     @Override
