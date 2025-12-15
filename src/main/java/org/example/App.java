@@ -26,7 +26,5 @@ public class App {
         UserRepositoryImpl updatePassword = new UserRepositoryImpl(cfg);
         boolean updated = updatePassword.updatePassword("admadm", "newPassword");
         System.out.println("Password updated: " + updated);
-
-
     }
 }
