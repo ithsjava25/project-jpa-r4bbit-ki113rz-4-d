@@ -18,11 +18,16 @@ public class App {
             .managedClasses(User.class);
 
 
-
         UserRepositoryImpl userRepo = new UserRepositoryImpl(cfg);
         boolean result = userRepo.createUser("admin", "admin", "admin");
         System.out.println(result);
 
-
+        Long userId = 1L;
+        boolean deleteUser = userRepo.deleteUser(userId);
+        if (deleteUser) {
+            System.out.println("Deleted: User " + userId);
+        } else {
+            System.out.println("User not found: " + userId);
+        }
     }
 }
