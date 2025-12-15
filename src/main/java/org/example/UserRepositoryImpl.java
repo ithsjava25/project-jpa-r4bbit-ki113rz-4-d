@@ -46,7 +46,26 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean updatePassword(String username, String password) {
-        return false;
+    public boolean updatePassword(String username, String newPassword) {
+
+        try (EntityManagerFactory emf = cfg.createEntityManagerFactory()){
+            emf.runInTransaction(em -> {
+
+                var users = em.createQuery(
+                    "select u from User u where u.username = :username", User.class)
+                    .setParameter("username", username)
+                    .getResultList();
+
+                if (users.isEmpty()) {
+                    throw new IllegalArgumentException("User not found");
+                }
+                User user = users.get(0);
+                user.setPassword(newPassword);
+            });
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
