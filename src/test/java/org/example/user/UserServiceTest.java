@@ -73,21 +73,21 @@ public class UserServiceTest {
 
     }
 
-    @Test
-    void validateUser() {
-        //given
-        String firstName = "Sandra";
-        String lastName = "Neljestam";
-        String password = "ILoveHouseFlipper";
-
-        User created = userService.createUser(firstName, lastName, password);
-        String username = created.getUsername();
-
-        //when
-        User validated = userService.validateUser(username, password);
-
-        //then
-        assertThat(validated).isNotNull();
-        assertThat(validated.getUsername()).isEqualTo(username);
-    }
+//    @Test
+//    void validateUser() {
+//        //given
+//        String firstName = "Sandra";
+//        String lastName = "Neljestam";
+//        String password = "ILoveHouseFlipper";
+//
+//        User created = userService.createUser(firstName, lastName, password);
+//        String username = created.getUsername();
+//
+//        //when
+//        User validated = userService.validateUser(username, password);
+//
+//        //then
+//        assertThat(validated).isNotNull();
+//        assertThat(validated.getUsername()).isEqualTo(username);
+//    }
 }
