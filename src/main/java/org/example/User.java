@@ -91,8 +91,6 @@ public class User {
         this.password = password;
     }
 
-    private String password;
-
     /* ===== Relation helper ===== */
     public void addPost(Post post){
         if (!posts.contains(post)){
