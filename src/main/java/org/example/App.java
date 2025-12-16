@@ -40,7 +40,7 @@ public class App extends Application {
             .property("hibernate.show_sql", "true")
             .property("hibernate.format_sql", "true")
             .property("hibernate.highlight_sql", "true")
-            .managedClasses(User.class);
+            .managedClasses(User.class, Post.class);
 
         //Creates an EntityManager with the config
         emf = cfg.createEntityManagerFactory();
@@ -50,7 +50,7 @@ public class App extends Application {
         PostRepository postRepo = new PostRepositoryImpl(emf);
 
         //Initialize Services
-        PostService postService = new PostServiceImpl(postRepo);
+        PostService postService = new PostServiceImpl(postRepo, userRepo);
         UserService userService = new UserServiceImpl(userRepo);
 
         //Load fxml
