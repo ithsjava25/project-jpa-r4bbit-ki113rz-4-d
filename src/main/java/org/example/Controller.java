@@ -18,7 +18,8 @@ public class Controller {
 
     public void registerUser() {
         //Get info from javaFX
-        User newUser = userService.createUser("", "", "");
+        User newUser = userService.createUser("Button", "Clicked", "secret");
+        System.out.println(newUser);
     }
 
 
