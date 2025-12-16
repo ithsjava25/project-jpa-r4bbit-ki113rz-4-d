@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import java.lang.String?>
+
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="org.example.PostItemController"
+           prefWidth="180" prefHeight="180">
+
+    <styleClass>
+        <String fx:value="post-it"/>
+    </styleClass>
+
+
+    <ImageView fx:id="PostitImage"
+               fitWidth="180"
+               fitHeight="180"
+               preserveRatio = "true"/>
+
+    <HBox fx:id="actionBox"
+          alignment="TOP_RIGHT"
+          visible="true"
+          StackPane.alignment="TOP_RIGHT">
+        <Button text="Visa meddelande"/>
+        <Button text="Uppdatera" onAction="#handleUpdate"/>
+        <Button text="Delete Post" onAction="#handleDelete"/>
+    </HBox>
+
+    <VBox alignment="CENTER">
+            <Label fx:id="subjectLabel"
+                   style="-fx-font-weight: bold;"/>
+            <Label fx:id="messageLabel"
+                   wrapText="true"
+                   maxWidth="140"/>
+    </VBox>
+</StackPane>
