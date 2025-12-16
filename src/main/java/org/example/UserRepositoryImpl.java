@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.sql.Update;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 /**
  * Handles User data from database
@@ -41,9 +42,17 @@ public class UserRepositoryImpl implements UserRepository {
     public User getUserById(Long id) {
         return null;
     }
+
     // Validates user credentials by verifying the username and password against the database
-
-
-
-
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        try (EntityManager em = emf.createEntityManager()) {
+            TypedQuery<User> query = em.createQuery(
+                "SELECT a FROM User a WHERE a.username = :username", User.class);
+            query.setParameter("username", username);
+            return Optional.ofNullable(query.getSingleResult());
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
 }

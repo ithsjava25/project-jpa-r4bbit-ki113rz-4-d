@@ -1,7 +1,5 @@
 package org.example;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
@@ -23,25 +21,9 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public boolean validateUser(String username, String password) {
-//        try (EntityManagerFactory emf = emf.createEntityManagerFactory()) {
-//            EntityManager em = emf.createEntityManager();
-//
-//            try {
-//                TypedQuery<User> query = em.createQuery("SELECT a FROM User a WHERE a.username = :username",
-//                    User.class);
-//                query.setParameter("username", username);
-//                User user = query.getSingleResult();
-//                return  (user.getPassword().equals(password));
-//
-//
-//            }catch (NoResultException e) {
-                return false;
-//
-//            } finally {
-//                em.close();
-//            }
-//        }
-
+        return userRepo.getUserByUsername(username)
+            .map(user -> user.getPassword().equals(password))
+            .orElse(false);
     }
 
     public String createUserName(String firstName, String lastName) {
