@@ -1,5 +1,23 @@
 package org.example;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
+import javafx.fxml.FXML;
+import nonapi.io.github.classgraph.json.JSONUtils;
+
+import java.awt.event.ActionEvent;
+import java.io.IOException;
+import java.util.List;
+
+import static org.example.JPAUtil.emf;
+
 /**
  * This is connected to the fxml file.
  * This class will control everything the user does inside the app
@@ -18,8 +36,12 @@ public class Controller {
     private UserService userService;
     private PostService postService;
 
+    @FXML
+    private FlowPane postContainer;
+
     public Controller() {
     }
+
     public void setUserService(UserService userService, PostService postService) {
         this.userService = userService;
         this.postService = postService;
@@ -42,5 +64,42 @@ public class Controller {
                     System.out.println("User already exists or invalid input");
                 }
             );
+    }
+
+    @FXML
+    private void handleUsers() {
+        System.out.println("Handle users clicked!");
+    }
+
+    @FXML
+    private void initialize() {
+        try {
+            loadPosts();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadPosts() throws IOException {
+        postContainer.getChildren().clear();
+        List<Post> posts = postService.getAllPosts();
+
+        for (Post post : posts) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/post_item.fxml"));
+                Node postNode = loader.load();
+
+                PostItemController controller = loader.getController();
+                controller.setPost(post);
+                postContainer.getChildren().add(postNode);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @FXML
+    private void newPost() throws IOException {
+        System.out.println("New post clicked!");
+        loadPosts();
     }
 }
