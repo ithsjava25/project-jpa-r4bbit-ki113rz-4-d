@@ -19,6 +19,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean deleteUser(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
         emf.runInTransaction(em -> {
             User user = em.find(User.class, id);
             if (user != null) {
@@ -32,20 +35,37 @@ public class UserRepositoryImpl implements UserRepository {
      * Creates or updates a User entity inside database
      * @param user entity of User class
      * @return managed entity
+     * @throws IllegalArgumentException if argument user is null
      */
     @Override
     public User save(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
         return emf.callInTransaction(em -> em.merge(user));
     }
 
+    /**
+     *
+     * @param id primary key of userId
+     * @return Optional User entity
+     */
     @Override
-    public User getUserById(Long id) {
-        return null;
+    public Optional<User> getUserById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+
+        return Optional.ofNullable(emf.callInTransaction(em -> em.find(User.class, id)));
     }
 
-    // Validates user credentials by verifying the username and password against the database
     @Override
     public Optional<User> getUserByUsername(String username) {
+        if (username == null) {
+            throw new IllegalArgumentException("Username cannot be null");
+        }
+
         try (EntityManager em = emf.createEntityManager()) {
             TypedQuery<User> query = em.createQuery(
                 "SELECT a FROM User a WHERE a.username = :username", User.class);

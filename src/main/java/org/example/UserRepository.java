@@ -11,7 +11,7 @@ public interface UserRepository {
 
     User save(User user);
 
-    User getUserById(Long id);
+    Optional<User> getUserById(Long id);
 
     Optional<User> getUserByUsername(String username);
 

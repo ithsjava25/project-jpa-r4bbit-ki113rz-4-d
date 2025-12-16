@@ -12,6 +12,9 @@ public interface UserService {
     Optional<User> createUser(String firstName, String lastName, String password);
     boolean updatePassword(String username, String password);
 
+    String makeUniqueUsername(String userName);
+    String formatStringForUsername(String name);
+
     boolean deleteUser(Long id);
 }
 
