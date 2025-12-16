@@ -15,18 +15,28 @@ public class UserRepositoryImpl implements UserRepository {
         this.emf = emf;
     }
 
+
+    /**
+     * Deletes a user from database based on userID
+     * @param id users userId
+     * @return true if user was deleted, returns false if fail
+     * @throws IllegalArgumentException if argument id is null
+     */
     @Override
     public boolean deleteUser(Long id) {
         if (id == null) {
             throw new IllegalArgumentException();
         }
-        emf.runInTransaction(em -> {
+
+        return emf.callInTransaction(em -> {
             User user = em.find(User.class, id);
             if (user != null) {
                 em.remove(user);
+                return true;
+            } else {
+                return false;
             }
         });
-        return true;
     }
 
     /**
@@ -45,32 +55,35 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     /**
-     *
+     *  Finds and returns user based on userID
      * @param id primary key of userId
-     * @return Optional User entity
+     * @return Optional User entity or Optional.empty() if no match
+     * @throws IllegalArgumentException if argument id is null
      */
     @Override
     public Optional<User> getUserById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Id cannot be null");
         }
-
         return Optional.ofNullable(emf.callInTransaction(em -> em.find(User.class, id)));
     }
 
+    /**
+     *  Find and returns user based on username
+     * @param username users username
+     * @return Optional<User> entity or Optional.empty() if no match
+     * @throws IllegalArgumentException if argument username is null
+     */
     @Override
     public Optional<User> getUserByUsername(String username) {
         if (username == null) {
             throw new IllegalArgumentException("Username cannot be null");
         }
 
-        try (EntityManager em = emf.createEntityManager()) {
-            TypedQuery<User> query = em.createQuery(
-                "SELECT a FROM User a WHERE a.username = :username", User.class);
-            query.setParameter("username", username);
-            return Optional.ofNullable(query.getSingleResult());
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
+        return (emf.callInTransaction(em -> em.createQuery(
+            "SELECT u FROM User u WHERE u.username = :username", User.class)
+        .setParameter("username", username)
+        .getResultStream()
+        .findFirst())); //Returns Optional.empty() if not found
     }
 }

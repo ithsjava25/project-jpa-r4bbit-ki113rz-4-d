@@ -43,6 +43,10 @@ public class Controller {
     }
 
     public void setUserService(UserService userService, PostService postService) {
+        if (userService == null || postService == null) {
+            throw new IllegalArgumentException("Services cannot be null");
+        }
+
         this.userService = userService;
         this.postService = postService;
         try {
