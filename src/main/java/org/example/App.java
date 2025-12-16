@@ -22,6 +22,9 @@ public class App {
         boolean result = userRepo.createUser("admin", "admin", "admin");
         System.out.println(result);
 
+        UserRepositoryImpl updatePassword = new UserRepositoryImpl(cfg);
+        boolean updated = updatePassword.updatePassword("admadm", "newPassword");
+        System.out.println("Password updated: " + updated);
         Long userId = 1L;
         boolean deleteUser = userRepo.deleteUser(userId);
         if (deleteUser) {
