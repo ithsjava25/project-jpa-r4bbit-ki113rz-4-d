@@ -9,5 +9,7 @@ public interface UserService {
     String createUserName(String firstName, String lastName);
     User createUser(String firstName, String lastName, String password);
     boolean updatePassword(String username, String password);
+
+    boolean deleteUser(Long id);
 }
 

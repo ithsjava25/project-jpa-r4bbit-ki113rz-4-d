@@ -12,7 +12,6 @@ public interface UserRepository {
     User getUserById(Long id);
 
 
-
 }
 
 

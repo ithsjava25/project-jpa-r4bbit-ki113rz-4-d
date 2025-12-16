@@ -65,17 +65,11 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
 
-    }
 
-    @Override
-    public void stop() throws Exception {
-        if (emf != null) {
-            emf.close();
-        UserRepositoryImpl updatePassword = new UserRepositoryImpl(cfg);
-        boolean updated = updatePassword.updatePassword("admadm", "newPassword");
+        boolean updated = userService.updatePassword("admadm", "newPassword");
         System.out.println("Password updated: " + updated);
         Long userId = 1L;
-        boolean deleteUser = userRepo.deleteUser(userId);
+        boolean deleteUser = userService.deleteUser(userId);
         if (deleteUser) {
             System.out.println("Deleted: User " + userId);
         } else {
@@ -83,12 +77,21 @@ public class App extends Application {
         }
 
         // Validates user credentials by verifying the username and password against the database
-        boolean isValid = userRepo.validateUser("admadm", "admin");
+        boolean isValid = userService.validateUser("admadm", "admin");
 
         if (isValid) {
             System.out.println("Login OK");
-         } else {
+        } else {
             System.out.println("Invalid username or password");
         }
     }
+
+    @Override
+    public void stop() throws Exception {
+        if (emf != null) {
+            emf.close();
+        }
+
+    }
+
 }
