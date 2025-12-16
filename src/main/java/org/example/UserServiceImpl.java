@@ -3,6 +3,12 @@ package org.example;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Optional;
+
 /**
  * Handles anything related to users
  * Calls UserRepository if needed
@@ -14,13 +20,43 @@ public class UserServiceImpl implements UserService {
         this.userRepo = userRepo;
     }
 
-    public User createUser(String firstName, String lastName, String password) {
+    /**
+     *
+     * @param firstName Users first name
+     * @param lastName Users last name
+     * @param password User created password
+     * @return managed User entity
+     */
+    public Optional<User> createUser(String firstName, String lastName, String password) {
+        if (firstName == null || firstName.isBlank()
+            || lastName == null || lastName.isBlank()
+            || password == null || password.isBlank()) {
+            throw new IllegalArgumentException("First name, last name, and password are required");
+        }
+
         String username = createUserName(firstName, lastName);
+
+        if(userRepo.getUserByUsername(username).isPresent()) {
+            return Optional.empty();
+        }
         User user = new User(firstName, lastName, username, password);
-        return userRepo.save(user);
+        return Optional.ofNullable(userRepo.save(user));
     }
+
+
+    /**
+     *
+     * @param username App users username
+     * @param password App users password
+     * @return true if username and password match is found. Return false if blank or null or no match found
+     */
     @Override
     public boolean validateUser(String username, String password) {
+        if (username == null || username.isBlank() ||
+            password == null || password.isBlank()) {
+            return false;
+        }
+
         return userRepo.getUserByUsername(username)
             .map(user -> user.getPassword().equals(password))
             .orElse(false);
