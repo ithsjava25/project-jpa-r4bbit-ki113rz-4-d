@@ -1,5 +1,7 @@
 package org.example;
 
+import java.util.Optional;
+
 /**
  * Handles User data from database
  */
@@ -9,7 +11,9 @@ public interface UserRepository {
 
     User save(User user);
 
-    User getUserById(Long id);
+    Optional<User> getUserById(Long id);
+
+    Optional<User> getUserByUsername(String username);
 
 
 }

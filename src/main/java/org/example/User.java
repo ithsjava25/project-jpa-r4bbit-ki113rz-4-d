@@ -14,9 +14,14 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+    @Column(nullable = false)
     private String first_name;
+    @Column(nullable = false)
     private String last_name;
+    @Column(nullable = false, unique = true)
     private String username;
+    @Column(nullable = false)
+    private String password;
 
     public User(String firstName, String lastName, String username, String password) {
         this.first_name = firstName;

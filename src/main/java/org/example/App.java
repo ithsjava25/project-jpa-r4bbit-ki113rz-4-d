@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.hibernate.jpa.HibernatePersistenceConfiguration;
 
+import java.util.Objects;
+
 /**
  * Use launcher to launch the App class
  * This is the "main"
@@ -60,15 +62,18 @@ public class App extends Application {
         controller.setUserService(userService, postService); //That is injected with userService
 
         //Show stage
-        Scene scene = new Scene(root, 320, 240);
-        stage.setTitle("Hello!");
+        Scene scene = new Scene(root, 800, 600);
+        scene.getStylesheets().add(
+            Objects.requireNonNull(App.class.getResource("/css/board.css")
+            ).toExternalForm());
+        stage.setTitle("Bulletin Board");
         stage.setScene(scene);
         stage.show();
 
 
         boolean updated = userService.updatePassword("admadm", "newPassword");
         System.out.println("Password updated: " + updated);
-        Long userId = 1L;
+        Long userId = 3L;
         boolean deleteUser = userService.deleteUser(userId);
         if (deleteUser) {
             System.out.println("Deleted: User " + userId);
@@ -85,13 +90,14 @@ public class App extends Application {
             System.out.println("Invalid username or password");
         }
     }
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     @Override
     public void stop() throws Exception {
         if (emf != null) {
             emf.close();
         }
-
     }
-
 }
