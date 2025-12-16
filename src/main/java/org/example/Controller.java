@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.List;
 
-import static org.example.JPAUtil.emf;
+
 
 /**
  * This is connected to the fxml file.
@@ -45,6 +45,11 @@ public class Controller {
     public void setUserService(UserService userService, PostService postService) {
         this.userService = userService;
         this.postService = postService;
+        try {
+            loadPosts();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void login(String username, String password) {
@@ -73,11 +78,7 @@ public class Controller {
 
     @FXML
     private void initialize() {
-        try {
-            loadPosts();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void loadPosts() throws IOException {

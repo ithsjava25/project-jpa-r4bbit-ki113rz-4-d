@@ -26,7 +26,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getAllPosts() {
-        return postRepo.findAll();
+        List<Post> posts = postRepo.findAll();
+        return posts != null ? posts : List.of();
     }
 
     @Override
