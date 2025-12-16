@@ -71,6 +71,24 @@ public class App extends Application {
     public void stop() throws Exception {
         if (emf != null) {
             emf.close();
+        UserRepositoryImpl updatePassword = new UserRepositoryImpl(cfg);
+        boolean updated = updatePassword.updatePassword("admadm", "newPassword");
+        System.out.println("Password updated: " + updated);
+        Long userId = 1L;
+        boolean deleteUser = userRepo.deleteUser(userId);
+        if (deleteUser) {
+            System.out.println("Deleted: User " + userId);
+        } else {
+            System.out.println("User not found: " + userId);
+        }
+
+        // Validates user credentials by verifying the username and password against the database
+        boolean isValid = userRepo.validateUser("admadm", "admin");
+
+        if (isValid) {
+            System.out.println("Login OK");
+         } else {
+            System.out.println("Invalid username or password");
         }
     }
 }
