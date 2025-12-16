@@ -1,7 +1,6 @@
 package org.example;
 
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.PersistenceConfiguration;
+import jakarta.persistence.*;
 import org.hibernate.sql.Update;
 
 import java.math.BigDecimal;
@@ -52,9 +51,28 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    // Validates user credentials by verifying the username and password against the database
     @Override
     public boolean validateUser(String username, String password) {
-        return false;
+        try (EntityManagerFactory emf = cfg.createEntityManagerFactory()) {
+            EntityManager em = emf.createEntityManager();
+
+            try {
+                TypedQuery<User> query = em.createQuery("SELECT a FROM User a WHERE a.username = :username",
+                    User.class);
+                query.setParameter("username", username);
+                User user = query.getSingleResult();
+                return  (user.getPassword().equals(password));
+
+
+            }catch (NoResultException e) {
+                return false;
+
+        } finally {
+            em.close();
+        }
+        }
+
     }
 
     @Override

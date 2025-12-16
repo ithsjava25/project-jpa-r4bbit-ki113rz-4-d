@@ -32,5 +32,14 @@ public class App {
         } else {
             System.out.println("User not found: " + userId);
         }
+
+        // Validates user credentials by verifying the username and password against the database
+        boolean isValid = userRepo.validateUser("admadm", "admin");
+
+        if (isValid) {
+            System.out.println("Login OK");
+         } else {
+            System.out.println("Invalid username or password");
+        }
     }
 }
