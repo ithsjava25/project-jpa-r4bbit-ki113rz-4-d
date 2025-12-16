@@ -1,9 +1,8 @@
 package org.example;
 
 /**
- * This class is used to handle Users
- * Everything User related is in this class
- * If anything from the database is needed, call userRepo
+ * Handles anything related to users
+ * Calls UserRepository if needed
  */
 public class UserServiceImpl implements UserService {
 

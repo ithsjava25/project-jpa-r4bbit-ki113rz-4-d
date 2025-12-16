@@ -11,8 +11,12 @@ import org.hibernate.jpa.HibernatePersistenceConfiguration;
 
 /**
  * Use launcher to launch the App class
+ * This is the "main"
+ *
  * Creates a PersistenceConfiguration
  * With the PersistenceConfiguration create a EntityManagerFactory(emf)
+ * Alternative is using JPAUtil with persistence.xml
+ *
  * Inject the Repos and Services with the EntityManagerFactory
  * Creates a fxml loader (fxmlLoader)
  * Uses the loader to load the UI inside the fxml
@@ -24,6 +28,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        //Creates a connection config with database
         final PersistenceConfiguration cfg = new HibernatePersistenceConfiguration("emf")
             .jdbcUrl("jdbc:mysql://localhost:3306/bulletin")
             .jdbcUsername("root")
@@ -34,21 +40,24 @@ public class App extends Application {
             .property("hibernate.highlight_sql", "true")
             .managedClasses(User.class);
 
+        //Creates an EntityManager with the config
         emf = cfg.createEntityManagerFactory();
 
-        //Repositories
+        //Initialize Repositories
         UserRepositoryImpl userRepo = new UserRepositoryImpl(emf);
+        PostRepository postRepo = new PostRepositoryImpl(emf);
 
-        //Services
+        //Initialize Services
+        PostService postService = new PostServiceImpl(postRepo);
         UserService userService = new UserServiceImpl(userRepo);
 
         //Load fxml
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/BulletinView.fxml"));
         Parent root = fxmlLoader.load();
 
-        //Inject userService
-        Controller controller = fxmlLoader.getController();
-        controller.setUserService(userService);
+        //Initialize controller
+        Controller controller = fxmlLoader.getController(); //Creates a controller instance
+        controller.setUserService(userService, postService); //That is injected with userService
 
         //Show stage
         Scene scene = new Scene(root, 320, 240);

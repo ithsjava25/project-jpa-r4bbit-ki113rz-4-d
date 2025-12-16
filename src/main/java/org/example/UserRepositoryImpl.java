@@ -2,6 +2,9 @@ package org.example;
 
 import jakarta.persistence.EntityManagerFactory;
 
+/**
+ * Handles User data from database
+ */
 public class UserRepositoryImpl implements UserRepository {
 
     private final EntityManagerFactory emf;

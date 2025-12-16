@@ -1,5 +1,9 @@
 package org.example;
 
+/**
+ * Handles anything related to users
+ * Calls UserRepository if needed
+ */
 public interface UserService {
     boolean validateUser(String username, String password);
     String createUserName(String firstName, String lastName);
