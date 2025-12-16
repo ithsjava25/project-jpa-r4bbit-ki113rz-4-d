@@ -53,9 +53,17 @@ public class Controller {
     }
 
     public void registerUser() {
-        //Get info from javaFX
-        User newUser = userService.createUser("Button", "Clicked", "secret");
-        System.out.println(newUser);
+        userService.createUser("Button", "Clicked", "secret")
+            .ifPresentOrElse(
+                user -> {
+                    //What happens if successfully created user
+                    System.out.println("User created: " + user.getUsername());
+                },
+                () -> {
+                    //What happens if failed creating user
+                    System.out.println("User already exists or invalid input");
+                }
+            );
     }
 
     @FXML

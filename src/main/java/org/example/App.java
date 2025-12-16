@@ -73,7 +73,7 @@ public class App extends Application {
 
         boolean updated = userService.updatePassword("admadm", "newPassword");
         System.out.println("Password updated: " + updated);
-        Long userId = 1L;
+        Long userId = 3L;
         boolean deleteUser = userService.deleteUser(userId);
         if (deleteUser) {
             System.out.println("Deleted: User " + userId);
