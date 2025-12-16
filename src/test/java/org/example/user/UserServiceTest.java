@@ -7,6 +7,9 @@ import org.hibernate.jpa.HibernatePersistenceConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserServiceTest {
@@ -55,6 +58,14 @@ public class UserServiceTest {
         }
 
     }
+
+    /**
+     * Verifies that
+     *      - a user is created
+     *      - id is generated
+     *      - username is built in the right way
+     *      - password is saved
+     */
     @Test
     void shouldCreateUser() {
         //given
@@ -73,21 +84,46 @@ public class UserServiceTest {
 
     }
 
-//    @Test
-//    void validateUser() {
-//        //given
-//        String firstName = "Sandra";
-//        String lastName = "Neljestam";
-//        String password = "ILoveHouseFlipper";
-//
-//        User created = userService.createUser(firstName, lastName, password);
-//        String username = created.getUsername();
-//
-//        //when
-//        User validated = userService.validateUser(username, password);
-//
-//        //then
-//        assertThat(validated).isNotNull();
-//        assertThat(validated.getUsername()).isEqualTo(username);
-//    }
+    /**
+     * Verifies that
+     *      - an already created user can login with correct password
+     */
+    @Test
+    void validateUser() {
+        //given
+        String firstName = "Sandra";
+        String lastName = "Neljestam";
+        String password = "ILoveHouseFlipper";
+
+        Optional<User> create = userService.createUser(firstName, lastName, password);
+        assertThat(create).isPresent();
+
+        String username = create.get().getUsername();
+
+        //when
+        boolean validated = userService.validateUser(username, password);
+
+        //then
+        assertThat(validated).isTrue();
+    }
+
+    /**
+     * Verifies that
+     *      - if username already exists in database, make a unique one
+     */
+    @Test
+    void makeUniqueUsername() {
+        //given
+        Optional<User> create = userService.createUser("Ash", "Ketchum","GottaCatchEmAll");
+        assertThat(create).isPresent();
+
+        String username = create.get().getUsername();
+
+        //when
+        String uniqueUsername = userService.makeUniqueUsername(username);
+
+        //then
+        assertThat(uniqueUsername).isEqualTo(username + "1");
+
+    }
 }
