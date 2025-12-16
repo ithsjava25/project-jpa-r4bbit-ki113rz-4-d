@@ -2,9 +2,7 @@ package org.example;
 
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.*;
-import org.hibernate.sql.Update;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 
 /**

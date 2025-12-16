@@ -1,5 +1,7 @@
 package org.example;
 
+import jakarta.persistence.EntityManagerFactory;
+
 import java.util.Optional;
 
 /**
@@ -26,10 +28,11 @@ public class UserServiceImpl implements UserService {
             || password == null || password.isBlank()) {
             return Optional.empty();
         }
+        String formattedFirstName = formatStringForUsername(firstName);
+        String formattedLastName = formatStringForUsername(lastName);
+        String username = createUserName(formattedFirstName, formattedLastName);
 
-        String username = createUserName(firstName, lastName);
-        String formattedUsername = formatStringForUsername(username);
-        String uniqueUsername = makeUniqueUsername(formattedUsername);
+        String uniqueUsername = makeUniqueUsername(username);
 
         User user = new User(firstName, lastName, uniqueUsername, password);
         return Optional.ofNullable(userRepo.save(user));
