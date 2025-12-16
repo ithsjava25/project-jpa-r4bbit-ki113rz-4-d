@@ -13,6 +13,15 @@ public class User {
     private String last_name;
     private String username;
 
+    public User(String firstName, String lastName, String username, String password) {
+        this.first_name = firstName;
+        this.last_name = lastName;
+        this.username = username;
+        this.password = password;
+    }
+
+    public User() {}
+
     @Override
     public String toString() {
         return "User{" +
