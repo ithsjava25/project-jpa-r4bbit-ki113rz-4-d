@@ -2,6 +2,11 @@ package org.example;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 
 @Entity
 @Table(name = "user")
@@ -19,6 +24,14 @@ public class User {
         this.username = username;
         this.password = password;
     }
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_posts",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "post_id")
+    )
+    private Set<Post> posts = new HashSet<>();
 
     public User() {}
 
@@ -74,5 +87,13 @@ public class User {
     }
 
     private String password;
+
+    /* ===== Relation helper ===== */
+    public void addPost(Post post){
+        if (!posts.contains(post)){
+            posts.add(post);
+            post.addAuthor(this);
+        }
+    }
 
 }
