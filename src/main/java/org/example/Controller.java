@@ -41,6 +41,14 @@ public class Controller {
     private FlowPane postContainer;
 
     public Controller(UserService userService, PostService postService) {
+    public Controller() {
+    }
+
+    public void setUserService(UserService userService, PostService postService) {
+        if (userService == null || postService == null) {
+            throw new IllegalArgumentException("Services cannot be null");
+        }
+
         this.userService = userService;
         this.postService = postService;
     }
