@@ -6,6 +6,7 @@ import org.example.*;
 import org.hibernate.jpa.HibernatePersistenceConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -123,7 +124,7 @@ public class UserServiceTest {
 
     /**
      * Verifies that
-     *      - if username already exists in database, make a unique one
+     *      - if username already exists in database, make a unique one by adding numbers.
      */
     @Test
     void makeUniqueUsername() {
@@ -140,4 +141,16 @@ public class UserServiceTest {
         assertThat(uniqueUsername).isEqualTo(username + "1");
 
     }
+
+    @DisplayName("Adds a number to the username to meet the minimum lenght requirement")
+    @Test
+    void shouldExtendShortUsername() {
+        String shortName = "Ed";
+
+        String username = userService.formatStringForUsername(shortName);
+
+        assertThat(username.length()).isGreaterThanOrEqualTo(3);
+        assertThat(username).startsWith(shortName);
+    }
 }
+
