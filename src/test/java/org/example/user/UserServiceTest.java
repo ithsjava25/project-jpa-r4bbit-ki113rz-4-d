@@ -129,7 +129,7 @@ public class UserServiceTest {
     @Test
     void makeUniqueUsername() {
         //given
-        Optional<User> create = userService.createUser("Ash", "Ketchum","GottaCatchEmAll");
+        Optional<User> create = userService.createUser("Daniel", "Marton","ImNotGoingToBeShadyWithThisDROPCommandIJustLearned");
         assertThat(create).isPresent();
 
         String username = create.get().getUsername();
@@ -142,7 +142,12 @@ public class UserServiceTest {
 
     }
 
-    @DisplayName("Adds a number to the username to meet the minimum lenght requirement")
+    /**
+     * Verifies that
+     *      - if name is shorter than 3 characters, method will add number to name
+     *      to ensure the username meets the username lenght requirements.
+     */
+    @DisplayName("Adds a number to the username to meet the minimum length requirement")
     @Test
     void shouldExtendShortUsername() {
         String shortName = "Ed";
@@ -151,6 +156,21 @@ public class UserServiceTest {
 
         assertThat(username.length()).isGreaterThanOrEqualTo(3);
         assertThat(username).startsWith(shortName);
+    }
+
+    /**
+     * Verifies that
+     *      - {@link UserService#formatStringForUsername(String)} only formats names that are smaller than 3 characters.
+     */
+    @DisplayName("Should not modify names that meet the minimum length requirement")
+    @Test
+    void shouldNotExtendLongName() {
+        String longName = "Rudolph";
+
+        String username = userService.formatStringForUsername(longName);
+
+        assertThat(username).isEqualTo(longName);
+
     }
 }
 
