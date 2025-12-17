@@ -5,10 +5,19 @@
     -fx-background-position: center;
 }
 
-.scroll-pane {
+.scroll-pane,
+.scroll-pane > .viewport {
     -fx-background-color: transparent;
 }
 
-.scroll-pane > .viewport {
-    -fx-background-color: transparent;
+.post-it {
+    -fx-padding: 0;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10,0,0,10);
+}
+
+/* Hover animation */
+.post-it:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }

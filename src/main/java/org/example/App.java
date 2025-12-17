@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceConfiguration;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -55,17 +56,21 @@ public class App extends Application {
 
         //Load fxml
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/BulletinView.fxml"));
-        Parent root = fxmlLoader.load();
 
         //Initialize controller
-        Controller controller = fxmlLoader.getController(); //Creates a controller instance
-        controller.setUserService(userService, postService); //That is injected with userService
+        fxmlLoader.setControllerFactory(controllerClass -> {
+            if (controllerClass == controllerClass) {
+                return new Controller(userService, postService);
+            }
+            return null;
+        });
+
+        Parent root = fxmlLoader.load();
 
         //Show stage
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 900, 600);
         scene.getStylesheets().add(
-            Objects.requireNonNull(App.class.getResource("/css/board.css")
-            ).toExternalForm());
+            App.class.getResource("/css/board.css").toExternalForm());
         stage.setTitle("Bulletin Board");
         stage.setScene(scene);
         stage.show();
