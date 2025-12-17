@@ -74,9 +74,14 @@ public class UserServiceTest {
         String password = "ImAlwaysOneWeekBehind";
 
         //when
-        User user = userService.createUser(firstName, lastName, password);
+        Optional<User> optionalUser =
+            userService.createUser(firstName, lastName, password);
 
         //then
+        assertThat(optionalUser).isPresent();
+
+        User user = optionalUser.get();
+
         assertThat(user).isNotNull();
         assertThat(user.getUserId()).isNotNull();
         assertThat(user.getUsername()).isEqualTo("FifFri");
