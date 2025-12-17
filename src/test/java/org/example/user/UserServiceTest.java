@@ -7,11 +7,20 @@ import org.hibernate.jpa.HibernatePersistenceConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+/**
+ * Integration tests require a local MySQL instance.
+ * Tests are intended to be run locally and are skipped in CI.
+ */
+
+@DisabledOnOs(OS.LINUX)
 public class UserServiceTest {
 
     private EntityManagerFactory emf;
