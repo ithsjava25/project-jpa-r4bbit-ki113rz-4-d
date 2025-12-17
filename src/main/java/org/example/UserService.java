@@ -16,5 +16,6 @@ public interface UserService {
     String formatStringForUsername(String name);
 
     boolean deleteUser(Long id);
+
 }
 

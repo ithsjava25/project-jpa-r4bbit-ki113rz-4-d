@@ -1,18 +1,19 @@
 package org.example;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
-import javafx.fxml.FXML;
-import nonapi.io.github.classgraph.json.JSONUtils;
-
-import java.awt.event.ActionEvent;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.Dialog;
 import java.io.IOException;
 import java.util.List;
 
@@ -39,18 +40,20 @@ public class Controller {
     @FXML
     private FlowPane postContainer;
 
-    public Controller() {
-    }
-
-    public void setUserService(UserService userService, PostService postService) {
+    public Controller(UserService userService, PostService postService) {
         this.userService = userService;
         this.postService = postService;
+    }
+
+    @FXML
+    private void initialize() {
         try {
             loadPosts();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     public void login(String username, String password) {
         //Get info from javaFX
@@ -76,10 +79,6 @@ public class Controller {
         System.out.println("Handle users clicked!");
     }
 
-    @FXML
-    private void initialize() {
-
-    }
 
     public void loadPosts() throws IOException {
         postContainer.getChildren().clear();
@@ -98,9 +97,54 @@ public class Controller {
             }
         }
     }
+
     @FXML
-    private void newPost() throws IOException {
-        System.out.println("New post clicked!");
-        loadPosts();
+    private void newPost() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("New Note");
+        dialog.setHeaderText("Enter your subject and message: ");
+
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField subjectField = new TextField();
+        subjectField.setPromptText("Subject");
+
+        TextArea messageArea = new TextArea();
+        messageArea.setPromptText("Message");
+        messageArea.setPrefRowCount(3);
+
+        grid.add(new Label("Subject:"), 0, 0);
+        grid.add(subjectField, 1, 0);
+        grid.add(new Label("Message:"), 0, 1);
+        grid.add(messageArea, 1, 1);
+
+        dialog.getDialogPane().setContent(grid);
+        Platform.runLater(subjectField::requestFocus);
+
+        dialog.showAndWait().ifPresent(input -> {
+            if (input == saveButtonType) {
+                System.out.println("Save clicked!");
+                Post newPost = new Post(subjectField.getText(), messageArea.getText());
+
+                userService.getUserById(1L).ifPresent(user -> {
+                    postService.createPost(newPost, user);
+                    System.out.println("Post saved in database!");
+
+                    try {
+                        loadPosts();
+                        System.out.println("loadPosts() has run!");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+
+            }
+        });
     }
 }

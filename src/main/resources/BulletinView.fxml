@@ -2,10 +2,12 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane stylesheets="@/css/board.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controller">
+<BorderPane
+    xmlns="http://javafx.com/javafx/17.0.12"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="org.example.Controller">
 
 <!--Top Toolbar-->
 <top>
@@ -23,13 +25,6 @@
           <padding>
               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
           </padding>
-            <children>
-               <ImageView fitHeight="300.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@Images/Background.jpeg" />
-                  </image>
-               </ImageView>
-            </children>
         </FlowPane>
         </ScrollPane>
     </center>

@@ -16,9 +16,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void createPost(Post post, User user) {
-        validate(post);
+        if (post == null) throw new IllegalArgumentException("Post cannot be null");
         if (user == null) throw new IllegalArgumentException("User cannot be null");
-
+        validate(post);
+        post.addAuthor(user);
         user.addPost(post);
 
         userRepo.save(user);

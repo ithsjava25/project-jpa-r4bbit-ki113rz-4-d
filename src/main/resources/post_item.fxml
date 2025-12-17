@@ -2,36 +2,38 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.ImageView?>
-<?import java.lang.String?>
+<?import javafx.scene.image.Image?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml"
-           fx:controller="org.example.PostItemController"
-           prefWidth="180" prefHeight="180">
+<StackPane  fx:id="root" stylesheets="@/css/board.css" styleClass="post-it"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.PostItemController">
 
-    <styleClass>
-        <String fx:value="post-it"/>
-    </styleClass>
+    <children>
+    <ImageView fitHeight="200.0" fitWidth="200.0"  preserveRatio = "true">
+        <image>
+            <Image url="@/Images/Postit.jpg"/>
+        </image>
+    </ImageView>
 
-
-    <ImageView fx:id="PostitImage"
-               fitWidth="180"
-               fitHeight="180"
-               preserveRatio = "true"/>
+    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="5.0"
+    style="-fx-padding: 30 20 20 20;">
+        <children>
+        <Label fx:id="subjectLabel" style="-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #2c3e50;"
+               text="Rubrik" wrapText="true" />
+        <Label fx:id="messageLabel" style="-fx-font-size: 12; -fx-text-fill: #34495e;"
+               text="Meddelande..." wrapText="true" textAlignment="CENTER" />
+        </children>
+    </VBox>
 
     <HBox fx:id="actionBox"
           alignment="TOP_RIGHT"
-          visible="true"
+          visible="false"
           StackPane.alignment="TOP_RIGHT">
+        <children>
         <Button text="Visa meddelande"/>
         <Button text="Uppdatera" onAction="#handleUpdate"/>
         <Button text="Delete Post" onAction="#handleDelete"/>
+        </children>
     </HBox>
-
-    <VBox alignment="CENTER">
-            <Label fx:id="subjectLabel"
-                   style="-fx-font-weight: bold;"/>
-            <Label fx:id="messageLabel"
-                   wrapText="true"
-                   maxWidth="140"/>
-    </VBox>
+    </children>
 </StackPane>
