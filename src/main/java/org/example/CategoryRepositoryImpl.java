@@ -20,7 +20,13 @@ public class CategoryRepositoryImpl implements CategoryRepository{
             category = em.merge(category);
             tx.commit();
             return category;
-        } finally {
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw e;
+        }
+        finally {
             em.close();
         }
     }
