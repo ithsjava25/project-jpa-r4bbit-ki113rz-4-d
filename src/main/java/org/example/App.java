@@ -56,16 +56,19 @@ public class App extends Application {
 
         //Load fxml
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/BulletinView.fxml"));
+        Parent root = fxmlLoader.load();
 
         //Initialize controller
-        fxmlLoader.setControllerFactory(controllerClass -> {
-            if (controllerClass == controllerClass) {
-                return new Controller(userService, postService);
-            }
-            return null;
-        });
+//        fxmlLoader.setControllerFactory(controllerClass -> {
+//            if (controllerClass == controllerClass) {
+//                return new Controller(userService, postService);
+//            }
+//            return null;
+//        });
+        Controller controller = fxmlLoader.getController(); //Creates a controller instance
+        controller.setUserService(userService, postService); //That is injected with userService
 
-        Parent root = fxmlLoader.load();
+
 
         //Show stage
         Scene scene = new Scene(root, 900, 600);

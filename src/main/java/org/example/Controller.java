@@ -40,119 +40,121 @@ public class Controller {
     @FXML
     private FlowPane postContainer;
 
-    public Controller(UserService userService, PostService postService) {
+    public Controller(UserService userService, PostService postService) {}
     public Controller() {
-    }
-
-    public void setUserService(UserService userService, PostService postService) {
-        if (userService == null || postService == null) {
-            throw new IllegalArgumentException("Services cannot be null");
         }
 
-        this.userService = userService;
-        this.postService = postService;
-    }
+        public void setUserService (UserService userService, PostService postService){
+            if (userService == null || postService == null) {
+                throw new IllegalArgumentException("Services cannot be null");
+            }
 
-    @FXML
-    private void initialize() {
-        try {
-            loadPosts();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void login(String username, String password) {
-        //Get info from javaFX
-        //Login logic here
-    }
-
-    public void registerUser() {
-        userService.createUser("Button", "Clicked", "secret")
-            .ifPresentOrElse(
-                user -> {
-                    //What happens if successfully created user
-                    System.out.println("User created: " + user.getUsername());
-                },
-                () -> {
-                    //What happens if failed creating user
-                    System.out.println("User already exists or invalid input");
-                }
-            );
-    }
-
-    @FXML
-    private void handleUsers() {
-        System.out.println("Handle users clicked!");
-    }
-
-
-    public void loadPosts() throws IOException {
-        postContainer.getChildren().clear();
-        List<Post> posts = postService.getAllPosts();
-
-        for (Post post : posts) {
+            this.userService = userService;
+            this.postService = postService;
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/post_item.fxml"));
-                Node postNode = loader.load();
-
-                PostItemController controller = loader.getController();
-                controller.setPost(post);
-                postContainer.getChildren().add(postNode);
+                loadPosts();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-    }
 
-    @FXML
-    private void newPost() {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("New Note");
-        dialog.setHeaderText("Enter your subject and message: ");
+        @FXML
+        private void initialize () {
 
-        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+        }
 
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
 
-        TextField subjectField = new TextField();
-        subjectField.setPromptText("Subject");
+        public void login (String username, String password){
+            //Get info from javaFX
+            //Login logic here
+        }
 
-        TextArea messageArea = new TextArea();
-        messageArea.setPromptText("Message");
-        messageArea.setPrefRowCount(3);
-
-        grid.add(new Label("Subject:"), 0, 0);
-        grid.add(subjectField, 1, 0);
-        grid.add(new Label("Message:"), 0, 1);
-        grid.add(messageArea, 1, 1);
-
-        dialog.getDialogPane().setContent(grid);
-        Platform.runLater(subjectField::requestFocus);
-
-        dialog.showAndWait().ifPresent(input -> {
-            if (input == saveButtonType) {
-                System.out.println("Save clicked!");
-                Post newPost = new Post(subjectField.getText(), messageArea.getText());
-
-                userService.getUserById(1L).ifPresent(user -> {
-                    postService.createPost(newPost, user);
-                    System.out.println("Post saved in database!");
-
-                    try {
-                        loadPosts();
-                        System.out.println("loadPosts() has run!");
-                    } catch (IOException e) {
-                        e.printStackTrace();
+        public void registerUser () {
+            userService.createUser("Button", "Clicked", "secret")
+                .ifPresentOrElse(
+                    user -> {
+                        //What happens if successfully created user
+                        System.out.println("User created: " + user.getUsername());
+                    },
+                    () -> {
+                        //What happens if failed creating user
+                        System.out.println("User already exists or invalid input");
                     }
-                });
+                );
+        }
 
+        @FXML
+        private void handleUsers () {
+            System.out.println("Handle users clicked!");
+        }
+
+
+        public void loadPosts () throws IOException {
+            postContainer.getChildren().clear();
+            List<Post> posts = postService.getAllPosts();
+
+            for (Post post : posts) {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/post_item.fxml"));
+                    Node postNode = loader.load();
+
+                    PostItemController controller = loader.getController();
+                    controller.setPost(post);
+                    postContainer.getChildren().add(postNode);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        });
-    }
+        }
+
+        @FXML
+        private void newPost () {
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle("New Note");
+            dialog.setHeaderText("Enter your subject and message: ");
+
+            ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+
+            TextField subjectField = new TextField();
+            subjectField.setPromptText("Subject");
+
+            TextArea messageArea = new TextArea();
+            messageArea.setPromptText("Message");
+            messageArea.setPrefRowCount(3);
+
+            grid.add(new Label("Subject:"), 0, 0);
+            grid.add(subjectField, 1, 0);
+            grid.add(new Label("Message:"), 0, 1);
+            grid.add(messageArea, 1, 1);
+
+            dialog.getDialogPane().setContent(grid);
+            Platform.runLater(subjectField::requestFocus);
+
+            dialog.showAndWait().ifPresent(input -> {
+                if (input == saveButtonType) {
+                    System.out.println("Save clicked!");
+                    Post newPost = new Post(subjectField.getText(), messageArea.getText());
+
+                    userService.getUserById(1L).ifPresent(user -> {
+                        postService.createPost(newPost, user);
+                        System.out.println("Post saved in database!");
+
+                        try {
+                            loadPosts();
+                            System.out.println("loadPosts() has run!");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                }
+            });
+        }
+
 }
