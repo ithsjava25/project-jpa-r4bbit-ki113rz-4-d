@@ -81,6 +81,28 @@ public class Post {
             authors.add(user);
         }
     }
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "post_categories",
+        joinColumns = @JoinColumn (name = "post_id"),
+        inverseJoinColumns = @JoinColumn (name = "category_id")
+    )
+    private List<Category> categories = new ArrayList<>();
+
+    public List<Category> getCategories(){
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void addCategory(Category category) {
+        if (category != null && !categories.contains(category)) {
+            categories.add(category);
+            category.addPost(this);
+        }
+    }
 
     /* ===== Debug ===== */
     @Override
