@@ -47,7 +47,7 @@ public class UserServiceTest {
                 .jdbcUsername("root")
                 .jdbcPassword("root")
                 .property("hibernate.hbm2ddl.auto", "update")
-                .managedClasses(User.class);
+                .managedClasses(User.class, Post.class);
 
         emf = cfg.createEntityManagerFactory();
         var userRepo = new UserRepositoryImpl(emf);
