@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String createUserName(String firstName, String lastName) {
         if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
-            throw new IllegalArgumentException("firstName is null or lastName is blank");
+            throw new IllegalArgumentException("firstName and lastName must not be null or blank");
         }
 
         String username = formatStringForUsername(firstName).substring(0,3)
@@ -142,6 +142,14 @@ public class UserServiceImpl implements UserService {
                 return true;
             })
             .orElse(false);
+    }
+
+    @Override
+    public Optional<User> getUserById(Long id) {
+        if(id == null) {
+            throw new IllegalArgumentException("id is null");
+        }
+        return userRepo.getUserById(id);
     }
 
     /**
