@@ -107,7 +107,7 @@ public class UserServiceTest {
     void validateUser() {
         //given
         String firstName = "Sandra";
-        String lastName = "Neljestam";
+        String lastName = "Nelj";
         String password = "ILoveHouseFlipper";
 
         Optional<User> create = userService.createUser(firstName, lastName, password);
@@ -129,7 +129,8 @@ public class UserServiceTest {
     @Test
     void makeUniqueUsername() {
         //given
-        Optional<User> create = userService.createUser("Daniel", "Marton","ImNotGoingToBeShadyWithThisDROPCommandIJustLearned");
+        Optional<User> create = userService.createUser
+            ("Daniel", "Mart","ImNotGoingToBeShadyWithThisDROPCommandIJustLearned");
         assertThat(create).isPresent();
 
         String username = create.get().getUsername();
@@ -170,6 +171,28 @@ public class UserServiceTest {
         String username = userService.formatStringForUsername(longName);
 
         assertThat(username).isEqualTo(longName);
+
+    }
+
+    /**
+     * Verifies that
+     *      - a user is deleted
+     *      - the deleted user is unable to login
+     */
+    @Test
+    void shouldDeleteUser() {
+        Optional<User> create = userService.createUser
+            ("Edvin", "Karl", "HowDidIEndUpInAGroupProjectWithABunchOfMillenials");
+        assertThat(create).isPresent();
+
+        User user = create.get();
+        Long id = user.getUserId();
+
+
+        boolean deleted = userService.deleteUser(id);
+
+        assertThat(deleted).isTrue();
+        assertThat(userService.validateUser(user.getUsername(), user.getPassword())).isFalse();
 
     }
 }
