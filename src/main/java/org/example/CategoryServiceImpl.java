@@ -13,8 +13,9 @@ public class CategoryServiceImpl implements CategoryService{
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Category name cannot be null");
         }
-        Category category = new Category(name.trim());
-        return categoryRepo.save(category);
+        String trimmed = name.trim();
+        return categoryRepo.findByName(trimmed)
+            .orElseGet(() -> categoryRepo.save(new Category(trimmed)));
     }
 
     @Override
