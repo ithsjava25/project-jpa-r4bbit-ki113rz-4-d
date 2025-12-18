@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
@@ -30,14 +31,41 @@ public class LoginController {
         this.postService = postService;
     }
 
+
+    /**
+     *
+     *
+     */
     @FXML
-    private void handleLogin() throws IOException {
+    private void handleLogin() {
 
-        //TODO Kontrollera anv+lösenord
+        String username = usernameField.getText();
+        String password = passwordField.getText();
 
+        userService.login(username, password)
+            .ifPresentOrElse(
+                user -> {
+                    UserSession.login(user);
+                    switchToBulletin();
+                },
+                () -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Login Failed");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Login Failed");
+                    alert.showAndWait();
+                }
+            );
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("BulletinView.fxml"));
-        Parent root = loader.load();
+    }
+    private void switchToBulletin() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/BulletinView.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         //Fetch Bulletin-Controller
         Controller bulletinController = loader.getController();
@@ -50,4 +78,8 @@ public class LoginController {
         stage.setTitle("Bulletin Board");
         stage.setScene(scene);
     }
+
 }
+
+
+

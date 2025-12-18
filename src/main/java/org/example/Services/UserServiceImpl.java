@@ -145,6 +145,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> login(String username, String password) {
+        if (username == null || username.isBlank()
+            || password == null || password.isBlank()) {
+            return Optional.empty();
+        }
+
+        if (validateUser(username, password)) {
+            return userRepo.getUserByUsername(username);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public Optional<User> getUserById(Long id) {
         if(id == null) {
             throw new IllegalArgumentException("id is null");
