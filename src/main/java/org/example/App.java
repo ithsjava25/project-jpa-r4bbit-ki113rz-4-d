@@ -40,7 +40,7 @@ public class App extends Application {
             .property("hibernate.show_sql", "true")
             .property("hibernate.format_sql", "true")
             .property("hibernate.highlight_sql", "true")
-            .managedClasses(User.class, Post.class);
+            .managedClasses(User.class, Post.class, Category.class);
 
         //Creates an EntityManager with the config
         emf = cfg.createEntityManagerFactory();
@@ -48,10 +48,17 @@ public class App extends Application {
         //Initialize Repositories
         UserRepositoryImpl userRepo = new UserRepositoryImpl(emf);
         PostRepository postRepo = new PostRepositoryImpl(emf);
+        CategoryRepository categoryRepo = new CategoryRepositoryImpl(emf);
 
         //Initialize Services
         PostService postService = new PostServiceImpl(postRepo, userRepo);
         UserService userService = new UserServiceImpl(userRepo);
+        CategoryService categoryService = new CategoryServiceImpl(categoryRepo);
+
+        categoryService.seedDefaultCategories();
+
+        System.out.println("Categories in Db");
+        categoryService.getAllCategories().forEach(System.out::println);
 
         //Load LoginView fxml
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/LoginView.fxml"));
@@ -64,6 +71,9 @@ public class App extends Application {
 //            }
 //            return null;
 //        });
+        Controller controller = fxmlLoader.getController(); //Creates a controller instance
+        controller.setUserService(userService, postService, categoryService); //That is injected with userService
+
         LoginController loginController = fxmlLoader.getController();
         loginController.setUserService(userService);
         loginController.setPostService(postService);

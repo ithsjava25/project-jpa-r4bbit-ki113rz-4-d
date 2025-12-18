@@ -36,6 +36,7 @@ import java.util.List;
 public class Controller {
     private UserService userService;
     private PostService postService;
+    private CategoryService categoryService;
 
     @FXML
     private FlowPane postContainer;
@@ -44,13 +45,13 @@ public class Controller {
     public Controller() {
         }
 
-        public void setUserService (UserService userService, PostService postService){
+        public void setUserService (UserService userService, PostService postService, CategoryService categoryService){
             if (userService == null || postService == null) {
                 throw new IllegalArgumentException("Services cannot be null");
             }
-
             this.userService = userService;
             this.postService = postService;
+            this.categoryService = categoryService;
             try {
                 loadPosts();
             } catch (IOException e) {

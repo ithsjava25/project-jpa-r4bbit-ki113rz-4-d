@@ -18,6 +18,8 @@ public class PostServiceImpl implements PostService {
     public void createPost(Post post, User user) {
         if (post == null) throw new IllegalArgumentException("Post cannot be null");
         if (user == null) throw new IllegalArgumentException("User cannot be null");
+        if (post.getCategories() == null || post.getCategories().isEmpty())
+            throw new IllegalArgumentException("Category is required");
         validate(post);
         post.addAuthor(user);
         user.addPost(post);
