@@ -1,4 +1,9 @@
-package org.example;
+package org.example.Services;
+
+import org.example.Entities.Post;
+import org.example.Entities.User;
+import org.example.Repositories.PostRepository;
+import org.example.Repositories.UserRepository;
 
 import java.util.List;
 

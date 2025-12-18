@@ -6,7 +6,7 @@
 
 <StackPane  fx:id="root" stylesheets="@/css/board.css" styleClass="post-it"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.PostItemController">
+            fx:controller="org.example.Controllers.PostItemController">
 
     <children>
     <ImageView fitHeight="200.0" fitWidth="200.0"  preserveRatio = "true">

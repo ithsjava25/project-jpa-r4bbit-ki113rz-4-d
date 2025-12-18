@@ -1,6 +1,7 @@
 package org.example;
 
 import jakarta.persistence.*;
+import org.example.Entities.Post;
 
 import java.util.ArrayList;
 import java.util.List;

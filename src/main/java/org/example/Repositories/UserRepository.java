@@ -1,6 +1,7 @@
-package org.example;
+package org.example.Repositories;
 
-import java.util.List;
+import org.example.Entities.User;
+
 import java.util.Optional;
 
 /**

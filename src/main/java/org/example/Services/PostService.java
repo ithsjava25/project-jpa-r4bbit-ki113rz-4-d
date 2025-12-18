@@ -1,4 +1,7 @@
-package org.example;
+package org.example.Services;
+
+import org.example.Entities.Post;
+import org.example.Entities.User;
 
 import java.util.List;
 
