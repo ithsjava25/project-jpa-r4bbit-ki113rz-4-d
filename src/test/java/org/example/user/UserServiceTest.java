@@ -2,7 +2,11 @@ package org.example.user;
 
 import jakarta.persistence.EntityManagerFactory;
 
-import org.example.*;
+import org.example.Entities.Post;
+import org.example.Entities.User;
+import org.example.Repositories.UserRepositoryImpl;
+import org.example.Services.UserService;
+import org.example.Services.UserServiceImpl;
 import org.hibernate.jpa.HibernatePersistenceConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;

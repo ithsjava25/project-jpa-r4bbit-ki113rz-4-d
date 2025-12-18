@@ -1,14 +1,14 @@
-package org.example;
+package org.example.Controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
-import javafx.stage.Stage;
 import javafx.scene.control.TextField;
-import java.io.IOException;
+import org.example.App;
+import org.example.Services.PostService;
+import org.example.Services.UserService;
+import org.example.UserSession;
 
 /**
  * Class to link LoginView to Controller
@@ -17,36 +17,39 @@ import java.io.IOException;
 public class LoginController {
 
     private UserService userService;
-    private PostService postService;
 
     @FXML
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
+    @FXML
+    private Button loginButton;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
-    public void setPostService(PostService postService) {
-        this.postService = postService;
+
+    @FXML
+    private void initialize() {
+        loginButton.disableProperty().bind(
+            usernameField.textProperty().isEmpty()
+                .or(passwordField.textProperty().isEmpty())
+        );
     }
 
-
-    /**
-     *
-     *
-     */
     @FXML
     private void handleLogin() {
 
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        String username = usernameField.getText().trim();
+        String password = passwordField.getText().trim();
+
+        passwordField.clear();
 
         userService.login(username, password)
             .ifPresentOrElse(
                 user -> {
                     UserSession.login(user);
-                    switchToBulletin();
+                    App.getAppInstance().showBoard();
                 },
                 () -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -56,29 +59,12 @@ public class LoginController {
                     alert.showAndWait();
                 }
             );
-
-    }
-    private void switchToBulletin() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/BulletinView.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        //Fetch Bulletin-Controller
-        Controller bulletinController = loader.getController();
-        bulletinController.setUserService(userService, postService);
-
-        Scene scene = new Scene(root, 900, 600);
-        scene.getStylesheets().add(getClass().getResource("/css/board.css").toExternalForm());
-
-        Stage stage = (Stage) usernameField.getScene().getWindow();
-        stage.setTitle("Bulletin Board");
-        stage.setScene(scene);
     }
 
+    @FXML
+    private void handleCreateUser() {
+        App.getAppInstance().showRegister();
+    }
 }
 
 

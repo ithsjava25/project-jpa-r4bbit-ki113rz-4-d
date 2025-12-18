@@ -1,4 +1,7 @@
-package org.example;
+package org.example.Services;
+
+import org.example.Entities.User;
+import org.example.Repositories.UserRepository;
 
 import java.util.Optional;
 
@@ -16,21 +19,26 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Takes parameters and creates a user and saves it inside the database
+     * checks if username is unique
      * then returns it
      * @param firstName Users first name
      * @param lastName Users last name
      * @param password User created password
+     * @param username Users prefered username
      * @return managed User entity
      */
     @Override
-    public Optional<User> createUser(String firstName, String lastName, String password) {
+    public Optional<User> createUser(String firstName, String lastName, String password, String username) {
         if (firstName == null || firstName.isBlank()
             || lastName == null || lastName.isBlank()
-            || password == null || password.isBlank()) {
+            || password == null || password.isBlank()
+            || username == null || username.isBlank()) {
             return Optional.empty();
         }
 
-        String username = createUserName(firstName, lastName);
+        if(userRepo.getUserByUsername(username).isPresent() && username.length() > 2 && username.length() < 30) {
+            return Optional.empty();
+        };
 
         User user = new User(firstName, lastName, username, password);
         return Optional.ofNullable(userRepo.save(user));
@@ -54,73 +62,6 @@ public class UserServiceImpl implements UserService {
         return userRepo.getUserByUsername(username)
             .map(user -> user.getPassword().equals(password))
             .orElse(false);
-    }
-
-    /**
-     * Creates a username with the first 3 characters from firstName
-     * and first 3 characters from lastName
-     * Makes sure username is unique by returning result of makeUniqueUsername()(adds numbers at end);
-     * Makes sure firstname and lastname is correct format 3 letters or bigger (adds numbers at end)
-     * @param firstName users first name
-     * @param lastName users last name
-     * @return String with username
-     * @throws IllegalArgumentException if any of the arguments are null or blank
-     */
-    @Override
-    public String createUserName(String firstName, String lastName) {
-        if (firstName == null || firstName.isBlank() || lastName == null || lastName.isBlank()) {
-            throw new IllegalArgumentException("firstName and lastName must not be null or blank");
-        }
-
-        String username = formatStringForUsername(firstName).substring(0,3)
-            + formatStringForUsername(lastName).substring(0,3);
-        return makeUniqueUsername(username);
-    }
-
-    /**
-     * Produce a username that does not collide with existing accounts.
-     *
-     * @param userName the preferred username
-     * @return the original username if available; otherwise the username with a numeric suffix that is not already used
-     * @throws IllegalArgumentException if argument userName is null or blank
-     */
-    @Override
-    public String makeUniqueUsername(String userName) {
-        if (userName == null || userName.isBlank()) {
-            throw new IllegalArgumentException("userName is null or blank");
-        }
-        int counter = 1;
-        String newUserName = userName;
-
-        //Adds numbers at the end if username exists
-        //Try adding 1, then 2, then 3 etc...
-        while (userRepo.getUserByUsername(newUserName).isPresent()) {
-            newUserName = userName + counter;
-            counter++;
-        }
-        return newUserName;
-    }
-
-    /**
-     * Ensure a name is at least three characters by appending incremental digits.
-     *
-     * @param name the original name to format; may be shorter than three characters
-     * @return the name padded with incremental digits starting at 1 until its length is at least three
-     * @throws IllegalArgumentException if argument name is null or blank
-     */
-    @Override
-    public String formatStringForUsername(String name) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("name is null or blank");
-        }
-        StringBuilder tempName = new StringBuilder(name);
-        int counter = 1;
-        //Adds numbers at the end while name length is less than 3
-        while (tempName.length() < 3) {
-            tempName.append(counter);
-            counter++;
-        }
-        return tempName.toString();
     }
 
     /**

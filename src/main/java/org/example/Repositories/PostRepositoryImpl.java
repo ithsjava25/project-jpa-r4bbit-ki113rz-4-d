@@ -1,8 +1,9 @@
-package org.example;
+package org.example.Repositories;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
+import org.example.Entities.Post;
 
 import java.util.List;
 import java.util.Optional;

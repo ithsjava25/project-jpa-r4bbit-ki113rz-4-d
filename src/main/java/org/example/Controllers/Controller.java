@@ -1,4 +1,4 @@
-package org.example;
+package org.example.Controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -7,13 +7,16 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Dialog;
+import org.example.Entities.Post;
+import org.example.Services.PostService;
+import org.example.Services.UserService;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -30,19 +33,13 @@ import java.util.List;
  * (If needed, we can create a LoginController, UserController and a PostController)
  *
  */
-//TODO: Login, registration
-//TODO: Display posts, create posts, delete/edit posts
-//TODO: Filter by category, assign categories when posting
+
 public class Controller {
     private UserService userService;
     private PostService postService;
 
     @FXML
     private FlowPane postContainer;
-
-    public Controller(UserService userService, PostService postService) {}
-    public Controller() {
-        }
 
         public void setUserService (UserService userService, PostService postService){
             if (userService == null || postService == null) {
@@ -61,26 +58,6 @@ public class Controller {
         @FXML
         private void initialize () {
 
-        }
-
-
-        public void login (String username, String password){
-            //Get info from javaFX
-            //Login logic here
-        }
-
-        public void registerUser () {
-            userService.createUser("Button", "Clicked", "secret")
-                .ifPresentOrElse(
-                    user -> {
-                        //What happens if successfully created user
-                        System.out.println("User created: " + user.getUsername());
-                    },
-                    () -> {
-                        //What happens if failed creating user
-                        System.out.println("User already exists or invalid input");
-                    }
-                );
         }
 
         @FXML
@@ -152,7 +129,6 @@ public class Controller {
                             e.printStackTrace();
                         }
                     });
-
                 }
             });
         }
