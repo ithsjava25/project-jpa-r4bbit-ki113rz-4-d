@@ -1,0 +1,86 @@
+.root {
+    -fx-background-color: linear-gradient(
+        to bottom,
+        #f7f3ea,
+        #e3d8bf
+    );
+    -fx-font-family: "Segoe UI", "Arial";
+}
+
+/* Main container */
+.vbox {
+    -fx-padding: 30;
+    -fx-spacing: 14;
+}
+
+/* Headline label (optional) */
+.label.title {
+    -fx-font-size: 18px;
+    -fx-text-fill: #4b5320;
+    -fx-font-weight: bold;
+}
+
+/* Standard labels */
+.label {
+    -fx-text-fill: #4b5320;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* Input fields */
+.text-field,
+.password-field {
+    -fx-background-color: #fffdf7;
+    -fx-border-color: #8b6b3e;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8;
+    -fx-font-size: 13px;
+}
+
+/* Focus state */
+.text-field:focused,
+.password-field:focused {
+    -fx-border-color: #6b8e23;
+    -fx-border-width: 2;
+}
+
+/* Primary login button */
+.button {
+    -fx-background-color: #6b8e23;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+}
+
+/* Hover */
+.button:hover {
+    -fx-background-color: #556b2f;
+}
+
+/* Disabled */
+.button:disabled {
+    -fx-background-color: #b5b5b5;
+    -fx-text-fill: #eeeeee;
+}
+
+/* Secondary button (Create user) */
+.button.secondary {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6b8e23;
+    -fx-border-color: #6b8e23;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.button.secondary:hover {
+    -fx-background-color: rgba(107, 142, 35, 0.15);
+}
+
+/* Error label (if you add one later) */
+.label.error {
+    -fx-text-fill: #8b0000;
+    -fx-font-size: 12px;
+}

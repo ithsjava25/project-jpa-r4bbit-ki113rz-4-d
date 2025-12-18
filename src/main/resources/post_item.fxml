@@ -6,7 +6,7 @@
 
 <StackPane  fx:id="root" stylesheets="@/css/board.css" styleClass="post-it"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.PostItemController">
+            fx:controller="org.example.Controllers.PostItemController">
 
     <children>
     <ImageView fitHeight="200.0" fitWidth="200.0"  preserveRatio = "true">
@@ -19,9 +19,9 @@
     style="-fx-padding: 30 20 20 20;">
         <children>
         <Label fx:id="subjectLabel" style="-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #2c3e50;"
-               text="Rubrik" wrapText="true" />
+               text="Subject" wrapText="true" />
         <Label fx:id="messageLabel" style="-fx-font-size: 12; -fx-text-fill: #34495e;"
-               text="Meddelande..." wrapText="true" textAlignment="CENTER" />
+               text="Message..." wrapText="true" textAlignment="CENTER" />
         </children>
     </VBox>
 
@@ -30,9 +30,9 @@
           visible="false"
           StackPane.alignment="TOP_RIGHT">
         <children>
-        <Button text="Visa meddelande"/>
-        <Button text="Uppdatera" onAction="#handleUpdate"/>
-        <Button text="Delete Post" onAction="#handleDelete"/>
+        <Button text="Show message"/>
+        <Button text="Update post" onAction="#handleUpdate"/>
+        <Button text="Delete post" onAction="#handleDelete"/>
         </children>
     </HBox>
     </children>

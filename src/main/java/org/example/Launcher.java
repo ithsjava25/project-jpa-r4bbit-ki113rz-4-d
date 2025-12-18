@@ -1,7 +1,5 @@
 package org.example;
 
-import javafx.application.Application;
-
 /**
  * Start the app from here :)
  */

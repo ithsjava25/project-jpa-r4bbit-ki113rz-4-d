@@ -1,4 +1,9 @@
-package org.example;
+package org.example.Services;
+
+import org.example.Entities.Post;
+import org.example.Entities.User;
+import org.example.Repositories.PostRepository;
+import org.example.Repositories.UserRepository;
 
 import java.util.List;
 
@@ -18,6 +23,8 @@ public class PostServiceImpl implements PostService {
     public void createPost(Post post, User user) {
         if (post == null) throw new IllegalArgumentException("Post cannot be null");
         if (user == null) throw new IllegalArgumentException("User cannot be null");
+        if (post.getCategories() == null || post.getCategories().isEmpty())
+            throw new IllegalArgumentException("Category is required");
         validate(post);
         post.addAuthor(user);
         user.addPost(post);

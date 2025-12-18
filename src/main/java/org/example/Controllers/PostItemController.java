@@ -1,9 +1,10 @@
-package org.example;
+package org.example.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import org.example.Entities.Post;
 
 public class PostItemController {
 

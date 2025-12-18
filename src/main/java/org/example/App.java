@@ -4,13 +4,17 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceConfiguration;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.example.Controllers.Controller;
+import org.example.Controllers.LoginController;
+import org.example.Entities.Category;
+import org.example.Entities.Post;
+import org.example.Entities.User;
+import org.example.Repositories.*;
+import org.example.Services.*;
 import org.hibernate.jpa.HibernatePersistenceConfiguration;
-
-import java.util.Objects;
 
 /**
  * Use launcher to launch the App class
@@ -27,10 +31,17 @@ import java.util.Objects;
  */
 
 public class App extends Application {
+    private static App app;
     private EntityManagerFactory emf;
+    private UserService userService;
+    private PostService postService;
+    private CategoryService categoryService;
+    private Stage stage;
 
     @Override
     public void start(Stage stage) throws Exception {
+        this.stage = stage;
+        app = this;
 
         //Creates a connection config with database
         final PersistenceConfiguration cfg = new HibernatePersistenceConfiguration("emf")
@@ -41,7 +52,7 @@ public class App extends Application {
             .property("hibernate.show_sql", "true")
             .property("hibernate.format_sql", "true")
             .property("hibernate.highlight_sql", "true")
-            .managedClasses(User.class, Post.class);
+            .managedClasses(User.class, Post.class, Category.class);
 
         //Creates an EntityManager with the config
         emf = cfg.createEntityManagerFactory();
@@ -49,36 +60,106 @@ public class App extends Application {
         //Initialize Repositories
         UserRepositoryImpl userRepo = new UserRepositoryImpl(emf);
         PostRepository postRepo = new PostRepositoryImpl(emf);
+        CategoryRepository categoryRepo = new CategoryRepositoryImpl(emf);
 
         //Initialize Services
-        PostService postService = new PostServiceImpl(postRepo, userRepo);
-        UserService userService = new UserServiceImpl(userRepo);
+        postService = new PostServiceImpl(postRepo, userRepo);
+        userService = new UserServiceImpl(userRepo);
+        categoryService = new CategoryServiceImpl(categoryRepo);
 
-        //Load fxml
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/BulletinView.fxml"));
-        Parent root = fxmlLoader.load();
+        categoryService.seedDefaultCategories();
 
-        //Initialize controller
-//        fxmlLoader.setControllerFactory(controllerClass -> {
-//            if (controllerClass == controllerClass) {
-//                return new Controller(userService, postService);
-//            }
-//            return null;
-//        });
-        Controller controller = fxmlLoader.getController(); //Creates a controller instance
-        controller.setUserService(userService, postService); //That is injected with userService
+        System.out.println("Categories in Db");
+        categoryService.getAllCategories().forEach(System.out::println);
 
-
-
-        //Show stage
-        Scene scene = new Scene(root, 900, 600);
-        scene.getStylesheets().add(
-            App.class.getResource("/css/board.css").toExternalForm());
-        stage.setTitle("Bulletin Board");
-        stage.setScene(scene);
+        showLogin();
         stage.show();
+    }
+    /**
+     * @return an instance of the current App
+     */
+    public static App getAppInstance() {
+        return app;
+    }
 
+    /**
+     * Loads LoginView fxml file
+     * Initializes LoginController
+     * Gets stylesheet login.css
+     * Sets the stage as login scene
+     */
+    public void showLogin() {
+        try {
+            FXMLLoader loader =
+                new FXMLLoader(getClass().getResource("/LoginView.fxml"));
+            Parent root = loader.load();
 
+            LoginController loginController = loader.getController();
+            loginController.setUserService(userService);
+
+            Scene scene = new Scene(root, 400, 300);
+            scene.getStylesheets()
+                .add(getClass().getResource("/css/login.css").toExternalForm());
+
+            stage.setTitle("Login");
+            stage.setScene(scene);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads RegisterView fxml file
+     * Initializes RegisterController
+     * Gets stylesheet register.css
+     * Sets the stage as register scene
+     */
+    public void showRegister() {
+        try {
+            FXMLLoader loader =
+                new FXMLLoader(getClass().getResource("/RegisterView.fxml"));
+            Parent root = loader.load();
+
+            org.example.Controllers.RegisterController controller = loader.getController();
+            controller.setUserService(userService);
+
+            Scene scene = new Scene(root, 400, 400);
+            scene.getStylesheets()
+                .add(getClass().getResource("/css/register.css").toExternalForm());
+            stage.setTitle("Register");
+            stage.setScene(scene);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Loads BulletinView fxml file
+     * Initializes Controller
+     * Gets stylesheet board.css
+     * Sets the stage as bulletin board scene
+     */
+    public void showBoard() {
+        try {
+            FXMLLoader loader =
+                new FXMLLoader(getClass().getResource("/BulletinView.fxml"));
+            Parent root = loader.load();
+
+            Controller controller = loader.getController();
+            controller.setUserService(userService, postService, categoryService);
+
+            Scene scene = new Scene(root, 900, 600);
+            scene.getStylesheets()
+                .add(getClass().getResource("/css/board.css").toExternalForm());
+
+            stage.setTitle("Bulletin Board");
+            stage.setScene(scene);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     public static void main(String[] args) {
         launch(args);
