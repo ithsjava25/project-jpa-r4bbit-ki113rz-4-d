@@ -28,11 +28,16 @@ public class UserServiceImpl implements UserService {
      * @return managed User entity
      */
     @Override
-    public Optional<User> createUser(String firstName, String lastName, String password, String username) {
+    public Optional<User> createUser(String firstName, String lastName, String password, String username, String confirmPassword) {
         if (firstName == null || firstName.isBlank()
             || lastName == null || lastName.isBlank()
             || password == null || password.isBlank()
-            || username == null || username.isBlank()) {
+            || username == null || username.isBlank()
+            || confirmPassword == null || confirmPassword.isBlank()) {
+            return Optional.empty();
+        }
+
+        if (!password.equals(confirmPassword)) {
             return Optional.empty();
         }
 

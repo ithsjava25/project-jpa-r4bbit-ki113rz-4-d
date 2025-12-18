@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface UserService {
     boolean validateUser(String username, String password);
-    Optional<User> createUser(String firstName, String lastName, String password, String username);
+    Optional<User> createUser(String firstName, String lastName, String password, String username, String confirmPassword);
     boolean updatePassword(String username, String password);
 
     Optional<User> login(String username, String password);

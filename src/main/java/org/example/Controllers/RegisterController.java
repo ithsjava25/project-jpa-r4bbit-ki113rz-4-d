@@ -17,6 +17,7 @@ public class RegisterController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Button registerButton;
+    @FXML private PasswordField confirmPasswordField;
 
     public void setUserService(UserService userService) {
         this.userService = userService;
@@ -38,14 +39,16 @@ public class RegisterController {
         String lastName = lastNameField.getText().trim();
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
+        String confirmPassword = confirmPasswordField.getText().trim();
 
-        userService.createUser(firstName, lastName, password, username)
+        userService.createUser(firstName, lastName, password, username, confirmPassword)
             .ifPresentOrElse(
                 user -> {
                     App.getAppInstance().showLogin();
                 },
                 () -> {
                     passwordField.clear();
+                    confirmPasswordField.clear();
                     registrationFailed();
                 }
             );
