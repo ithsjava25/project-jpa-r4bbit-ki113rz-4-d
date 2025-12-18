@@ -1,7 +1,7 @@
-package org.example;
+package org.example.Repositories;
 
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.*;
+import org.example.Entities.User;
 
 import java.util.Optional;
 
