@@ -9,7 +9,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.hibernate.jpa.HibernatePersistenceConfiguration;
-
 import java.util.Objects;
 
 /**
@@ -61,8 +60,8 @@ public class App extends Application {
         System.out.println("Categories in Db");
         categoryService.getAllCategories().forEach(System.out::println);
 
-        //Load fxml
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/BulletinView.fxml"));
+        //Load LoginView fxml
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/LoginView.fxml"));
         Parent root = fxmlLoader.load();
 
         //Initialize controller
@@ -75,16 +74,20 @@ public class App extends Application {
         Controller controller = fxmlLoader.getController(); //Creates a controller instance
         controller.setUserService(userService, postService, categoryService); //That is injected with userService
 
+        LoginController loginController = fxmlLoader.getController();
+        loginController.setUserService(userService);
+        loginController.setPostService(postService);
+   // Controller controller = fxmlLoader.getController(); //Creates a controller instance
+    // controller.setUserService(userService, postService); //That is injected with userService
 
 
         //Show stage
-        Scene scene = new Scene(root, 900, 600);
-        scene.getStylesheets().add(
-            App.class.getResource("/css/board.css").toExternalForm());
-        stage.setTitle("Bulletin Board");
+        Scene scene = new Scene(root, 400, 300);
+        //scene.getStylesheets().add(
+        //    App.class.getResource("/css/board.css").toExternalForm());
+        stage.setTitle("Login");
         stage.setScene(scene);
         stage.show();
-
 
     }
     public static void main(String[] args) {
