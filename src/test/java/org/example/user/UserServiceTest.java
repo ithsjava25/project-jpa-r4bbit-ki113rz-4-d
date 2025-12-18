@@ -3,6 +3,7 @@ package org.example.user;
 import jakarta.persistence.EntityManagerFactory;
 
 import org.example.*;
+import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
 import org.example.Repositories.UserRepositoryImpl;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.condition.OS;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.CHAR_ARRAY;
 
 //==========//==========//
 /*
@@ -67,11 +69,11 @@ public class UserServiceTest {
 
         var cfg =
             new HibernatePersistenceConfiguration("emf")
-                .jdbcUrl("jdbc:mysql://localhost:3306/bulletin")
+                .jdbcUrl("jdbc:mysql://localhost:3306/bulletin_test")
                 .jdbcUsername("root")
                 .jdbcPassword("root")
                 .property("hibernate.hbm2ddl.auto", "update")
-                .managedClasses(User.class, Post.class);
+                .managedClasses(User.class, Post.class, Category.class);
 
         emf = cfg.createEntityManagerFactory();
         var userRepo = new UserRepositoryImpl(emf);
@@ -88,9 +90,11 @@ public class UserServiceTest {
     @AfterEach
     void tearDown() {
         if (emf != null) {
+            emf.runInTransaction(em -> {
+                em.createQuery("DELETE FROM User").executeUpdate();
+            });
             emf.close();
         }
-
     }
 
     /**
