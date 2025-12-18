@@ -149,65 +149,13 @@ public class UserServiceTest {
 
     /**
      * Verifies that
-     * - if username already exists in database, make a unique one by adding numbers.
-     */
-    @Test
-    void makeUniqueUsername() {
-        //given
-        Optional<User> create = userService.createUser
-            ("Daniel", "Mart", "ImNotGoingToBeShadyWithThisDROPCommandIJustLearned");
-        assertThat(create).isPresent();
-
-        String username = create.get().getUsername();
-
-        //when
-        String uniqueUsername = userService.makeUniqueUsername(username);
-
-        //then
-        assertThat(uniqueUsername).isEqualTo(username + "1");
-
-    }
-
-    /**
-     * Verifies that
-     * - if name is shorter than 3 characters, method will add number to name
-     * to ensure the username meets the username lenght requirements.
-     */
-    @DisplayName("Adds a number to the username to meet the minimum length requirement")
-    @Test
-    void shouldExtendShortUsername() {
-        String shortName = "Ed";
-
-        String username = userService.formatStringForUsername(shortName);
-
-        assertThat(username.length()).isGreaterThanOrEqualTo(3);
-        assertThat(username).startsWith(shortName);
-    }
-
-    /**
-     * Verifies that
-     * - {@link UserService#formatStringForUsername(String)} only formats names that are smaller than 3 characters.
-     */
-    @DisplayName("Should not modify names that meet the minimum length requirement")
-    @Test
-    void shouldNotExtendLongName() {
-        String longName = "Rudolph";
-
-        String username = userService.formatStringForUsername(longName);
-
-        assertThat(username).isEqualTo(longName);
-
-    }
-
-    /**
-     * Verifies that
      * - a user is deleted
      * - the deleted user is unable to login
      */
     @Test
     void shouldDeleteUser() {
         Optional<User> create = userService.createUser
-            ("Edvin", "Karl", "HowDidIEndUpInAGroupProjectWithABunchOfMillenials");
+            ("Edvin", "Karl", "HowDidIEndUpInAGroupProjectWithABunchOfMillenials", "RabbitDude");
         assertThat(create).isPresent();
 
         User user = create.get();
