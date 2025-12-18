@@ -15,6 +15,25 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+//==========//==========//
+/*
+ * Integration tests for UserService.
+ *
+ *
+ * These tests verify the business rules and expected behavior
+ * for users in the system.
+ *
+ *
+ *                      User rules
+ *
+ *     Username is provided by the user and must be unique
+ *     Username length must be between 3 and 30 characters
+ *     Password must not be null or blank
+ *     A user can authenticate using a valid username and password
+ *     A user can be deleted from the system
+ *
+ */
+//==========//==========//
 
 /**
  * Integration tests require a local MySQL instance.
@@ -79,13 +98,12 @@ public class UserServiceTest {
     @Test
     void shouldCreateUser() {
         //given
-        String firstName = "Fiffen";
-        String lastName = "Friberg";
+        String username = "Fiffen_Biffen";
         String password = "ImAlwaysOneWeekBehind";
 
         //when
         Optional<User> optionalUser =
-            userService.createUser(firstName, lastName, password);
+            userService.createUser(username, password);
 
         //then
         assertThat(optionalUser).isPresent();
@@ -94,7 +112,7 @@ public class UserServiceTest {
 
         assertThat(user).isNotNull();
         assertThat(user.getUserId()).isNotNull();
-        assertThat(user.getUsername()).isEqualTo("FifFri");
+        assertThat(user.getUsername()).isEqualTo(username);
         assertThat(user.getPassword()).isEqualTo("ImAlwaysOneWeekBehind");
 
     }
