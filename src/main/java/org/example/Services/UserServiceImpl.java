@@ -36,9 +36,12 @@ public class UserServiceImpl implements UserService {
             return Optional.empty();
         }
 
-        if(userRepo.getUserByUsername(username).isPresent() && username.length() > 2 && username.length() < 30) {
+        if (username.length() <= 2 || username.length() >= 30) {
+             return Optional.empty();
+            }
+        if (userRepo.getUserByUsername(username).isPresent()) {
             return Optional.empty();
-        };
+            }
 
         User user = new User(firstName, lastName, username, password);
         return Optional.ofNullable(userRepo.save(user));
