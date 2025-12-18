@@ -44,7 +44,10 @@ public class RegisterController {
                 user -> {
                     App.getAppInstance().showLogin();
                 },
-                () -> registrationFailed()
+                () -> {
+                    passwordField.clear();
+                    registrationFailed();
+                }
             );
     }
 

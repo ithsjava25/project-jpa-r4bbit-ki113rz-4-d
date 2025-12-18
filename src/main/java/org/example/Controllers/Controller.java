@@ -13,10 +13,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Dialog;
-import org.example.*;
 import org.example.Entities.Post;
+import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.Services.UserService;
+import org.example.UserSession;
 
 import java.io.IOException;
 import java.util.List;

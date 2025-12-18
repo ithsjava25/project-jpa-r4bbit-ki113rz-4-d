@@ -9,15 +9,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.example.Controllers.Controller;
 import org.example.Controllers.LoginController;
+import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
-import org.example.Repositories.PostRepository;
-import org.example.Repositories.PostRepositoryImpl;
-import org.example.Repositories.UserRepositoryImpl;
-import org.example.Services.PostService;
-import org.example.Services.PostServiceImpl;
-import org.example.Services.UserService;
-import org.example.Services.UserServiceImpl;
+import org.example.Repositories.*;
+import org.example.Services.*;
 import org.hibernate.jpa.HibernatePersistenceConfiguration;
 
 /**
@@ -39,7 +35,7 @@ public class App extends Application {
     private EntityManagerFactory emf;
     private UserService userService;
     private PostService postService;
-    private CategoryService  categoryService;
+    private CategoryService categoryService;
     private Stage stage;
 
     @Override

@@ -1,8 +1,11 @@
-package org.example;
+package org.example.Services;
+
+import org.example.Entities.Category;
+import org.example.Repositories.CategoryRepository;
 
 import java.util.List;
 
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepo;
 
     public CategoryServiceImpl(CategoryRepository categoryRepo) {

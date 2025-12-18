@@ -1,4 +1,6 @@
-package org.example;
+package org.example.Repositories;
+
+import org.example.Entities.Category;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,6 @@
 package org.example.Entities;
 
 import jakarta.persistence.*;
-import org.example.Category;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

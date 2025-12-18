@@ -1,13 +1,14 @@
-package org.example;
+package org.example.Repositories;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
+import org.example.Entities.Category;
 
 import java.util.List;
 import java.util.Optional;
 
-public class CategoryRepositoryImpl implements CategoryRepository{
+public class CategoryRepositoryImpl implements CategoryRepository {
     private final EntityManagerFactory emf;
 
     public CategoryRepositoryImpl (EntityManagerFactory emf) { this.emf = emf; }
