@@ -15,6 +15,7 @@
         <Button onAction="#newPost" text="New note" />
         <Separator />
         <Button onAction="#handleUsers" text="Handle users" />
+        <Button onAction="#handleProfile" text="Handle profile" />
     </ToolBar>
 </top>
 
