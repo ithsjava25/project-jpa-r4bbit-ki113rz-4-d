@@ -45,8 +45,12 @@ public class RegisterController {
                     App.getAppInstance().showLogin();
                 },
                 () -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Registration Failed");
+                    alert.setHeaderText(null);
+                    alert.setContentText("User could not be created. Make sure all fields are filled and username is unique.");
+                    alert.showAndWait();
                     passwordField.clear();
-                    registrationFailed();
                 }
             );
     }

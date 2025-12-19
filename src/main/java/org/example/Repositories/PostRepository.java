@@ -1,6 +1,7 @@
 package org.example.Repositories;
 
 import org.example.Entities.Post;
+import org.example.Entities.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +12,9 @@ import java.util.Optional;
 public interface PostRepository {
     //Add methods here:
     Post save(Post post);
-
-    Optional<Post> findById(int postId);
-
+    Optional<Post> getPostById(Long id);
     List<Post> findAll();
-
     void deleteById(int postId);
+    Post createPost(Post post, User user);
+    Post updatePost(Post post);
 }

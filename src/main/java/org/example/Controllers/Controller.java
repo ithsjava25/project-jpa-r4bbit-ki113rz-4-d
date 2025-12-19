@@ -1,27 +1,19 @@
 package org.example.Controllers;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.Dialog;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.example.Entities.Post;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.Services.UserService;
-import org.example.UserSession;
-
 import java.io.IOException;
 import java.util.List;
-
 
 
 /**
@@ -77,67 +69,57 @@ public class Controller {
         List<Post> posts = postService.getAllPosts();
 
         for (Post post : posts) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/post_item.fxml"));
-                Node postNode = loader.load();
 
-                PostItemController controller = loader.getController();
-                controller.setPost(post);
-                postContainer.getChildren().add(postNode);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/post_item.fxml"));
+
+            Node postNode = loader.load();
+
+            PostItemController controller = loader.getController();
+            controller.setPost(post);
+            controller.setPostService(postService);
+            controller.setOnPostChanged(() -> {
+                try {
+                    loadPosts();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            postContainer.getChildren().add(postNode);
+        }
+    }
+
+    private void reloadAfterSave() {
+        try {
+            loadPosts();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @FXML
     private void newPost () {
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("New Note");
-        dialog.setHeaderText("Enter your subject and message: ");
 
-        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/NewNote.fxml"));
 
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
+            Parent root = loader.load();
 
-        TextField subjectField = new TextField();
-        subjectField.setPromptText("Subject");
+            NewNoteController controller = loader.getController();
+            controller.setPostService(postService);
+            controller.setCategoryService(categoryService);
 
-        TextArea messageArea = new TextArea();
-        messageArea.setPromptText("Message");
-        messageArea.setPrefRowCount(3);
+            Stage stage = new Stage();
+            stage.setTitle("New Note");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
 
-        grid.add(new Label("Subject:"), 0, 0);
-        grid.add(subjectField, 1, 0);
-        grid.add(new Label("Message:"), 0, 1);
-        grid.add(messageArea, 1, 1);
+            loadPosts();
 
-        dialog.getDialogPane().setContent(grid);
-        Platform.runLater(subjectField::requestFocus);
-
-        dialog.showAndWait().ifPresent(input -> {
-            if (input == saveButtonType) {
-                System.out.println("Save clicked!");
-                Post newPost = new Post(subjectField.getText(), messageArea.getText());
-
-                userService.getUserById(1L).ifPresent(user -> {
-                    postService.createPost(newPost, user);
-                    System.out.println("Post saved in database!");
-
-                    try {
-                        loadPosts();
-                        System.out.println("loadPosts() has run!");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-
-            }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

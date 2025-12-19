@@ -24,11 +24,12 @@ public class UserServiceImpl implements UserService {
      * @param firstName Users first name
      * @param lastName Users last name
      * @param password User created password
-     * @param username Users prefered username
+     * @param username Users preferred username
      * @return managed User entity
      */
     @Override
     public Optional<User> createUser(String firstName, String lastName, String password, String username) {
+
         if (firstName == null || firstName.isBlank()
             || lastName == null || lastName.isBlank()
             || password == null || password.isBlank()
@@ -57,11 +58,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean validateUser(String username, String password) {
-        if (username == null || username.isBlank() ||
-            password == null || password.isBlank()) {
-            return false;
-        }
-
         return userRepo.getUserByUsername(username)
             .map(user -> user.getPassword().equals(password))
             .orElse(false);
@@ -91,16 +87,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> login(String username, String password) {
-        if (username == null || username.isBlank()
-            || password == null || password.isBlank()) {
+        if (isInvalid(username) || isInvalid(password)) {
             return Optional.empty();
         }
-
         if (validateUser(username, password)) {
             return userRepo.getUserByUsername(username);
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
+    }
+
+    private boolean isInvalid(String str) {
+        return str == null || str.isBlank();
     }
 
     @Override

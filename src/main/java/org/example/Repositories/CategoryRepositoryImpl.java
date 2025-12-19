@@ -9,9 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class CategoryRepositoryImpl implements CategoryRepository {
+
     private final EntityManagerFactory emf;
 
     public CategoryRepositoryImpl (EntityManagerFactory emf) { this.emf = emf; }
+
     @Override
     public Category save(Category category) {
         EntityManager em = emf.createEntityManager();
