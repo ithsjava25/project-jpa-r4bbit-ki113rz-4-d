@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Dialog;
+import org.example.App;
 import org.example.Entities.Post;
 import org.example.Entities.Profile;
 import org.example.Entities.User;
@@ -45,18 +46,20 @@ public class Controller {
     private UserService userService;
     private PostService postService;
     private CategoryService categoryService;
+    private App app;
 
     @FXML
     private FlowPane postContainer;
 
 
-    public void setUserService (UserService userService, PostService postService, CategoryService categoryService){
-        if (userService == null || postService == null) {
-            throw new IllegalArgumentException("Services cannot be null");
+    public void setUserService (UserService userService, PostService postService, CategoryService categoryService, App app){
+        if (userService == null || postService == null || categoryService == null || app == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
         }
         this.userService = userService;
         this.postService = postService;
         this.categoryService = categoryService;
+        this.app = app;
         try {
             loadPosts();
         } catch (IOException e) {
@@ -144,14 +147,15 @@ public class Controller {
     }
 
     public void handleProfile() {
-        UserSession
-            .getCurrentUser()
-            .map(User::getProfile)
-            .map(Profile::getBio)
-            .ifPresentOrElse(
-                System.out::println,
-                () -> System.out.println("No profile found!")
-            );
-        System.out.println();
+        app.showProfile();
+//        UserSession
+//            .getCurrentUser()
+//            .map(User::getProfile)
+//            .map(Profile::getBio)
+//            .ifPresentOrElse(
+//                System.out::println,
+//                () -> System.out.println("No profile found!")
+//            );
+//        System.out.println();
     }
 }

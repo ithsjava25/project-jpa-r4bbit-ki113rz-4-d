@@ -1,0 +1,61 @@
+/* Root background – same tone as login */
+.root {
+    -fx-background-color: linear-gradient(
+        to bottom,
+        #f7f3ea,
+        #e3d8bf
+    );
+    -fx-font-family: "Segoe UI", "Arial";
+}
+
+/* SplitPane background */
+.split-pane {
+    -fx-background-color: transparent;
+}
+
+/* Profile header container */
+.profile-header {
+    -fx-padding: 20;
+    -fx-spacing: 20;
+}
+
+/* Profile title (name) */
+#userProfileTitle {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4b5320;
+}
+
+/* Bio text */
+#bioLabel {
+    -fx-font-size: 12px;
+    -fx-text-fill: #556b2f;
+    -fx-text-alignment: center;
+}
+
+/* Profile image styling */
+#profileImage {
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(75, 83, 32, 0.35),
+        10, 0, 0, 2
+    );
+}
+
+/* Left menu container */
+.profile-menu {
+    -fx-padding: 20;
+    -fx-spacing: 12;
+}
+
+/* Menu buttons reuse login button style */
+.profile-menu .button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4b5320;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.profile-menu .button:hover {
+    -fx-background-color: rgba(107, 142, 35, 0.15);
+}

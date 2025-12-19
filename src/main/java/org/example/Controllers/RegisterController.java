@@ -13,6 +13,7 @@ public class RegisterController {
 
     private UserService userService;
     private ProfileService profileService;
+    private App app;
 
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
@@ -20,9 +21,10 @@ public class RegisterController {
     @FXML private PasswordField passwordField;
     @FXML private Button registerButton;
 
-    public void setUserService(UserService userService, ProfileService profileService) {
+    public void setUserService(UserService userService, ProfileService profileService, App app) {
         this.userService = userService;
         this.profileService = profileService;
+        this.app = app;
     }
 
     @FXML
@@ -45,7 +47,7 @@ public class RegisterController {
         userService.createUser(firstName, lastName, password, username)
             .ifPresentOrElse(
                 user -> {
-                    App.getAppInstance().showLogin();
+                    app.showLogin();
                 },
                 () -> {
                     passwordField.clear();
@@ -64,6 +66,6 @@ public class RegisterController {
 
     @FXML
     private void showLogin() {
-        App.getAppInstance().showLogin();
+        app.showLogin();
     }
 }

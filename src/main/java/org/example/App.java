@@ -6,9 +6,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.example.Controllers.Controller;
 import org.example.Controllers.LoginController;
+import org.example.Controllers.ProfileController;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.Profile;
@@ -39,6 +41,8 @@ public class App extends Application {
     private CategoryService categoryService;
     private ProfileService profileService;
     private Stage stage;
+
+    private Image iconTopLeft;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -71,6 +75,7 @@ public class App extends Application {
         categoryService = new CategoryServiceImpl(categoryRepo);
         profileService = new ProfileServiceImpl(profileRepo);
 
+        iconTopLeft = new Image(getClass().getResourceAsStream("/iths.png"));
 
         categoryService.seedDefaultCategories();
 
@@ -100,7 +105,7 @@ public class App extends Application {
             Parent root = loader.load();
 
             LoginController loginController = loader.getController();
-            loginController.setUserService(userService);
+            loginController.setUserService(userService, app);
 
             Scene scene = new Scene(root, 400, 300);
             scene.getStylesheets()
@@ -108,6 +113,7 @@ public class App extends Application {
 
             stage.setTitle("Login");
             stage.setScene(scene);
+            stage.getIcons().add(iconTopLeft);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,13 +133,14 @@ public class App extends Application {
             Parent root = loader.load();
 
             org.example.Controllers.RegisterController controller = loader.getController();
-            controller.setUserService(userService, profileService);
+            controller.setUserService(userService, profileService, app);
 
             Scene scene = new Scene(root, 400, 400);
             scene.getStylesheets()
                 .add(getClass().getResource("/css/register.css").toExternalForm());
             stage.setTitle("Register");
             stage.setScene(scene);
+            stage.getIcons().add(iconTopLeft);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -153,7 +160,7 @@ public class App extends Application {
             Parent root = loader.load();
 
             Controller controller = loader.getController();
-            controller.setUserService(userService, postService, categoryService);
+            controller.setUserService(userService, postService, categoryService, app);
 
             Scene scene = new Scene(root, 900, 600);
             scene.getStylesheets()
@@ -161,6 +168,29 @@ public class App extends Application {
 
             stage.setTitle("Bulletin Board");
             stage.setScene(scene);
+            stage.getIcons().add(iconTopLeft);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showProfile() {
+        try {
+            FXMLLoader loader =
+                new FXMLLoader(getClass().getResource("/ProfileView.fxml"));
+            Parent root = loader.load();
+
+            ProfileController profileController = loader.getController();
+//            profileController.setUserService(userService, postService, categoryService, app);
+
+            Scene scene = new Scene(root, 900, 600);
+            scene.getStylesheets()
+                .add(getClass().getResource("/css/profile.css").toExternalForm());
+
+            stage.setTitle("Profile");
+            stage.setScene(scene);
+            stage.getIcons().add(iconTopLeft);
 
         } catch (Exception e) {
             e.printStackTrace();

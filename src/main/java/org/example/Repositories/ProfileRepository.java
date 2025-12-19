@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ProfileRepository {
     Profile save(Profile profile);
     Optional<Profile> findById(Long id);
+
+    Optional<String> bioById(String id);
 }

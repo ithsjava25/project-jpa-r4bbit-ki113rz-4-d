@@ -10,7 +10,7 @@
     <TextField fx:id="usernameField" promptText="Username (3-30 characters)" />
     <PasswordField fx:id="passwordField" promptText="Password" />
 
-    <Button fx:id="loginButton" onAction="#handleLogin" text="Login" />
+    <Button fx:id="loginButton" defaultButton="true" onAction="#handleLogin" text="Login" />
     <Button text="Create user" onAction="#handleCreateUser" style="-fx-font-size: 11px;" />
 </VBox>
 

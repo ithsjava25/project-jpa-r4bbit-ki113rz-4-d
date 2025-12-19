@@ -16,6 +16,7 @@ import org.example.UserSession;
 public class LoginController {
 
     private UserService userService;
+    private App app;
 
     @FXML
     private TextField usernameField;
@@ -24,8 +25,9 @@ public class LoginController {
     @FXML
     private Button loginButton;
 
-    public void setUserService(UserService userService) {
+    public void setUserService(UserService userService, App app) {
         this.userService = userService;
+        this.app = app;
     }
 
     @FXML
@@ -48,7 +50,7 @@ public class LoginController {
             .ifPresentOrElse(
                 user -> {
                     UserSession.login(user);
-                    App.getAppInstance().showBoard();
+                    app.showBoard();
                 },
                 () -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -62,7 +64,7 @@ public class LoginController {
 
     @FXML
     private void handleCreateUser() {
-        App.getAppInstance().showRegister();
+        app.showRegister();
     }
 }
 
