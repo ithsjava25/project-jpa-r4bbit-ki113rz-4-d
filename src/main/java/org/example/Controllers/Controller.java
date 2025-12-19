@@ -1,6 +1,7 @@
 package org.example.Controllers;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -14,6 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Dialog;
 import org.example.Entities.Post;
+import org.example.Entities.Profile;
+import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.Services.UserService;
@@ -140,4 +143,15 @@ public class Controller {
         });
     }
 
+    public void handleProfile() {
+        UserSession
+            .getCurrentUser()
+            .map(User::getProfile)
+            .map(Profile::getBio)
+            .ifPresentOrElse(
+                System.out::println,
+                () -> System.out.println("No profile found!")
+            );
+        System.out.println();
+    }
 }
