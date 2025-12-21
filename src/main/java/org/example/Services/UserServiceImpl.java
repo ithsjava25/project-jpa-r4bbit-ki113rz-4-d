@@ -80,13 +80,23 @@ public class UserServiceImpl implements UserService {
      * @return true if successful, returns false if no user is found
      */
     @Override
-    public boolean updatePassword(String username, String newPassword) {
-        if (username == null || username.isBlank() ||
-            newPassword == null || newPassword.isBlank()) {
+    public boolean updatePassword(String username, String oldPassword, String newPassword, String confirmNewPassword) {
+        if (username == null || username.isBlank()
+            || oldPassword == null || oldPassword.isBlank()
+            || newPassword == null || newPassword.isBlank()
+            || confirmNewPassword == null || confirmNewPassword.isBlank()) {
             throw new IllegalArgumentException("Username and password are required");
         }
         return userRepo.getUserByUsername(username)
             .map(user -> {
+                if (!user.getPassword().equals(oldPassword)) {
+                    return false;
+                }
+
+                if (!newPassword.equals(confirmNewPassword)) {
+                    return false;
+                }
+
                 user.setPassword(newPassword);
                 userRepo.save(user);
                 return true;
