@@ -42,9 +42,10 @@ import static org.assertj.core.api.InstanceOfAssertFactories.CHAR_ARRAY;
  *     Password must not be null or blank
  *     Password lenght must be between 8 and 64 characters
  *     A user can authenticate using a valid username and password
- *     A user can be deleted from the system
  *     Password must be case-sensitive
  *     Username must be case-insensitive
+ *     A user can be deleted from the system
+ *     A user can change their password
  *
  */
 //==========//==========//
@@ -247,7 +248,7 @@ public class UserServiceTest {
 
 
 
-    //==========//Change Current User//==========//
+    //==========//Update Current User//==========//
 
     /**
      * Verifies that
@@ -268,6 +269,30 @@ public class UserServiceTest {
 
         assertThat(deleted).isTrue();
         assertThat(userService.validateUser(user.getUsername(), user.getPassword())).isFalse();
+    }
+
+    /**
+     * Verifies that
+     *      - the user is able to change password
+     */
+    @Test
+    void shouldChangePassword() {
+        Optional<User> create = userService.createUser(
+            "Linus","Torva", "talkIsCheapShowMeTheCode", "LinuxxUserNo1"
+        );
+        assertThat(create).isPresent();
+
+        User user = create.get();
+        String oldPassword = user.getPassword();
+        String newPassword = "givenEnoughEyeballsAllBugsAreShallow";
+
+        boolean updated = userService.updatePassword(user.getUsername(), newPassword);
+
+        assertThat(updated).isTrue();
+        assertThat(userService.validateUser(user.getUsername(), oldPassword)).isFalse();
+        assertThat(userService.validateUser(user.getUsername(), newPassword)).isTrue();
+
+
     }
 }
 
