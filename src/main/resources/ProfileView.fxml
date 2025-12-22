@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.ProfileController">
+
+    <children>
+        <SplitPane dividerPositions="0.25" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+            <items>
+
+                <AnchorPane>
+                    <children>
+                        <VBox spacing="10" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+                            <Button text="Menu 1" />
+                            <Button text="Menu 2" />
+                            <Button text="Menu 3" />
+
+                        </VBox>
+                    </children>
+                </AnchorPane>
+
+                <AnchorPane>
+                    <children>
+                        <BorderPane AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+                            <top>
+                                <HBox spacing="20">
+                                    <VBox alignment="TOP_CENTER" spacing="10">
+                                        <ImageView fx:id="profileImage" fitHeight="100" fitWidth="100" preserveRatio="true" smooth="true">
+                                 <VBox.margin>
+                                    <Insets left="20.0" top="20.0" />
+                                 </VBox.margin></ImageView>
+                              <HBox.margin>
+                                 <Insets left="10.0" top="10.0" />
+                              </HBox.margin>
+                                    </VBox>
+
+                                <Label id="userProfileTitle" text="User Profile" BorderPane.alignment="CENTER">
+                              <HBox.margin>
+                                 <Insets top="40.0" />
+                              </HBox.margin></Label>
+                                </HBox>
+                            </top>
+
+                            <center>
+                                <Button onAction="#testMethod" text="Button" />
+                            </center>
+
+                        </BorderPane>
+                    </children>
+                </AnchorPane>
+
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

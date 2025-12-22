@@ -6,6 +6,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.Dialog;
+import org.example.App;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.Entities.Post;
@@ -36,18 +42,20 @@ public class Controller {
     private UserService userService;
     private PostService postService;
     private CategoryService categoryService;
+    private App app;
 
     @FXML
     private FlowPane postContainer;
 
 
-    public void setUserService (UserService userService, PostService postService, CategoryService categoryService){
-        if (userService == null || postService == null) {
-            throw new IllegalArgumentException("Services cannot be null");
+    public void setUserService (UserService userService, PostService postService, CategoryService categoryService, App app){
+        if (userService == null || postService == null || categoryService == null || app == null) {
+            throw new IllegalArgumentException("Arguments cannot be null");
         }
         this.userService = userService;
         this.postService = postService;
         this.categoryService = categoryService;
+        this.app = app;
         try {
             loadPosts();
         } catch (IOException e) {
@@ -125,14 +133,15 @@ public class Controller {
     }
 
     public void handleProfile() {
-        UserSession
-            .getCurrentUser()
-            .map(User::getProfile)
-            .map(Profile::getBio)
-            .ifPresentOrElse(
-                System.out::println,
-                () -> System.out.println("No profile found!")
-            );
-        System.out.println();
+        app.showProfile();
+//        UserSession
+//            .getCurrentUser()
+//            .map(User::getProfile)
+//            .map(Profile::getBio)
+//            .ifPresentOrElse(
+//                System.out::println,
+//                () -> System.out.println("No profile found!")
+//            );
+//        System.out.println();
     }
 }

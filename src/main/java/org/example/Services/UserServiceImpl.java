@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
         Profile profile = new Profile();
         profile.setBio("Hello " + user.getFirst_name() + "! Welcome to your bio, write something about yourself: ");
 
+        profile.setUser(user);
         user.setProfile(profile);
 
         return Optional.ofNullable(userRepo.save(user));
