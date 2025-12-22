@@ -1,6 +1,8 @@
 package org.example.Repositories;
 
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import org.example.Entities.User;
 
 import java.util.Optional;
@@ -25,18 +27,17 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean deleteUser(Long id) {
         if (id == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Id cannot be null");
         }
-
-        return emf.callInTransaction(em -> {
-            User user = em.find(User.class, id);
-            if (user != null) {
-                em.remove(user);
-                return true;
-            } else {
-                return false;
-            }
-        });
+        EntityManager em = emf.createEntityManager();
+        User user = em.find(User.class, id);
+        if (user!=null) {
+            em.getTransaction().begin();
+            em.remove(user);
+            em.getTransaction().commit();
+            return true;
+        }
+            return false;
     }
 
     /**
@@ -50,8 +51,23 @@ public class UserRepositoryImpl implements UserRepository {
         if (user == null) {
             throw new IllegalArgumentException("User cannot be null");
         }
-
-        return emf.callInTransaction(em -> em.merge(user));
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            if (user.getUserId() == null) {
+                em.persist(user);
+            } else {
+                user = em.merge(user);
+            }
+            tx.commit();
+            return user;
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     /**
@@ -76,14 +92,15 @@ public class UserRepositoryImpl implements UserRepository {
      */
     @Override
     public Optional<User> getUserByUsername(String username) {
-        if (username == null) {
-            throw new IllegalArgumentException("Username cannot be null");
-        }
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
+                .setParameter("username", username)
+                .getResultStream()
+                .findFirst(); //Returns Optional.empty() if not found
+        } finally {
+            em.close();
 
-        return (emf.callInTransaction(em -> em.createQuery(
-            "SELECT u FROM User u WHERE u.username = :username", User.class)
-        .setParameter("username", username)
-        .getResultStream()
-        .findFirst())); //Returns Optional.empty() if not found
+        }
     }
 }
