@@ -59,3 +59,39 @@
 .profile-menu .button:hover {
     -fx-background-color: rgba(107, 142, 35, 0.15);
 }
+
+/* Bio text area – blends into profile */
+#bioTextArea {
+    -fx-background-color: rgba(255, 253, 247, 0.65);
+    -fx-border-color: transparent;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+
+    -fx-text-fill: #556b2f;
+    -fx-font-size: 13px;
+    -fx-padding: 12;
+
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* Remove inner TextArea background */
+#bioTextArea .content {
+    -fx-background-color: transparent;
+}
+
+/* Scrollbar – subtle, natural */
+#bioTextArea .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+#bioTextArea .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(107, 142, 35, 0.35);
+    -fx-background-radius: 6;
+}
+
+/* Disabled / read-only appearance */
+#bioTextArea:disabled,
+#bioTextArea:readonly {
+    -fx-opacity: 1.0;
+}

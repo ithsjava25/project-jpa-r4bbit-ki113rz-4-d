@@ -178,7 +178,7 @@ public class App extends Application {
     public void showProfile() {
         try {
             FXMLLoader loader =
-                new FXMLLoader(getClass().getResource("/ProfileView.fxml"));
+                new FXMLLoader(getClass().getResource("/dev.fxml"));
             Parent root = loader.load();
 
             ProfileController profileController = loader.getController();
