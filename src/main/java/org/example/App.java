@@ -66,11 +66,9 @@ public class App extends Application {
         ProfileRepository profileRepo = new ProfileRepositoryImpl(emf);
 
         //Initialize Services
-        postService = new PostServiceImpl(postRepo, userRepo);
-        userService = new UserServiceImpl(userRepo);
-        categoryService = new CategoryServiceImpl(categoryRepo);
-        profileService = new ProfileServiceImpl(profileRepo);
-
+        this.userService = new UserServiceImpl(userRepo);
+        this.categoryService = new CategoryServiceImpl(categoryRepo);
+        this.postService = new PostServiceImpl(postRepo, userRepo);
 
         categoryService.seedDefaultCategories();
 
