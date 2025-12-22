@@ -5,11 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import org.example.App;
-import org.example.Entities.Profile;
-import org.example.Entities.User;
-import org.example.UserSession;
 
-import java.lang.classfile.Label;
 import java.util.Objects;
 
 

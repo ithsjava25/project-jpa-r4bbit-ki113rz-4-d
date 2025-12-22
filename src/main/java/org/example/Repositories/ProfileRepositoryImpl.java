@@ -29,7 +29,7 @@ public class ProfileRepositoryImpl implements ProfileRepository {
     }
 
     @Override
-    public Optional<String> bioById(String id) {
+    public Optional<String> bioById(Long id) {
         return emf.callInTransaction(em ->
             em.createQuery(
                     "select p.bio from Profile p where p.user.id = :userId",
