@@ -80,7 +80,7 @@ public class Controller {
 
         for (Post post : posts) {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/post_item.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/post_item.fxml"));
 
             Node postNode = loader.load();
 
