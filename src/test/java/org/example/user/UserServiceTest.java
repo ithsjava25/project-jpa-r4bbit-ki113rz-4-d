@@ -16,8 +16,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.CHAR_ARRAY;
@@ -36,8 +40,11 @@ import static org.assertj.core.api.InstanceOfAssertFactories.CHAR_ARRAY;
  *     Username is provided by the user and must be unique
  *     Username length must be between 3 and 30 characters
  *     Password must not be null or blank
+ *     Password lenght must be between 8 and 64 characters
  *     A user can authenticate using a valid username and password
  *     A user can be deleted from the system
+ *     Password must be case-sensitive
+ *     Username must be case-insensitive
  *
  */
 //==========//==========//
@@ -97,6 +104,8 @@ public class UserServiceTest {
         }
     }
 
+    //==========//Create user tests//==========//
+
     /**
      * Verifies that
      * - a user is created
@@ -126,6 +135,52 @@ public class UserServiceTest {
         assertThat(user.getPassword()).isEqualTo("ImAlwaysOneWeekBehind");
 
     }
+    /** Input validation tests
+     * These tests verify that
+     *              - firstname input cannot be empty
+     *              - lastname input cannot be empty
+     *              - password input cannot be empty
+     *              - username input cannot be empty
+     *
+     *              - password cannot be under 8 characters
+     *              - password cannot be over 64 characters
+     *              - username cannot be under 3 characters
+     *              - username cannot be over 30 characters
+     *
+     *              - password cannot contain blank spaces
+     *              - username cannot contain blank spaces
+     *
+     */
+    @DisplayName("Must force user to fill in all necessary fields")
+    @ParameterizedTest(name = "{index} => {0}")
+    @MethodSource("invalidUserInputs")
+    void shouldNotCreateuserWheninvalidInput(
+        String reason,
+        String firstName,
+        String lastName,
+        String password,
+        String username
+    ) {
+        Optional<User> result =
+            userService.createUser(firstName, lastName, password, username);
+
+        assertThat(result).isEmpty();
+    }
+    static Stream<Arguments> invalidUserInputs() {
+        return Stream.of(
+            Arguments.of("firstName input cannot be blank", "", "Friberg", "secret123", "fiffen"),
+            Arguments.of("lastName input cannot be blank", "Fiffen", "", "secret123", "fiffen"),
+            Arguments.of("password input cannot be blank", "Fiffen", "Friberg", "", "fiffen"),
+            Arguments.of("username input cannot blank", "Fiffen", "Friberg", "secret123", ""),
+            Arguments.of("password must be 8 or more characters", "Fiffen", "Friberg", "secret", "fiffen"),
+            Arguments.of("password must be a maximum of 64 characters", "Fiffen", "Friberg", "s".repeat(65), "fiffen"),
+            Arguments.of("username must be 3 or more characters", "Fiffen", "Friberg", "secret123", "Fi"),
+            Arguments.of("username must be a maximum of 30 characters", "Fiffen", "Friberg", "secret123", "f".repeat(31)),
+            Arguments.of("password input cannot contain blank spaces", "Fiffen", "Friberg", "secret 123", "fiffen"),
+            Arguments.of("username input cannot contain blank spaces", "Fiffen", "Friberg", "secret123", "f ifen")
+        );
+    }
+
 
     /**
      * Verifies that
