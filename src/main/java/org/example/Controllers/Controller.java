@@ -9,6 +9,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.Entities.Post;
+import org.example.Entities.Profile;
+import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.Services.UserService;
@@ -122,4 +124,15 @@ public class Controller {
         }
     }
 
+    public void handleProfile() {
+        UserSession
+            .getCurrentUser()
+            .map(User::getProfile)
+            .map(Profile::getBio)
+            .ifPresentOrElse(
+                System.out::println,
+                () -> System.out.println("No profile found!")
+            );
+        System.out.println();
+    }
 }

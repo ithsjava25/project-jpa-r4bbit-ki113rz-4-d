@@ -6,11 +6,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.example.App;
+import org.example.Services.ProfileService;
 import org.example.Services.UserService;
 
 public class RegisterController {
 
     private UserService userService;
+    private ProfileService profileService;
 
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
@@ -18,8 +20,9 @@ public class RegisterController {
     @FXML private PasswordField passwordField;
     @FXML private Button registerButton;
 
-    public void setUserService(UserService userService) {
+    public void setUserService(UserService userService, ProfileService profileService) {
         this.userService = userService;
+        this.profileService = profileService;
     }
 
     @FXML
