@@ -104,7 +104,7 @@ public class UserServiceTest {
         }
     }
 
-    //==========//Create user tests//==========//
+    //==========//Create user//==========//
 
     /**
      * Verifies that
@@ -182,6 +182,12 @@ public class UserServiceTest {
     }
 
 
+
+
+
+
+
+//==========// login verification //=========//
     /**
      * Verifies that
      * - an already created user can login with correct password
@@ -205,6 +211,43 @@ public class UserServiceTest {
         //then
         assertThat(validated).isTrue();
     }
+
+    /**
+     * Verifies that
+     *      - password must be typed exactly as set
+     */
+    @Test
+    void passwordIsCaseSensitive() {
+        Optional<User> create = userService.createUser(
+            "Daniel", "Mart", "ImNotDoingAnythingShadyWithThisDROPCommandIJustLearned", "Maxxer"
+        );
+        assertThat(create).isPresent();
+
+        boolean authorize = userService.validateUser("maxxer","imnotdoinganythingshadywiththisdropcommandijustlearned");
+
+        assertThat(authorize).isFalse();
+    }
+
+    /**
+     * Verifies that
+     *      - username is valid even if typed in different casing than set username
+     */
+    @Test
+    void usernameIsNotCaseSensitive() {
+        Optional<User> create = userService.createUser(
+            "Alban", "Nwapa", "SingHalleluja", "Dr.Alban"
+        );
+        assertThat(create).isPresent();
+
+        boolean authorize = userService.validateUser("dr.alBAN","SingHalleluja");
+
+        assertThat(authorize).isTrue();
+    }
+
+
+
+
+    //==========//Change Current User//==========//
 
     /**
      * Verifies that
