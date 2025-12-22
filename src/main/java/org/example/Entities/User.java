@@ -96,7 +96,7 @@ public class User {
     public void addPost(Post post){
         if (!posts.contains(post)){
             posts.add(post);
-            post.addAuthor(this);
+            post.setAuthor(this);
         }
     }
 
