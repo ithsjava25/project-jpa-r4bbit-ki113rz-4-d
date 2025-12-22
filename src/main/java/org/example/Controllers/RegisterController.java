@@ -39,7 +39,7 @@ public class RegisterController {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
-        userService.createUser(firstName, lastName, password, username)
+        userService.createUser(firstName, lastName, username, password)
             .ifPresentOrElse(
                 user -> {
                     App.getAppInstance().showLogin();
