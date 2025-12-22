@@ -5,8 +5,10 @@ import org.example.Entities.Category;
 import java.util.List;
 
 public interface CategoryService {
+    Category getCategoryByName(String name);
     Category createCategory(String name);
     List<Category> getAllCategories();
-    Category getCategoryByid(Long id);
+    Category getCategoryById(Long id);
     void seedDefaultCategories();
+
 }

@@ -1,11 +1,14 @@
 package org.example.Services;
 
+import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
 import org.example.Repositories.PostRepository;
 import org.example.Repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Handles anything related to posts
@@ -14,28 +17,29 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepo;
     private final UserRepository userRepo;
+
+
     public PostServiceImpl(PostRepository postRepo, UserRepository userRepo) {
         this.postRepo = postRepo;
         this.userRepo = userRepo;
     }
 
     @Override
-    public void createPost(Post post, User user) {
-        if (post == null) throw new IllegalArgumentException("Post cannot be null");
-        if (user == null) throw new IllegalArgumentException("User cannot be null");
-        if (post.getCategories() == null || post.getCategories().isEmpty())
-            throw new IllegalArgumentException("Category is required");
-        validate(post);
-        post.addAuthor(user);
-        user.addPost(post);
+    public Post createPost(Post post, User user) {
+        if (post == null || user == null) {
+            throw new IllegalArgumentException("Post and user cannot be null");
+        }
+        return postRepo.createPost(post, user);
+    }
 
-        userRepo.save(user);
+    @Override
+    public Optional<Post> getPostById(Long id) {
+        return postRepo.getPostById(id);
     }
 
     @Override
     public List<Post> getAllPosts() {
-        List<Post> posts = postRepo.findAll();
-        return posts != null ? posts : List.of();
+        return postRepo.findAll();
     }
 
     @Override
