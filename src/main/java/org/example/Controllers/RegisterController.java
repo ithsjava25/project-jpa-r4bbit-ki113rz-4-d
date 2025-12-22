@@ -6,11 +6,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import org.example.App;
+import org.example.Services.ProfileService;
 import org.example.Services.UserService;
 
 public class RegisterController {
 
     private UserService userService;
+    private ProfileService profileService;
 
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
@@ -19,8 +21,9 @@ public class RegisterController {
     @FXML private Button registerButton;
     @FXML private PasswordField confirmPasswordField;
 
-    public void setUserService(UserService userService) {
+    public void setUserService(UserService userService, ProfileService profileService) {
         this.userService = userService;
+        this.profileService = profileService;
     }
 
     @FXML
@@ -47,6 +50,11 @@ public class RegisterController {
                     App.getAppInstance().showLogin();
                 },
                 () -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Registration Failed");
+                    alert.setHeaderText(null);
+                    alert.setContentText("User could not be created. Make sure all fields are filled and username is unique.");
+                    alert.showAndWait();
                     passwordField.clear();
                     confirmPasswordField.clear();
                     registrationFailed();

@@ -20,6 +20,10 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
+    @OneToOne(mappedBy = "user"
+        , cascade = CascadeType.ALL
+        , orphanRemoval = true)
+    private Profile profile;
 
     public User(String firstName, String lastName, String username, String password) {
         this.first_name = firstName;
@@ -94,6 +98,17 @@ public class User {
             posts.add(post);
             post.addAuthor(this);
         }
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+        if (profile != null) {
+            profile.setUser(this);
+        }
+    }
+
+    public Profile getProfile() {
+        return profile;
     }
 
 }

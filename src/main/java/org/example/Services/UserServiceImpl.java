@@ -1,7 +1,9 @@
 package org.example.Services;
 
+import org.example.Entities.Profile;
 import org.example.Entities.User;
 import org.example.Repositories.UserRepository;
+import org.example.UserSession;
 
 import java.util.Optional;
 
@@ -24,7 +26,7 @@ public class UserServiceImpl implements UserService {
      * @param firstName Users first name
      * @param lastName Users last name
      * @param password User created password
-     * @param username Users prefered username
+     * @param username Users preferred username
      * @return managed User entity
      */
     @Override
@@ -49,6 +51,12 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = new User(firstName, lastName, username, password);
+
+        Profile profile = new Profile();
+        profile.setBio("Hello " + user.getFirst_name() + "! Welcome to your bio, write something about yourself: ");
+
+        user.setProfile(profile);
+
         return Optional.ofNullable(userRepo.save(user));
     }
 
@@ -62,11 +70,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public boolean validateUser(String username, String password) {
-        if (username == null || username.isBlank() ||
-            password == null || password.isBlank()) {
-            return false;
-        }
-
         return userRepo.getUserByUsername(username)
             .map(user -> user.getPassword().equals(password))
             .orElse(false);
@@ -106,16 +109,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> login(String username, String password) {
-        if (username == null || username.isBlank()
-            || password == null || password.isBlank()) {
+        if (isInvalid(username) || isInvalid(password)) {
             return Optional.empty();
         }
-
         if (validateUser(username, password)) {
             return userRepo.getUserByUsername(username);
-        } else {
-            return Optional.empty();
         }
+        return Optional.empty();
+    }
+
+    private boolean isInvalid(String str) {
+        return str == null || str.isBlank();
     }
 
     @Override

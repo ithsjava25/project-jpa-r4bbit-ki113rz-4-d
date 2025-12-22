@@ -11,6 +11,7 @@ import org.example.Controllers.Controller;
 import org.example.Controllers.LoginController;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
+import org.example.Entities.Profile;
 import org.example.Entities.User;
 import org.example.Repositories.*;
 import org.example.Services.*;
@@ -36,6 +37,7 @@ public class App extends Application {
     private UserService userService;
     private PostService postService;
     private CategoryService categoryService;
+    private ProfileService profileService;
     private Stage stage;
 
     @Override
@@ -52,7 +54,7 @@ public class App extends Application {
             .property("hibernate.show_sql", "true")
             .property("hibernate.format_sql", "true")
             .property("hibernate.highlight_sql", "true")
-            .managedClasses(User.class, Post.class, Category.class);
+            .managedClasses(User.class, Post.class, Category.class, Profile.class);
 
         //Creates an EntityManager with the config
         emf = cfg.createEntityManagerFactory();
@@ -61,11 +63,12 @@ public class App extends Application {
         UserRepositoryImpl userRepo = new UserRepositoryImpl(emf);
         PostRepository postRepo = new PostRepositoryImpl(emf);
         CategoryRepository categoryRepo = new CategoryRepositoryImpl(emf);
+        ProfileRepository profileRepo = new ProfileRepositoryImpl(emf);
 
         //Initialize Services
-        postService = new PostServiceImpl(postRepo, userRepo);
-        userService = new UserServiceImpl(userRepo);
-        categoryService = new CategoryServiceImpl(categoryRepo);
+        this.userService = new UserServiceImpl(userRepo);
+        this.categoryService = new CategoryServiceImpl(categoryRepo);
+        this.postService = new PostServiceImpl(postRepo, userRepo);
 
         categoryService.seedDefaultCategories();
 
@@ -122,7 +125,7 @@ public class App extends Application {
             Parent root = loader.load();
 
             org.example.Controllers.RegisterController controller = loader.getController();
-            controller.setUserService(userService);
+            controller.setUserService(userService, profileService);
 
             Scene scene = new Scene(root, 400, 400);
             scene.getStylesheets()
