@@ -50,6 +50,8 @@ import static org.assertj.core.api.InstanceOfAssertFactories.CHAR_ARRAY;
  */
 //==========//==========//
 
+//todo: add, "deletedUserCannotLogin", "shouldNotUpdatePasswordWhenNewPasswordIsInvalid"
+
 /**
  * Integration tests require a local MySQL instance.
  * Tests are intended to be run locally and are skipped in CI.
@@ -295,5 +297,4 @@ public class UserServiceTest {
 
     }
 }
-
 
