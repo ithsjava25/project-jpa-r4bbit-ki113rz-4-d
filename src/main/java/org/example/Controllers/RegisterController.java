@@ -20,6 +20,7 @@ public class RegisterController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Button registerButton;
+    @FXML private PasswordField confirmPasswordField;
 
     public void setUserService(UserService userService, ProfileService profileService, App app) {
         this.userService = userService;
@@ -43,8 +44,9 @@ public class RegisterController {
         String lastName = lastNameField.getText().trim();
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
+        String confirmPassword = confirmPasswordField.getText().trim();
 
-        userService.createUser(firstName, lastName, username, password)
+        userService.createUser(firstName, lastName, password, username, confirmPassword)
             .ifPresentOrElse(
                 user -> {
                     app.showLogin();
@@ -56,6 +58,8 @@ public class RegisterController {
                     alert.setContentText("User could not be created. Make sure all fields are filled and username is unique.");
                     alert.showAndWait();
                     passwordField.clear();
+                    confirmPasswordField.clear();
+                    registrationFailed();
                 }
             );
     }

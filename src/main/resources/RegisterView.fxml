@@ -12,6 +12,7 @@
     <TextField fx:id="lastNameField" promptText="Last name"/>
     <TextField fx:id="usernameField" promptText="Username"/>
     <PasswordField fx:id="passwordField" promptText="Password"/>
+    <PasswordField fx:id="confirmPasswordField" promptText="Confirm password"/>
 
     <Button fx:id="registerButton"
             text="Create account"

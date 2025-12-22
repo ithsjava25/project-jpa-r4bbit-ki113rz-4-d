@@ -30,12 +30,16 @@ public class UserServiceImpl implements UserService {
      * @return managed User entity
      */
     @Override
-    public Optional<User> createUser(String firstName, String lastName, String username, String password) {
-
+    public Optional<User> createUser(String firstName, String lastName, String password, String username, String confirmPassword) {
         if (firstName == null || firstName.isBlank()
             || lastName == null || lastName.isBlank()
             || password == null || password.isBlank()
-            || username == null || username.isBlank()) {
+            || username == null || username.isBlank()
+            || confirmPassword == null || confirmPassword.isBlank()) {
+            return Optional.empty();
+        }
+
+        if (!password.equals(confirmPassword)) {
             return Optional.empty();
         }
 
@@ -80,13 +84,23 @@ public class UserServiceImpl implements UserService {
      * @return true if successful, returns false if no user is found
      */
     @Override
-    public boolean updatePassword(String username, String newPassword) {
-        if (username == null || username.isBlank() ||
-            newPassword == null || newPassword.isBlank()) {
+    public boolean updatePassword(String username, String oldPassword, String newPassword, String confirmNewPassword) {
+        if (username == null || username.isBlank()
+            || oldPassword == null || oldPassword.isBlank()
+            || newPassword == null || newPassword.isBlank()
+            || confirmNewPassword == null || confirmNewPassword.isBlank()) {
             throw new IllegalArgumentException("Username and password are required");
         }
         return userRepo.getUserByUsername(username)
             .map(user -> {
+                if (!user.getPassword().equals(oldPassword)) {
+                    return false;
+                }
+
+                if (!newPassword.equals(confirmNewPassword)) {
+                    return false;
+                }
+
                 user.setPassword(newPassword);
                 userRepo.save(user);
                 return true;
