@@ -44,14 +44,18 @@ public class RegisterController {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
-        userService.createUser(firstName, lastName, password, username)
+        userService.createUser(firstName, lastName, username, password)
             .ifPresentOrElse(
                 user -> {
                     app.showLogin();
                 },
                 () -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Registration Failed");
+                    alert.setHeaderText(null);
+                    alert.setContentText("User could not be created. Make sure all fields are filled and username is unique.");
+                    alert.showAndWait();
                     passwordField.clear();
-                    registrationFailed();
                 }
             );
     }

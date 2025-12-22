@@ -25,8 +25,9 @@ public class Post {
     @Column (name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @ManyToMany (mappedBy = "posts", fetch = FetchType.LAZY)
-    private Set<User> authors = new HashSet<>();
+    @ManyToOne (optional = false)
+    @JoinColumn(name="user_id")
+    private User author;
 
     /* ===== Constructors =====*/
     public Post(){
@@ -68,19 +69,14 @@ public class Post {
         return createdAt;
     }
 
-    public Set<User> getAuthors() {
-        return authors;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAuthors(Set<User> authors) {
-        this.authors = authors;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
-    public void addAuthor(User user){
-        if(!authors.contains(user)){
-            authors.add(user);
-        }
-    }
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "post_categories",
@@ -88,6 +84,7 @@ public class Post {
         inverseJoinColumns = @JoinColumn (name = "category_id")
     )
     private List<Category> categories = new ArrayList<>();
+
 
     public List<Category> getCategories(){
         return categories;

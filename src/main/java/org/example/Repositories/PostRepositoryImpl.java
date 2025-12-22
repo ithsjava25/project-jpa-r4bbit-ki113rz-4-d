@@ -3,10 +3,14 @@ package org.example.Repositories;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
+import org.example.Entities.Category;
 import org.example.Entities.Post;
-
+import org.example.Entities.User;
+import org.example.EntityManagerFactoryWrapper;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Handles post data from database
@@ -16,14 +20,14 @@ public class PostRepositoryImpl implements PostRepository {
     public PostRepositoryImpl(EntityManagerFactory emf) {
         this.emf = emf;
     }
+
     //Implement methods here:
+
     @Override
     public Post save(Post post) {
         EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-
         try {
-            tx.begin();
+            em.getTransaction().begin();
 
             if (post.getPostId() == 0) {
                 em.persist(post);
@@ -31,55 +35,80 @@ public class PostRepositoryImpl implements PostRepository {
                 post = em.merge(post);
             }
 
-            tx.commit();
+            em.getTransaction().commit();
             return post;
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
         } finally {
             em.close();
         }
     }
 
     @Override
-    public Optional<Post> findById(int postId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return Optional.ofNullable(em.find(Post.class, postId));
-        } finally {
-            em.close();
-        }
+    public Post createPost(Post post, User user) {
+        return emf.callInTransaction(em -> {
+            post.setAuthor(user);
+            List<Category> managedCategories = new ArrayList<>();
+
+            for (Category category : post.getCategories()) {
+                Category managedCategory = em.find(Category.class, category.getCategoryId());
+
+                if (managedCategory == null) {
+                    throw new IllegalArgumentException("Category " + category.getCategoryId() + " does not exist");
+                }
+                    managedCategories.add(managedCategory);
+                }
+            post.setCategories(managedCategories);
+            em.persist(post);
+
+            return post;
+        });
+    }
+
+    @Override
+    public Post updatePost(Post post) {
+        return emf.callInTransaction(em -> {
+            Post existing = em.find(Post.class, post.getPostId());
+            if (existing == null) {
+                throw new IllegalArgumentException("Post not found: " + post.getPostId());
+            }
+            existing.setSubject(post.getSubject());
+            existing.setMessage(post.getMessage());
+
+            List<Category> managedCategories = new ArrayList<>();
+            for (Category category : post.getCategories()) {
+                Category managedCategory = em.find(Category.class, category.getCategoryId());
+                if (managedCategory == null) {
+                    throw new IllegalArgumentException("Category " + category.getCategoryId() + " does not exist");
+                }
+                managedCategories.add(managedCategory);
+            }
+            existing.setCategories(managedCategories);
+            return em.merge(existing); // Uppdaterad post
+        });
+    }
+
+    @Override
+    public Optional<Post> getPostById(Long id) {
+        return EntityManagerFactoryWrapper.callInTransaction(emf, em ->
+            Optional.ofNullable(em.find(Post.class, id))
+        );
     }
 
     @Override
     public List<Post> findAll() {
-        EntityManager em = emf.createEntityManager();
-            try {
-                return em.createQuery(
-                    "select p from Post p order by p.createdAt desc",
-                    Post.class
-                ).getResultList();
-            } finally {
-                em.close();
-            }
+        return EntityManagerFactoryWrapper.callInTransaction(emf, em ->
+            em.createQuery("SELECT p FROM Post p ORDER BY p.createdAt DESC", Post.class)
+                .getResultList()
+        );
     }
 
     @Override
     public void deleteById(int postId) {
-        EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-
-        try {
-            tx.begin();
+        emf.callInTransaction(em -> {
             Post post = em.find(Post.class, postId);
-            if (post != null){
+            if (post != null) {
                 em.remove(post);
             }
-        } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            throw e;
-        } finally {
-            em.close();
-        }
+            return null;
+        });
     }
 }
