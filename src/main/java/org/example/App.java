@@ -65,14 +65,14 @@ public class App extends Application {
 
         //Initialize Repositories
         UserRepositoryImpl userRepo = new UserRepositoryImpl(emf);
-        PostRepository postRepo = new PostRepositoryImpl(emf);
         CategoryRepository categoryRepo = new CategoryRepositoryImpl(emf);
+        PostRepository postRepo = new PostRepositoryImpl(emf);
         ProfileRepository profileRepo = new ProfileRepositoryImpl(emf);
 
         //Initialize Services
         this.userService = new UserServiceImpl(userRepo);
         this.categoryService = new CategoryServiceImpl(categoryRepo);
-        this.postService = new PostServiceImpl(postRepo, userRepo);
+        this.postService = new PostServiceImpl(postRepo, categoryRepo);
         this.profileService = new ProfileServiceImpl(profileRepo);
 
         iconTopLeft = new Image(getClass().getResourceAsStream("/iths.png"));

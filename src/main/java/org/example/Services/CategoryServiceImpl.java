@@ -31,7 +31,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryById(Long id) {
         if (id == null) throw new IllegalArgumentException("Category id cannot be null");
-        return categoryRepo.getById(id);
+        return categoryRepo.getById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Category id " + id + " does not exist"));
     }
 
     @Override

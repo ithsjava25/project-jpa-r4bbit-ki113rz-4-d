@@ -1,5 +1,6 @@
 package org.example.Repositories;
 
+import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
 
@@ -15,6 +16,5 @@ public interface PostRepository {
     Optional<Post> getPostById(Long id);
     List<Post> findAll();
     void deleteById(int postId);
-    Post createPost(Post post, User user);
     Post updatePost(Post post);
 }

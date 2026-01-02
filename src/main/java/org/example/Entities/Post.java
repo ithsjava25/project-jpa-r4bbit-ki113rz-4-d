@@ -41,7 +41,7 @@ public class Post {
     /* Lifecycle callback ===== */
     @PrePersist
     void prePersist(){
-        this.createdAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
     }
 
     /* ===== Getters & setters ====== */
@@ -97,7 +97,6 @@ public class Post {
     public void addCategory(Category category) {
         if (category != null && !categories.contains(category)) {
             categories.add(category);
-            category.addPost(this);
         }
     }
 

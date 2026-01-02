@@ -23,12 +23,6 @@ public class Category {
         return posts;
     }
 
-    public void addPost(Post post){
-        if (post != null && !posts.contains(post)) {
-            posts.add(post);
-        }
-    }
-
     public Category() {}
 
     public Category(String name){
