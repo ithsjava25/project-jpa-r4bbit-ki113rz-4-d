@@ -121,14 +121,19 @@ public class Controller {
             NewNoteController controller = loader.getController();
             controller.setPostService(postService);
             controller.setCategoryService(categoryService);
+            controller.setOnPostSaved(() -> {
+                try {
+                    loadPosts();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                });
 
             Stage stage = new Stage();
             stage.setTitle("New Note");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-
-            loadPosts();
 
         } catch (IOException e) {
             e.printStackTrace();

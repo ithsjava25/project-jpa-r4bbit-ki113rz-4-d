@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import org.example.Entities.Category;
+import org.example.EntityManagerFactoryWrapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,13 +36,10 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
-    public Category getById(Long id) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return em.find(Category.class, id);
-        } finally {
-            em.close();
-        }
+    public Optional <Category> getById(Long id) {
+        return EntityManagerFactoryWrapper.callInTransaction(emf, em ->
+            Optional.ofNullable(em.find(Category.class, id))
+        );
     }
 
     @Override

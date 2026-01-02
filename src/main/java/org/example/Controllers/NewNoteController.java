@@ -19,6 +19,7 @@ public class NewNoteController {
     @FXML private ComboBox<Category> categoryBox;
 
     private PostService postService;
+    private Runnable onPostSaved;
     private CategoryService categoryService;
 
     public void setPostService(PostService postService) {
@@ -27,26 +28,42 @@ public class NewNoteController {
 
     public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
-        categoryBox.getItems().setAll(categoryService.getAllCategories());
+        loadCategories();
     }
+
+    public void setOnPostSaved(Runnable onPostSaved) {
+        this.onPostSaved = onPostSaved;
+    }
+
+    private void loadCategories() {
+        if (categoryService!=null) {
+            categoryBox.getItems().setAll(categoryService.getAllCategories());
+        }
+    }
+
 
 //Save new note
     @FXML
     private void handleSave() {
+        String subject = subjectField.getText();
+        String message = messageArea.getText();
+        Category category = categoryBox.getValue();
+
         User author = UserSession.getCurrentUser()
-            .orElseThrow(() -> new IllegalStateException("No user logged in!"));
+            .orElseThrow(() -> new IllegalStateException("No user logged in"));
 
-        Post post = new Post();
-        post.setSubject(subjectField.getText());
-        post.setMessage(messageArea.getText());
-        post.setAuthor(author);
-
-        Category selectedCategory = categoryBox.getValue();
-        if (selectedCategory != null){
-            post.addCategory(selectedCategory);
+        if (subject == null || subject.isBlank()
+            || message == null || message.isBlank()
+            || category == null) {
+            return;
         }
 
-        postService.createPost(post, author);
+        //Save through service
+        postService.createPost(subject, message, category.getCategoryId(), author);
+
+        if (onPostSaved != null) {
+            onPostSaved.run();
+        }
 
         closeWindow();
     }

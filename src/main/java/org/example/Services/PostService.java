@@ -1,5 +1,6 @@
 package org.example.Services;
 
+import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
 
@@ -11,9 +12,8 @@ import java.util.Optional;
  * Calls PostRepository if needed
  */
 public interface PostService {
-    Post createPost(Post post, User author);
+    Post createPost(String subject, String message, Long categoryId, User author);
     List<Post> getAllPosts();
     void updatePost(Post post);
     void deletePost(Post post);
-    Optional<Post> getPostById(Long id);
 }
