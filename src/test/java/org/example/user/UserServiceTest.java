@@ -16,8 +16,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.CHAR_ARRAY;
@@ -36,11 +40,17 @@ import static org.assertj.core.api.InstanceOfAssertFactories.CHAR_ARRAY;
  *     Username is provided by the user and must be unique
  *     Username length must be between 3 and 30 characters
  *     Password must not be null or blank
+ *     Password lenght must be between 8 and 64 characters
  *     A user can authenticate using a valid username and password
+ *     Password must be case-sensitive
+ *     Username must be case-insensitive
  *     A user can be deleted from the system
+ *     A user can change their password
  *
  */
 //==========//==========//
+
+//todo: add, "deletedUserCannotLogin", "shouldNotUpdatePasswordWhenNewPasswordIsInvalid"
 
 /**
  * Integration tests require a local MySQL instance.
@@ -97,6 +107,8 @@ public class UserServiceTest {
         }
     }
 
+    //==========//Create user//==========//
+
     /**
      * Verifies that
      * - a user is created
@@ -110,10 +122,11 @@ public class UserServiceTest {
         String lastName = "Friberg";
         String username = "Fiffen_Biffen";
         String password = "ImAlwaysOneWeekBehind";
+        String email = "fiifen@Hot_MALE.com";
 
         //when
         Optional<User> optionalUser =
-            userService.createUser(firstName, lastName, password, username);
+            userService.createUser(firstName, lastName, password, username, email);
 
         //then
         assertThat(optionalUser).isPresent();
@@ -126,7 +139,60 @@ public class UserServiceTest {
         assertThat(user.getPassword()).isEqualTo("ImAlwaysOneWeekBehind");
 
     }
+    /** Input validation tests
+     * These tests verify that
+     *              - firstname input cannot be empty
+     *              - lastname input cannot be empty
+     *              - password input cannot be empty
+     *              - username input cannot be empty
+     *
+     *              - password cannot be under 8 characters
+     *              - password cannot be over 64 characters
+     *              - username cannot be under 3 characters
+     *              - username cannot be over 30 characters
+     *
+     *              - password cannot contain blank spaces
+     *              - username cannot contain blank spaces
+     *
+     */
+    @DisplayName("Must force user to fill in all necessary fields")
+    @ParameterizedTest(name = "{index} => {0}")
+    @MethodSource("invalidUserInputs")
+    void shouldNotCreateuserWheninvalidInput(
+        String reason,
+        String firstName,
+        String lastName,
+        String password,
+        String username,
+        String email
+    ) {
+        Optional<User> result =
+            userService.createUser(firstName, lastName, password, username, email);
 
+        assertThat(result).isEmpty();
+    }
+    static Stream<Arguments> invalidUserInputs() {
+        return Stream.of(
+            Arguments.of("firstName input cannot be blank", "", "Friberg", "secret123", "fiffen", "test@example.com"),
+            Arguments.of("lastName input cannot be blank", "Fiffen", "", "secret123", "fiffen", "test@example.com"),
+            Arguments.of("password input cannot be blank", "Fiffen", "Friberg", "", "fiffen", "test@example.com"),
+            Arguments.of("username input cannot blank", "Fiffen", "Friberg", "secret123", "", "test@example.com"),
+            Arguments.of("password must be 8 or more characters", "Fiffen", "Friberg", "secret", "fiffen", "test@example.com"),
+            Arguments.of("password must be a maximum of 64 characters", "Fiffen", "Friberg", "s".repeat(65), "fiffen", "test@example.com"),
+            Arguments.of("username must be 3 or more characters", "Fiffen", "Friberg", "secret123", "Fi", "test@example.com"),
+            Arguments.of("username must be a maximum of 30 characters", "Fiffen", "Friberg", "secret123", "f".repeat(31), "test@example.com"),
+            Arguments.of("password input cannot contain blank spaces", "Fiffen", "Friberg", "secret 123", "fiffen", "test@example.com"),
+            Arguments.of("username input cannot contain blank spaces", "Fiffen", "Friberg", "secret123", "f ifen", "test@example.com")
+        );
+    }
+
+
+
+
+
+
+
+//==========// login verification //=========//
     /**
      * Verifies that
      * - an already created user can login with correct password
@@ -138,8 +204,9 @@ public class UserServiceTest {
         String lastName = "Nelj";
         String username = "Sandra";
         String password = "ILoveHouseFlipper";
+        String email = "sandra@gheeMail.com";
 
-        Optional<User> create = userService.createUser(firstName, lastName, password, username);
+        Optional<User> create = userService.createUser(firstName, lastName, password, username, email);
         assertThat(create).isPresent();
 
         String getUsername = create.get().getUsername();
@@ -153,13 +220,50 @@ public class UserServiceTest {
 
     /**
      * Verifies that
+     *      - password must be typed exactly as set
+     */
+    @Test
+    void passwordIsCaseSensitive() {
+        Optional<User> create = userService.createUser(
+            "Daniel", "Mart", "ImNotDoingAnythingShadyWithThisDROPCommandIJustLearned", "Maxxer", "daniel@yeehaaw.com"
+        );
+        assertThat(create).isPresent();
+
+        boolean authorize = userService.validateUser("maxxer","imnotdoinganythingshadywiththisdropcommandijustlearned");
+
+        assertThat(authorize).isFalse();
+    }
+
+    /**
+     * Verifies that
+     *      - username is valid even if typed in different casing than set username
+     */
+    @Test
+    void usernameIsNotCaseSensitive() {
+        Optional<User> create = userService.createUser(
+            "Alban", "Nwapa", "SingHalleluja", "Dr.Alban", "thistimeimfree@helloafrica.tk"
+        );
+        assertThat(create).isPresent();
+
+        boolean authorize = userService.validateUser("dr.alBAN","SingHalleluja");
+
+        assertThat(authorize).isTrue();
+    }
+
+
+
+
+    //==========//Update Current User//==========//
+
+    /**
+     * Verifies that
      * - a user is deleted
      * - the deleted user is unable to login
      */
     @Test
     void shouldDeleteUser() {
         Optional<User> create = userService.createUser
-            ("Edvin", "Karl", "HowDidIEndUpInAGroupProjectWithABunchOfMillenials", "RabbitDude");
+            ("Edvin", "Karl", "HowDidIEndUpInAGroupProjectWithABunchOfMillenials", "RabbitDude", "edvin@utkolla.com");
         assertThat(create).isPresent();
 
         User user = create.get();
@@ -171,6 +275,35 @@ public class UserServiceTest {
         assertThat(deleted).isTrue();
         assertThat(userService.validateUser(user.getUsername(), user.getPassword())).isFalse();
     }
-}
 
+    /**
+     * Verifies that
+     *      - the user is able to change password
+     */
+    @Test
+    void shouldChangePassword() {
+        Optional<User> create = userService.createUser(
+            "Linus","Torva", "talkIsCheapShowMeTheCode", "LinuxxUserNo1", "linus@linux.com"
+        );
+        assertThat(create).isPresent();
+
+        User user = create.get();
+        String oldPassword = user.getPassword();
+        String newPassword = "givenEnoughEyeballsAllBugsAreShallow";
+
+        boolean updated = userService.updatePassword(
+            user.getUsername(),
+            oldPassword,
+            newPassword,
+            "linus@linux.com"
+        );
+
+
+        assertThat(updated).isTrue();
+        assertThat(userService.validateUser(user.getUsername(), oldPassword)).isFalse();
+        assertThat(userService.validateUser(user.getUsername(), newPassword)).isTrue();
+
+
+    }
+}
 
