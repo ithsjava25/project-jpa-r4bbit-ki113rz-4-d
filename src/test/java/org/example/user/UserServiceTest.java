@@ -122,10 +122,11 @@ public class UserServiceTest {
         String lastName = "Friberg";
         String username = "Fiffen_Biffen";
         String password = "ImAlwaysOneWeekBehind";
+        String email = "fiifen@Hot_MALE.com";
 
         //when
         Optional<User> optionalUser =
-            userService.createUser(firstName, lastName, password, username);
+            userService.createUser(firstName, lastName, password, username, email);
 
         //then
         assertThat(optionalUser).isPresent();
@@ -162,25 +163,26 @@ public class UserServiceTest {
         String firstName,
         String lastName,
         String password,
-        String username
+        String username,
+        String email
     ) {
         Optional<User> result =
-            userService.createUser(firstName, lastName, password, username);
+            userService.createUser(firstName, lastName, password, username, email);
 
         assertThat(result).isEmpty();
     }
     static Stream<Arguments> invalidUserInputs() {
         return Stream.of(
-            Arguments.of("firstName input cannot be blank", "", "Friberg", "secret123", "fiffen"),
-            Arguments.of("lastName input cannot be blank", "Fiffen", "", "secret123", "fiffen"),
-            Arguments.of("password input cannot be blank", "Fiffen", "Friberg", "", "fiffen"),
-            Arguments.of("username input cannot blank", "Fiffen", "Friberg", "secret123", ""),
-            Arguments.of("password must be 8 or more characters", "Fiffen", "Friberg", "secret", "fiffen"),
-            Arguments.of("password must be a maximum of 64 characters", "Fiffen", "Friberg", "s".repeat(65), "fiffen"),
-            Arguments.of("username must be 3 or more characters", "Fiffen", "Friberg", "secret123", "Fi"),
-            Arguments.of("username must be a maximum of 30 characters", "Fiffen", "Friberg", "secret123", "f".repeat(31)),
-            Arguments.of("password input cannot contain blank spaces", "Fiffen", "Friberg", "secret 123", "fiffen"),
-            Arguments.of("username input cannot contain blank spaces", "Fiffen", "Friberg", "secret123", "f ifen")
+            Arguments.of("firstName input cannot be blank", "", "Friberg", "secret123", "fiffen", "test@example.com"),
+            Arguments.of("lastName input cannot be blank", "Fiffen", "", "secret123", "fiffen", "test@example.com"),
+            Arguments.of("password input cannot be blank", "Fiffen", "Friberg", "", "fiffen", "test@example.com"),
+            Arguments.of("username input cannot blank", "Fiffen", "Friberg", "secret123", "", "test@example.com"),
+            Arguments.of("password must be 8 or more characters", "Fiffen", "Friberg", "secret", "fiffen", "test@example.com"),
+            Arguments.of("password must be a maximum of 64 characters", "Fiffen", "Friberg", "s".repeat(65), "fiffen", "test@example.com"),
+            Arguments.of("username must be 3 or more characters", "Fiffen", "Friberg", "secret123", "Fi", "test@example.com"),
+            Arguments.of("username must be a maximum of 30 characters", "Fiffen", "Friberg", "secret123", "f".repeat(31), "test@example.com"),
+            Arguments.of("password input cannot contain blank spaces", "Fiffen", "Friberg", "secret 123", "fiffen", "test@example.com"),
+            Arguments.of("username input cannot contain blank spaces", "Fiffen", "Friberg", "secret123", "f ifen", "test@example.com")
         );
     }
 
@@ -202,8 +204,9 @@ public class UserServiceTest {
         String lastName = "Nelj";
         String username = "Sandra";
         String password = "ILoveHouseFlipper";
+        String email = "sandra@gheeMail.com";
 
-        Optional<User> create = userService.createUser(firstName, lastName, password, username);
+        Optional<User> create = userService.createUser(firstName, lastName, password, username, email);
         assertThat(create).isPresent();
 
         String getUsername = create.get().getUsername();
@@ -222,7 +225,7 @@ public class UserServiceTest {
     @Test
     void passwordIsCaseSensitive() {
         Optional<User> create = userService.createUser(
-            "Daniel", "Mart", "ImNotDoingAnythingShadyWithThisDROPCommandIJustLearned", "Maxxer"
+            "Daniel", "Mart", "ImNotDoingAnythingShadyWithThisDROPCommandIJustLearned", "Maxxer", "daniel@yeehaaw.com"
         );
         assertThat(create).isPresent();
 
@@ -238,7 +241,7 @@ public class UserServiceTest {
     @Test
     void usernameIsNotCaseSensitive() {
         Optional<User> create = userService.createUser(
-            "Alban", "Nwapa", "SingHalleluja", "Dr.Alban"
+            "Alban", "Nwapa", "SingHalleluja", "Dr.Alban", "thistimeimfree@helloafrica.tk"
         );
         assertThat(create).isPresent();
 
@@ -260,7 +263,7 @@ public class UserServiceTest {
     @Test
     void shouldDeleteUser() {
         Optional<User> create = userService.createUser
-            ("Edvin", "Karl", "HowDidIEndUpInAGroupProjectWithABunchOfMillenials", "RabbitDude");
+            ("Edvin", "Karl", "HowDidIEndUpInAGroupProjectWithABunchOfMillenials", "RabbitDude", "edvin@utkolla.com");
         assertThat(create).isPresent();
 
         User user = create.get();
@@ -280,7 +283,7 @@ public class UserServiceTest {
     @Test
     void shouldChangePassword() {
         Optional<User> create = userService.createUser(
-            "Linus","Torva", "talkIsCheapShowMeTheCode", "LinuxxUserNo1"
+            "Linus","Torva", "talkIsCheapShowMeTheCode", "LinuxxUserNo1", "linus@linux.com"
         );
         assertThat(create).isPresent();
 
@@ -288,7 +291,13 @@ public class UserServiceTest {
         String oldPassword = user.getPassword();
         String newPassword = "givenEnoughEyeballsAllBugsAreShallow";
 
-        boolean updated = userService.updatePassword(user.getUsername(), newPassword);
+        boolean updated = userService.updatePassword(
+            user.getUsername(),
+            oldPassword,
+            newPassword,
+            "linus@linux.com"
+        );
+
 
         assertThat(updated).isTrue();
         assertThat(userService.validateUser(user.getUsername(), oldPassword)).isFalse();
