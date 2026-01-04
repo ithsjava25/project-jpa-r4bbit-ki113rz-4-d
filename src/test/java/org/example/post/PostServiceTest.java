@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
+import org.example.Repositories.CategoryRepositoryImpl;
 import org.example.Repositories.UserRepositoryImpl;
 import org.example.Services.PostService;
 import org.example.Services.PostServiceImpl;
@@ -21,6 +22,7 @@ import org.example.Repositories.PostRepositoryImpl;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 //==========//==========//
@@ -61,7 +63,11 @@ public class PostServiceTest {
         emf = cfg.createEntityManagerFactory();
         var postRepo = new PostRepositoryImpl(emf);
         var userRepo = new UserRepositoryImpl(emf);
-        postService = new PostServiceImpl(postRepo, userRepo);
+        var categoryRepo = new CategoryRepositoryImpl(emf);
+        postService = new PostServiceImpl(postRepo, categoryRepo);
+
+        emf.runInTransaction(em ->
+            em.persist(new Category("General")));
 
 
 
@@ -74,13 +80,19 @@ public class PostServiceTest {
 
     @Test
     void shouldNotCreatePostWhenSubjectIsBlank() {
-        User user = new User("", "Friberg", "fiffen", "secret123");
-        Post post = new Post("", "This is a message");
+        User user = new User("Fiffen", "Friberg", "fiffen", "secret123");
 
-        Optional<Post> result = postService.createPost(post, user);
-
-        assertThat(result).isEmpty();
+        assertThatThrownBy(() ->
+            postService.createPost(
+                "",
+                "Fiffen is king",
+                1L,
+                user
+            )
+        ).isInstanceOf(IllegalArgumentException.class)
+            .hasMessageContaining("Subject");
     }
+
 
     //todo: add , "shouldNotCreatePostWhenMessageIsBlank" , "shouldCreatePostWhenInputIsValid", "shouldDeletePost", "shouldUpdatePost",
 
