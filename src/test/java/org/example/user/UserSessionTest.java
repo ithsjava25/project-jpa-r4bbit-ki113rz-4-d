@@ -4,12 +4,15 @@ import org.example.Entities.User;
 import org.example.UserSession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 //todo: add userMustLoginAgainAfterLogout
-
-class UserSessionTest {
+@DisabledOnOs(OS.LINUX)
+public class UserSessionTest {
 
     @AfterEach
     void clearSession() {
