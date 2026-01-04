@@ -4,8 +4,11 @@ import jakarta.persistence.EntityManagerFactory;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
+import org.example.Repositories.UserRepositoryImpl;
 import org.example.Services.PostService;
 import org.example.Services.PostServiceImpl;
+import org.example.Services.UserService;
+import org.example.Services.UserServiceImpl;
 import org.hibernate.jpa.HibernatePersistenceConfiguration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +45,7 @@ public class PostServiceTest {
 
     private EntityManagerFactory emf;
     private PostService postService;
+    private UserService userService;
 
     @BeforeEach
     public void setup() {
@@ -55,8 +59,9 @@ public class PostServiceTest {
                 .managedClasses(User.class, Post.class, Category.class);
 
         emf = cfg.createEntityManagerFactory();
-        PostRepository postRepo = new PostRepositoryImpl(emf);
-        postService = new PostServiceImpl(postRepo);
+        var postRepo = new PostRepositoryImpl(emf);
+        var userRepo = new UserRepositoryImpl(emf);
+        postService = new PostServiceImpl(postRepo, userRepo);
 
 
 
