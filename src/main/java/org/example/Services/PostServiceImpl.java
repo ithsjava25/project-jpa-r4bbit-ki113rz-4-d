@@ -92,7 +92,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPostsByUser(User user) {
-        return postRepo.findAll(); //Temporary
+        return postRepo.getPostsByUser(user); //Temporary
         //TODO: return only users posts
     }
 
