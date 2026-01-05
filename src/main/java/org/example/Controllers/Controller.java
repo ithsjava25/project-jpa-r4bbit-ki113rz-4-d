@@ -23,6 +23,8 @@ import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.Services.UserService;
+import org.example.UserSession;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -155,6 +157,9 @@ public class Controller {
 
     @FXML
     private void logout() {
+        //when logout button is pressed go to loginview
+        UserSession.logout();
+        app.showLogin();
 
     }
 }
