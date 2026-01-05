@@ -12,7 +12,7 @@ import java.util.Optional;
  * Calls PostRepository if needed
  */
 public interface PostService {
-    Post createPost(String subject, String message, Long categoryId, User author);
+    Post createPost(String subject, String message, List<Long> categoryIds, User author);
     List<Post> getAllPosts();
     void updatePost(Post post);
     void deletePost(Post post);

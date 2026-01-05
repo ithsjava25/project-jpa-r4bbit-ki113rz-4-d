@@ -35,7 +35,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post createPost(String subject, String message, Long categoryId, User author) {
+    public Post createPost(String subject, String message,List<Long> categoryIds, User author) {
 
         if (subject == null || subject.isBlank())
             throw new IllegalArgumentException("Subject missing");
@@ -43,12 +43,19 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("Message missing");
         if (author == null)
             throw new IllegalStateException("No logged in user");
-
-        Category category = categoryRepo.getById(categoryId)
-            .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+        if (categoryIds == null || categoryIds.isEmpty())
+            throw new IllegalArgumentException("At least one category required");
 
 
         Post post = new Post(subject, message);
+
+        for (Long id : categoryIds) {
+            Category category = categoryRepo.getById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Category not found: " + id));
+
+            post.addCategory(category);
+        }
+
         post.setAuthor(author);
         post.getCategories().add(category);
         post.setPostItColor(randomPostItColor());

@@ -17,8 +17,8 @@
     <TextArea fx:id="messageArea"
               promptText="Message"/>
 
-    <ComboBox fx:id="categoryBox"
-              promptText="Choose category"/>
+    <MenuButton fx:id="categoryMenu"
+              text="Choose category"/>
 
     <HBox spacing="10" alignment="CENTER_RIGHT">
     <Button text="Cancel" onAction="#handleCancel"/>
