@@ -24,7 +24,6 @@
                     AnchorPane.leftAnchor="0"
                     AnchorPane.rightAnchor="0">
 
-            <!-- LEFT SIDEBAR -->
             <left>
                 <VBox prefWidth="220" spacing="10" styleClass="profile-menu">
                     <Button fx:id="myPostsButton"
@@ -42,7 +41,6 @@
                 </VBox>
             </left>
 
-            <!-- MAIN CONTENT -->
             <center>
 
                 <BorderPane fx:id="contentPane">
