@@ -3,23 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10"
-      alignment="CENTER"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.example.Controllers.RegisterController">
+<VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.Controllers.RegisterController">
 
-    <TextField fx:id="firstNameField" promptText="First name"/>
-    <TextField fx:id="lastNameField" promptText="Last name"/>
-    <TextField fx:id="usernameField" promptText="Username"/>
-    <PasswordField fx:id="passwordField" promptText="Password"/>
-    <PasswordField fx:id="confirmPasswordField" promptText="Confirm password"/>
+    <TextField fx:id="firstNameField" maxWidth="280.0" prefWidth="280.0" promptText="First name" />
+    <TextField fx:id="lastNameField" maxWidth="280.0" prefWidth="280.0" promptText="Last name" />
+    <TextField fx:id="usernameField" maxWidth="280.0" prefWidth="280.0" promptText="Username" />
+    <PasswordField fx:id="passwordField" maxWidth="280.0" prefWidth="280.0" promptText="Password" />
+    <PasswordField fx:id="confirmPasswordField" maxWidth="280.0" prefWidth="280.0" promptText="Confirm password" />
 
-    <Button fx:id="registerButton"
-            text="Create account"
-            onAction="#handleRegister"/>
+    <Button fx:id="registerButton" onAction="#handleRegister" text="Create account" />
 
-    <Button text="Go back"
-            onAction="#showLogin"/>
+    <Button onAction="#showLogin" text="Go back" />
 
 </VBox>
-
