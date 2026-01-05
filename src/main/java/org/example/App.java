@@ -182,7 +182,7 @@ public class App extends Application {
             Parent root = loader.load();
 
             ProfileController profileController = loader.getController();
-//            profileController.setUserService(userService, postService, categoryService, app);
+            profileController.setUserService(userService, postService, categoryService, app);
 
             Scene scene = new Scene(root, 900, 600);
             scene.getStylesheets()
@@ -205,5 +205,10 @@ public class App extends Application {
         if (emf != null) {
             emf.close();
         }
+    }
+
+    public void logout() {
+        UserSession.logout();
+        showLogin();
     }
 }

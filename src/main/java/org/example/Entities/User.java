@@ -22,6 +22,7 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
+
     @OneToOne(mappedBy = "user"
         , cascade = CascadeType.ALL
         , orphanRemoval = true)

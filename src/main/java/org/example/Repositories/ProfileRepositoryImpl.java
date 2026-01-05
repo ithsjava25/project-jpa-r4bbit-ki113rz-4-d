@@ -19,7 +19,6 @@ public class ProfileRepositoryImpl implements ProfileRepository {
             if (profile == null) {
                 throw new IllegalArgumentException("User cannot be null");
             }
-
             return emf.callInTransaction(em -> em.merge(profile));
     }
 

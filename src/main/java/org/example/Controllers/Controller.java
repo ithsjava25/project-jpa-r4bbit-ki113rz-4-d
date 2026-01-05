@@ -23,6 +23,8 @@ import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.Services.UserService;
+import org.example.UserSession;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -151,5 +153,17 @@ public class Controller {
 //                () -> System.out.println("No profile found!")
 //            );
 //        System.out.println();
+    }
+
+    @FXML
+    private void logout() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("Are you sure you want to logout?");
+
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            app.logout();
+        }
+
     }
 }
