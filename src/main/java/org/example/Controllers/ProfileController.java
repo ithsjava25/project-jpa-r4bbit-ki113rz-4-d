@@ -2,12 +2,15 @@ package org.example.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
 import org.example.App;
 import org.example.Entities.Profile;
@@ -17,6 +20,7 @@ import org.example.Services.PostService;
 import org.example.Services.UserService;
 import org.example.UserSession;
 
+import java.io.IOException;
 import java.util.Objects;
 
 
@@ -27,14 +31,6 @@ public class ProfileController {
     private CategoryService categoryService;
     private App app;
 
-    public void setUserService(
-        UserService userService,
-        PostService postService,
-        CategoryService categoryService,
-        App app
-    ) {
-        this.app = app;
-    }
 
     @FXML
     private ImageView profileImage;
@@ -44,6 +40,16 @@ public class ProfileController {
 
     @FXML
     private Button saveButton;
+
+    @FXML
+    private Button editButton;
+
+    @FXML
+    private Button myPostsButton;
+
+    @FXML
+    private BorderPane contentPane;
+
 
     public void initialize() {
         Circle clip = new Circle(50, 50, 50);
@@ -62,6 +68,14 @@ public class ProfileController {
                 () -> bioTextArea.setText("Hello! Welcome to your bio, write something about yourself: ")
             );
     }
+
+    public void setUserService(UserService userService, PostService postService, CategoryService categoryService, App app
+    ) {
+        this.app = app;
+        this.userService = userService;
+        this.postService = postService;
+        showMyPosts();
+    }
     public void testMethod() {
         App app = App.getAppInstance();
         app.showBoard();
@@ -70,12 +84,22 @@ public class ProfileController {
     public void editBio(ActionEvent actionEvent) {
         bioTextArea.setEditable(true);
         saveButton.setDisable(false);
-
+        editButton.setDisable(true);
     }
 
     public void saveBio(ActionEvent actionEvent) {
         bioTextArea.setEditable(false);
         saveButton.setDisable(true);
+        editButton.setDisable(false);
+
+        String newBio = bioTextArea.getText();
+        UserSession.getCurrentUser().ifPresentOrElse(
+            user -> userService.updateBio(user, newBio),
+            () -> {
+                throw new IllegalStateException("No user logged in");
+            }
+        );
+
         //Push to db
     }
     @FXML
@@ -86,6 +110,22 @@ public class ProfileController {
 
         if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             app.logout();
+        }
+    }
+
+    public void showMyPosts() {
+        try {
+            FXMLLoader loader =
+                new FXMLLoader(getClass().getResource("/myPosts.fxml"));
+            Parent myPostsView = loader.load();
+
+            MyPostsController controller = loader.getController();
+            controller.setPostService(postService);
+            controller.loadMyPosts();
+            contentPane.setCenter(myPostsView);
+
+        } catch (IOException e) {
+            throw new  RuntimeException(e);
         }
     }
 }

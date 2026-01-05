@@ -84,6 +84,12 @@ public class PostServiceImpl implements PostService {
         postRepo.deleteById(post.getPostId());
     }
 
+    @Override
+    public List<Post> getPostsByUser(User user) {
+        return postRepo.findAll(); //Temporary
+        //TODO: return only users posts
+    }
+
     private void validate(Post post){
         if (post.getSubject() == null || post.getSubject().isBlank())
             throw new IllegalArgumentException("Subject missing");

@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,80 +12,96 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.ProfileController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0"
+            xmlns="http://javafx.com/javafx/24.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.Controllers.ProfileController">
 
     <children>
-        <SplitPane dividerPositions="0.25" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
-            <items>
+        <BorderPane AnchorPane.topAnchor="0"
+                    AnchorPane.bottomAnchor="0"
+                    AnchorPane.leftAnchor="0"
+                    AnchorPane.rightAnchor="0">
 
-                <AnchorPane>
-                    <children>
-                        <VBox spacing="10" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <!-- LEFT SIDEBAR -->
+            <left>
+                <VBox prefWidth="220" spacing="10" styleClass="profile-menu">
+                    <Button fx:id="myPostsButton"
+                            text="My posts"
+                            onAction="#showMyPosts" />
 
-                            <Button text="Menu 1" />
-                            <Button text="Menu 2" />
-                            <Button text="Menu 3" />
-                            <Button onAction="#testMethod" text="View Bulletin" alignment="BOTTOM_LEFT"/>
-                            <!--<Region VBox.vgrow="ALWAYS"/> Removed because of bug-->
-                            <Button onAction="#logout" text="Logout" />
+                    <Button text="Menu 2" />
+                    <Button text="Menu 3" />
 
-                        </VBox>
-                    </children>
-                </AnchorPane>
+                    <Button onAction="#testMethod"
+                            text="View Bulletin" />
 
-                <AnchorPane>
-                    <children>
-                        <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <Button onAction="#logout"
+                            text="Logout" />
+                </VBox>
+            </left>
 
-                            <top>
-                                <HBox spacing="20">
-                                    <VBox alignment="TOP_CENTER" spacing="10">
-                                        <ImageView fx:id="profileImage" fitHeight="100" fitWidth="100" preserveRatio="true" smooth="true">
-                                            <VBox.margin>
-                                                <Insets left="20.0" top="20.0" />
-                                            </VBox.margin></ImageView>
-                                        <HBox.margin>
-                                            <Insets left="10.0" top="10.0" />
-                                        </HBox.margin>
-                                    </VBox>
-                                    <TextArea fx:id="bioTextArea" editable="false" prefHeight="200.0" prefWidth="500.0" wrapText="true" />
+            <!-- MAIN CONTENT -->
+            <center>
+
+                <BorderPane fx:id="contentPane">
+
+                    <top>
+                        <HBox spacing="20">
+                            <VBox alignment="TOP_CENTER" spacing="10">
+                                <ImageView fx:id="profileImage"
+                                           fitHeight="100"
+                                           fitWidth="100"
+                                           preserveRatio="true"
+                                           smooth="true">
+                                    <VBox.margin>
+                                        <Insets left="20" top="20"/>
+                                    </VBox.margin>
+                                </ImageView>
+                            </VBox>
+
+                            <VBox spacing="8">
+                                <TextArea fx:id="bioTextArea"
+                                          editable="false"
+                                          prefHeight="200"
+                                          prefWidth="500"
+                                          wrapText="true"/>
+
+                                <HBox spacing="10" alignment="CENTER_RIGHT">
+                                    <Button fx:id="editButton"
+                                            text="Edit"
+                                            onAction="#editBio"/>
+
+                                    <Button fx:id="saveButton"
+                                            text="Save"
+                                            disable="true"
+                                            onAction="#saveBio"/>
                                 </HBox>
-                            </top>
-                            <center>
-                                <GridPane BorderPane.alignment="CENTER">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    </rowConstraints>
-                                    <children>
-                                        <Button text="Edit" alignment="TOP_LEFT" onAction="#editBio" GridPane.columnIndex="2" />
-                                        <Button fx:id="saveButton" text="Save" disable="true" alignment="TOP_LEFT" onAction="#saveBio" GridPane.columnIndex="3" />
-                                    </children>
-                                </GridPane>
-                            </center>
+                            </VBox>
+                        </HBox>
+                    </top>
 
-                        </BorderPane>
-                    </children>
-                </AnchorPane>
+                    <center>
+                        <GridPane BorderPane.alignment="CENTER">
+                            <columnConstraints>
+                                <ColumnConstraints prefWidth="100"/>
+                                <ColumnConstraints prefWidth="100"/>
+                                <ColumnConstraints prefWidth="100"/>
+                                <ColumnConstraints prefWidth="100"/>
+                            </columnConstraints>
 
-            </items>
-        </SplitPane>
+                            <rowConstraints>
+                                <RowConstraints prefHeight="30"/>
+                            </rowConstraints>
+                        </GridPane>
+                    </center>
+
+                </BorderPane>
+
+            </center>
+
+        </BorderPane>
+
     </children>
 </AnchorPane>
