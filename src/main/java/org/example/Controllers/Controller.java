@@ -157,9 +157,14 @@ public class Controller {
 
     @FXML
     private void logout() {
-        //when logout button is pressed go to loginview
-        UserSession.logout();
-        app.showLogin();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("Are you sure you want to logout?");
+
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            UserSession.logout();
+            app.showLogin();
+        }
 
     }
 }
