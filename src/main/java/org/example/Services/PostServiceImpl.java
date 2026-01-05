@@ -57,7 +57,6 @@ public class PostServiceImpl implements PostService {
         }
 
         post.setAuthor(author);
-        post.getCategories().add(category);
         post.setPostItColor(randomPostItColor());
 
         return postRepo.save(post);
