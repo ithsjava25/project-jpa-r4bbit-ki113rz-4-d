@@ -23,12 +23,6 @@ public class Category {
         return posts;
     }
 
-    public void addPost(Post post){
-        if (post != null && !posts.contains(post)) {
-            posts.add(post);
-        }
-    }
-
     public Category() {}
 
     public Category(String name){
@@ -41,9 +35,6 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" +
-            "categoryId=" + categoryId +
-            ", name='" + name + '\'' +
-            '}';
+        return name;
     }
 }

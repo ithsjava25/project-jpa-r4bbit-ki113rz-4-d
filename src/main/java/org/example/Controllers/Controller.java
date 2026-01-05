@@ -23,6 +23,8 @@ import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.Services.UserService;
+import org.example.UserSession;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -121,14 +123,19 @@ public class Controller {
             NewNoteController controller = loader.getController();
             controller.setPostService(postService);
             controller.setCategoryService(categoryService);
+            controller.setOnPostSaved(() -> {
+                try {
+                    loadPosts();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                });
 
             Stage stage = new Stage();
             stage.setTitle("New Note");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-
-            loadPosts();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -146,5 +153,17 @@ public class Controller {
 //                () -> System.out.println("No profile found!")
 //            );
 //        System.out.println();
+    }
+
+    @FXML
+    private void logout() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("Are you sure you want to logout?");
+
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            app.logout();
+        }
+
     }
 }

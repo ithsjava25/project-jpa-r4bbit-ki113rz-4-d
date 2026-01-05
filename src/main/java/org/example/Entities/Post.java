@@ -16,6 +16,9 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int postId;
 
+    @Column(name= "postit_color", nullable = false)
+    private String postItColor;
+
     @Column (nullable = false)
     private String subject;
 
@@ -36,17 +39,29 @@ public class Post {
     public Post(String subject, String message){
         this.subject = subject;
         this.message = message;
+        this.postItColor = "/Images/PostIt_Blue.jpg";
     }
 
     /* Lifecycle callback ===== */
     @PrePersist
     void prePersist(){
-        this.createdAt = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
+        if (postItColor == null || postItColor.isBlank()) {
+            postItColor = "/Images/PostIt_Blue.jpg";
+        }
     }
 
     /* ===== Getters & setters ====== */
     public int getPostId() {
         return postId;
+    }
+
+    public String getPostItColor() {
+        return postItColor;
+    }
+
+    public void setPostItColor(String postItColor) {
+        this.postItColor = postItColor;
     }
 
     public String getSubject() {
@@ -97,7 +112,6 @@ public class Post {
     public void addCategory(Category category) {
         if (category != null && !categories.contains(category)) {
             categories.add(category);
-            category.addPost(this);
         }
     }
 

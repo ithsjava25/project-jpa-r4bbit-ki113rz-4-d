@@ -1,38 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 
-<StackPane  fx:id="root" stylesheets="@/css/board.css" styleClass="post-it"
-            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.Controllers.PostItemController">
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="root"
+           styleClass="post-it"
+           stylesheets="@/css/board.css"
+           xmlns="http://javafx.com/javafx/17.0.12"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.Controllers.PostItemController"
+           focusTraversable="true">
+
 
     <children>
-    <ImageView fitHeight="200.0" fitWidth="200.0"  preserveRatio = "true">
-        <image>
-            <Image url="@/Images/Postit.jpg"/>
-        </image>
-    </ImageView>
+    <ImageView fx:id="postItImage"
+               fitHeight="200.0"
+               fitWidth="200.0"
+               preserveRatio="true"/>
 
-    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="5.0"
-    style="-fx-padding: 30 20 20 20;">
+
+    <VBox alignment="CENTER"
+          prefHeight="158.0"
+          prefWidth="205.0"
+          spacing="5.0"
+          style="-fx-padding: 30 20 20 20;">
+
         <children>
-        <Label fx:id="subjectLabel" style="-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #2c3e50;"
-               text="Subject" wrapText="true" />
-        <Label fx:id="messageLabel" style="-fx-font-size: 12; -fx-text-fill: #34495e;"
-               text="Message..." wrapText="true" textAlignment="CENTER" />
+        <Label fx:id="subjectLabel"
+               style="-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #2c3e50;"
+               text="Subject"
+               wrapText="true" />
+        <Label fx:id="messageLabel"
+               style="-fx-font-size: 12; -fx-text-fill: #34495e;"
+               text="Message..."
+               textAlignment="CENTER"
+               wrapText="true" />
         </children>
+
     </VBox>
 
     <HBox fx:id="actionBox"
           alignment="TOP_RIGHT"
           visible="false"
           StackPane.alignment="TOP_RIGHT">
+
         <children>
-        <Button text="Show message"/>
-        <Button text="Update post" onAction="#handleUpdate"/>
-        <Button text="Delete post" onAction="#handleDelete"/>
+        <Button text="Show message" />
+        <Button onAction="#handleUpdate" text="Update post" />
+        <Button onAction="#handleDelete" text="Delete post" />
         </children>
     </HBox>
     </children>

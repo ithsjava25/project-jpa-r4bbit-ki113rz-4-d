@@ -16,7 +16,9 @@ import java.util.stream.Collectors;
  * Handles post data from database
  */
 public class PostRepositoryImpl implements PostRepository {
+
     private final EntityManagerFactory emf;
+
     public PostRepositoryImpl(EntityManagerFactory emf) {
         this.emf = emf;
     }
@@ -25,47 +27,21 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Post save(Post post) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
+        return EntityManagerFactoryWrapper.callInTransaction(emf, em -> {
 
             if (post.getPostId() == 0) {
                 em.persist(post);
+                return post;
             } else {
-                post = em.merge(post);
+                return em.merge(post);
             }
-
-            em.getTransaction().commit();
-            return post;
-        } finally {
-            em.close();
-        }
-    }
-
-    @Override
-    public Post createPost(Post post, User user) {
-        return emf.callInTransaction(em -> {
-            post.setAuthor(user);
-            List<Category> managedCategories = new ArrayList<>();
-
-            for (Category category : post.getCategories()) {
-                Category managedCategory = em.find(Category.class, category.getCategoryId());
-
-                if (managedCategory == null) {
-                    throw new IllegalArgumentException("Category " + category.getCategoryId() + " does not exist");
-                }
-                    managedCategories.add(managedCategory);
-                }
-            post.setCategories(managedCategories);
-            em.persist(post);
-
-            return post;
         });
     }
 
+
     @Override
     public Post updatePost(Post post) {
-        return emf.callInTransaction(em -> {
+        return EntityManagerFactoryWrapper.callInTransaction(emf, em -> {
             Post existing = em.find(Post.class, post.getPostId());
             if (existing == null) {
                 throw new IllegalArgumentException("Post not found: " + post.getPostId());
@@ -76,13 +52,14 @@ public class PostRepositoryImpl implements PostRepository {
             List<Category> managedCategories = new ArrayList<>();
             for (Category category : post.getCategories()) {
                 Category managedCategory = em.find(Category.class, category.getCategoryId());
+
                 if (managedCategory == null) {
                     throw new IllegalArgumentException("Category " + category.getCategoryId() + " does not exist");
                 }
                 managedCategories.add(managedCategory);
             }
             existing.setCategories(managedCategories);
-            return em.merge(existing); // Uppdaterad post
+            return existing; // Uppdaterad post
         });
     }
 
@@ -103,7 +80,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public void deleteById(int postId) {
-        emf.callInTransaction(em -> {
+        EntityManagerFactoryWrapper.callInTransaction(emf,em -> {
             Post post = em.find(Post.class, postId);
             if (post != null) {
                 em.remove(post);

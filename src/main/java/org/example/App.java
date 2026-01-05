@@ -65,14 +65,14 @@ public class App extends Application {
 
         //Initialize Repositories
         UserRepositoryImpl userRepo = new UserRepositoryImpl(emf);
-        PostRepository postRepo = new PostRepositoryImpl(emf);
         CategoryRepository categoryRepo = new CategoryRepositoryImpl(emf);
+        PostRepository postRepo = new PostRepositoryImpl(emf);
         ProfileRepository profileRepo = new ProfileRepositoryImpl(emf);
 
         //Initialize Services
         this.userService = new UserServiceImpl(userRepo);
         this.categoryService = new CategoryServiceImpl(categoryRepo);
-        this.postService = new PostServiceImpl(postRepo, userRepo);
+        this.postService = new PostServiceImpl(postRepo, categoryRepo);
         this.profileService = new ProfileServiceImpl(profileRepo);
 
         iconTopLeft = new Image(getClass().getResourceAsStream("/iths.png"));
@@ -181,8 +181,8 @@ public class App extends Application {
                 new FXMLLoader(getClass().getResource("/ProfileView.fxml"));
             Parent root = loader.load();
 
-//            ProfileController profileController = loader.getController();
-//            profileController.setUserService(userService, postService, categoryService, app);
+            ProfileController profileController = loader.getController();
+            profileController.setUserService(userService, postService, categoryService, app);
 
             Scene scene = new Scene(root, 900, 600);
             scene.getStylesheets()
@@ -205,5 +205,10 @@ public class App extends Application {
         if (emf != null) {
             emf.close();
         }
+    }
+
+    public void logout() {
+        UserSession.logout();
+        showLogin();
     }
 }

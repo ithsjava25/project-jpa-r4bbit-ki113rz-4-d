@@ -3,12 +3,11 @@ package org.example.Services;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
+import org.example.Repositories.CategoryRepository;
 import org.example.Repositories.PostRepository;
-import org.example.Repositories.UserRepository;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * Handles anything related to posts
@@ -16,23 +15,47 @@ import java.util.Optional;
  */
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepo;
-    private final UserRepository userRepo;
+    private final CategoryRepository categoryRepo;
 
+    private static final List<String> POSTIT_IMAGES = List.of(
+        "/Images/PostIt_Yellow.jpg",
+        "/Images/PostIt_Blue.jpg",
+        "/Images/PostIt_LightGreen.jpg",
+        "/Images/PostIt_Pink.jpg",
+        "/Images/PostIt_Purple.jpg"
+    );
 
-    public PostServiceImpl(PostRepository postRepo, UserRepository userRepo) {
+    private String randomPostItColor() {
+        return POSTIT_IMAGES.get(new Random().nextInt(POSTIT_IMAGES.size()));
+    }
+
+    public PostServiceImpl(PostRepository postRepo, CategoryRepository categoryRepo) {
         this.postRepo = postRepo;
-        this.userRepo = userRepo;
+        this.categoryRepo = categoryRepo;
     }
 
     @Override
-    public Post createPost(Post post, User user) {
-        if (post == null || user == null) {
-            throw new IllegalArgumentException("Post and user cannot be null");
-        }
-        return postRepo.createPost(post, user);
+    public Post createPost(String subject, String message, Long categoryId, User author) {
+
+        if (subject == null || subject.isBlank())
+            throw new IllegalArgumentException("Subject missing");
+        if (message == null || message.isBlank())
+            throw new IllegalArgumentException("Message missing");
+        if (author == null)
+            throw new IllegalStateException("No logged in user");
+
+        Category category = categoryRepo.getById(categoryId)
+            .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+
+
+        Post post = new Post(subject, message);
+        post.setAuthor(author);
+        post.getCategories().add(category);
+        post.setPostItColor(randomPostItColor());
+
+        return postRepo.save(post);
     }
 
-    @Override
     public Optional<Post> getPostById(Long id) {
         return postRepo.getPostById(id);
     }
@@ -48,8 +71,7 @@ public class PostServiceImpl implements PostService {
             throw new IllegalArgumentException("Post or postId missing");
         }
         validate(post);
-
-        postRepo.save(post);
+        postRepo.updatePost(post);
     }
 
     @Override
