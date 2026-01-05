@@ -1,9 +1,7 @@
 package org.example.Controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
@@ -12,15 +10,25 @@ import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.UserSession;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class NewNoteController {
 
     @FXML private TextField subjectField;
     @FXML private TextArea messageArea;
-    @FXML private ComboBox<Category> categoryBox;
+    @FXML private MenuButton categoryMenu;
+
+    private final Map<Long, CheckMenuItem> categoryItems = new HashMap<>();
 
     private PostService postService;
     private Runnable onPostSaved;
     private CategoryService categoryService;
+
+    public void initialize(){
+        loadCategories();
+    }
 
     public void setPostService(PostService postService) {
         this.postService = postService;
@@ -36,8 +44,15 @@ public class NewNoteController {
     }
 
     private void loadCategories() {
-        if (categoryService!=null) {
-            categoryBox.getItems().setAll(categoryService.getAllCategories());
+        if (categoryService==null || categoryMenu == null)  return;
+
+        categoryMenu.getItems().clear();
+        categoryItems.clear();
+
+        for (Category c : categoryService.getAllCategories()) {
+            CheckMenuItem item = new CheckMenuItem(c.getName());
+            categoryMenu.getItems().add(item);
+            categoryItems.put(c.getCategoryId(), item);
         }
     }
 
@@ -47,19 +62,25 @@ public class NewNoteController {
     private void handleSave() {
         String subject = subjectField.getText();
         String message = messageArea.getText();
-        Category category = categoryBox.getValue();
 
         User author = UserSession.getCurrentUser()
             .orElseThrow(() -> new IllegalStateException("No user logged in"));
 
         if (subject == null || subject.isBlank()
-            || message == null || message.isBlank()
-            || category == null) {
+            || message == null || message.isBlank()) {
             return;
         }
 
+        List<Long> categoryIds = categoryItems.entrySet().stream()
+            .filter(e -> e.getValue().isSelected())
+            .map(Map.Entry::getKey)
+            .toList();
+
+        if (categoryIds.isEmpty())
+            return;
+
         //Save through service
-        postService.createPost(subject, message, category.getCategoryId(), author);
+        postService.createPost(subject, message, categoryIds, author);
 
         if (onPostSaved != null) {
             onPostSaved.run();

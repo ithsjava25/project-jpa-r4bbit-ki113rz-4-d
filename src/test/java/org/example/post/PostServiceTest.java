@@ -20,6 +20,7 @@ import org.example.Repositories.PostRepository;
 import org.example.Repositories.PostRepositoryImpl;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -86,7 +87,7 @@ public class PostServiceTest {
             postService.createPost(
                 "",
                 "Fiffen is king",
-                1L,
+                List.of(1L),
                 user
             )
         ).isInstanceOf(IllegalArgumentException.class)

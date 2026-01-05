@@ -2,7 +2,9 @@ package org.example.Entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -32,15 +34,11 @@ public class User {
         this.password = password;
     }
 
-    @ManyToMany
-    @JoinTable(
-        name = "user_posts",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "post_id")
-    )
-    private Set<Post> posts = new HashSet<>();
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts = new ArrayList<>();
 
-    public User() {}
+    public User() {
+    }
 
     @Override
     public String toString() {
@@ -92,12 +90,15 @@ public class User {
         this.password = password;
     }
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
     /* ===== Relation helper ===== */
-    public void addPost(Post post){
-        if (!posts.contains(post)){
-            posts.add(post);
-            post.setAuthor(this);
-        }
+    public void addPost(Post post) {
+        if (post == null) return;
+        posts.add(post);
+        post.setAuthor(this);
     }
 
     public void setProfile(Profile profile) {
