@@ -28,8 +28,7 @@
                             <Button text="Menu 2" />
                             <Button text="Menu 3" />
                             <Button onAction="#testMethod" text="View Bulletin" alignment="BOTTOM_LEFT"/>
-
-                            <Region VBox.vgrow="ALWAYS"/>
+                            <!--<Region VBox.vgrow="ALWAYS"/> Removed because of bug-->
                             <Button onAction="#logout" text="Logout" />
 
                         </VBox>
