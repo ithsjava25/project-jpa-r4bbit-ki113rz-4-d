@@ -77,6 +77,7 @@ public class ProfileController {
         bioTextArea.setEditable(false);
         saveButton.setDisable(true);
         //Push to db
+    }
     @FXML
     private void logout() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -86,6 +87,5 @@ public class ProfileController {
         if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             app.logout();
         }
-
     }
 }
