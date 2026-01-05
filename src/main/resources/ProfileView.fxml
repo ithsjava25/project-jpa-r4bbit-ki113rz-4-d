@@ -20,6 +20,9 @@
                             <Button text="Menu 2" />
                             <Button text="Menu 3" />
 
+                            <Region VBox.vgrow="ALWAYS"/>
+                            <Button onAction="#logout" text="Logout" />
+
                         </VBox>
                     </children>
                 </AnchorPane>

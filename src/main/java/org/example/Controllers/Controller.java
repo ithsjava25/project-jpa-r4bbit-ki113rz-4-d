@@ -162,8 +162,7 @@ public class Controller {
         alert.setHeaderText("Are you sure you want to logout?");
 
         if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
-            UserSession.logout();
-            app.showLogin();
+            app.logout();
         }
 
     }
