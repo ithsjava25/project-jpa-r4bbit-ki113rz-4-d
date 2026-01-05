@@ -76,7 +76,7 @@
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <Button text="Edit" alignment="TOP_LEFT" onAction="#editBio" GridPane.columnIndex="2" />
+                                        <Button fx:id="editButton" text="Edit" alignment="TOP_LEFT" onAction="#editBio" GridPane.columnIndex="2" />
                                         <Button fx:id="saveButton" text="Save" disable="true" alignment="TOP_LEFT" onAction="#saveBio" GridPane.columnIndex="3" />
                                     </children>
                                 </GridPane>

@@ -45,6 +45,9 @@ public class ProfileController {
     @FXML
     private Button saveButton;
 
+    @FXML
+    private Button editButton;
+
     public void initialize() {
         Circle clip = new Circle(50, 50, 50);
         profileImage.setClip(clip);
@@ -70,12 +73,13 @@ public class ProfileController {
     public void editBio(ActionEvent actionEvent) {
         bioTextArea.setEditable(true);
         saveButton.setDisable(false);
-
+        editButton.setDisable(true);
     }
 
     public void saveBio(ActionEvent actionEvent) {
         bioTextArea.setEditable(false);
         saveButton.setDisable(true);
+        editButton.setDisable(false);
         //Push to db
     }
     @FXML
