@@ -62,6 +62,21 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public void updateBio(User user, String newBio) {
+
+        //This is here mostly because if the user was created before the profile was implemented
+        if (user.getProfile() == null) {
+            Profile profile = new Profile();
+            profile.setUser(user);
+            profile.setBio("");
+            user.setProfile(profile);
+        }
+
+        user.getProfile().setBio(newBio);
+        userRepo.save(user);
+    }
+
     /**
      * Checks if user exists in database,
      * then tests if the password is a match

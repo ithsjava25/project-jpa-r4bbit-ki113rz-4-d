@@ -9,6 +9,8 @@ import java.util.Optional;
  * Calls UserRepository if needed
  */
 public interface UserService {
+
+    void updateBio(User user, String newBio);
     boolean validateUser(String username, String password);
     Optional<User> createUser(String firstName, String lastName, String password, String username, String confirmPassword);
     boolean updatePassword(String username, String oldPassword, String newPassword, String confirmNewPassword);

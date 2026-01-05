@@ -27,13 +27,10 @@ public class ProfileController {
     private CategoryService categoryService;
     private App app;
 
-    public void setUserService(
-        UserService userService,
-        PostService postService,
-        CategoryService categoryService,
-        App app
+    public void setUserService(UserService userService, PostService postService, CategoryService categoryService, App app
     ) {
         this.app = app;
+        this.userService = userService;
     }
 
     @FXML
@@ -80,6 +77,15 @@ public class ProfileController {
         bioTextArea.setEditable(false);
         saveButton.setDisable(true);
         editButton.setDisable(false);
+
+        String newBio = bioTextArea.getText();
+        UserSession.getCurrentUser().ifPresentOrElse(
+            user -> userService.updateBio(user, newBio),
+            () -> {
+                throw new IllegalStateException("No user logged in");
+            }
+        );
+
         //Push to db
     }
     @FXML
