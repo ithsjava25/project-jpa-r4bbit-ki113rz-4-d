@@ -15,7 +15,8 @@
         <Button onAction="#handleProfile" text="Handle profile" />
 
         <Separator />
-        <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" onAction="#logout" text="Logout" />
+         <Region HBox.hgrow="ALWAYS"/>
+        <Button onAction="#logout" text="Logout" />
     </ToolBar>
 </top>
 
