@@ -39,12 +39,16 @@ public class Post {
     public Post(String subject, String message){
         this.subject = subject;
         this.message = message;
+        this.postItColor = "/Images/PostIt_Blue.jpg";
     }
 
     /* Lifecycle callback ===== */
     @PrePersist
     void prePersist(){
         createdAt = LocalDateTime.now();
+        if (postItColor == null || postItColor.isBlank()) {
+            postItColor = "/Images/PostIt_Blue.jpg";
+        }
     }
 
     /* ===== Getters & setters ====== */
