@@ -5,12 +5,9 @@ import org.example.Entities.Post;
 import org.example.Entities.User;
 import org.example.Repositories.CategoryRepository;
 import org.example.Repositories.PostRepository;
-import org.example.Repositories.UserRepository;
-import org.example.UserSession;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 /**
  * Handles anything related to posts
@@ -19,6 +16,18 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
     private final PostRepository postRepo;
     private final CategoryRepository categoryRepo;
+
+    private static final List<String> POSTIT_IMAGES = List.of(
+        "/Images/PostIt_Yellow.jpg",
+        "/Images/PostIt_Blue.jpg",
+        "/Images/PostIt_LightGreen.jpg",
+        "/Images/PostIt_Pink.jpg",
+        "/Images/PostIt_Purple.jpg"
+    );
+
+    private String randomPostItColor() {
+        return POSTIT_IMAGES.get(new Random().nextInt(POSTIT_IMAGES.size()));
+    }
 
     public PostServiceImpl(PostRepository postRepo, CategoryRepository categoryRepo) {
         this.postRepo = postRepo;
@@ -42,6 +51,7 @@ public class PostServiceImpl implements PostService {
         Post post = new Post(subject, message);
         post.setAuthor(author);
         post.getCategories().add(category);
+        post.setPostItColor(randomPostItColor());
 
         return postRepo.save(post);
     }

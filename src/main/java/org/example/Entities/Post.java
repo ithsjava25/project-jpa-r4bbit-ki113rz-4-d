@@ -16,6 +16,9 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int postId;
 
+    @Column(name= "postit_color", nullable = false)
+    private String postItColor;
+
     @Column (nullable = false)
     private String subject;
 
@@ -47,6 +50,14 @@ public class Post {
     /* ===== Getters & setters ====== */
     public int getPostId() {
         return postId;
+    }
+
+    public String getPostItColor() {
+        return postItColor;
+    }
+
+    public void setPostItColor(String postItColor) {
+        this.postItColor = postItColor;
     }
 
     public String getSubject() {

@@ -11,8 +11,6 @@ import org.example.Services.PostService;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import java.util.List;
-import java.util.Random;
 
 public class PostItemController {
 
@@ -26,13 +24,6 @@ public class PostItemController {
     private PostService postService;
     private Runnable onPostChanged;
 
-    private static final List<String> POSTIT_IMAGES = List.of(
-        "/Images/PostIt_Yellow.jpg",
-        "/Images/PostIt_Blue.jpg",
-        "/Images/PostIt_LightGreen.jpg",
-        "/Images/PostIt_Pink.jpg",
-        "/Images/PostIt_Purple.jpg"
-    );
 
     @FXML void initialize() {
         actionBox.setVisible(false);
@@ -54,7 +45,12 @@ public class PostItemController {
         this.post = post;
         subjectLabel.setText(post.getSubject());
         messageLabel.setText(post.getMessage());
-        applyRandomPostItColor();
+
+        String colorPath = post.getPostItColor();
+        if (colorPath == null || colorPath.isBlank()) {
+            colorPath = "/Images/PostIt_Blue.jpg";
+        }
+        postItImage.setImage(new Image(colorPath));
     }
     public void setPostService(PostService postService) {
         this.postService = postService;
@@ -80,10 +76,5 @@ public class PostItemController {
             onPostChanged.run();
         }
         System.out.println("Post deleted!");
-    }
-
-    private void applyRandomPostItColor() {
-        String path = POSTIT_IMAGES.get(new Random().nextInt(POSTIT_IMAGES.size()));
-        postItImage.setImage(new Image(path));
     }
 }
