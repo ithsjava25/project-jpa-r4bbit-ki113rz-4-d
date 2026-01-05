@@ -4,10 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane
-    xmlns="http://javafx.com/javafx/17.0.12"
-    xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="org.example.Controllers.Controller">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.Controller">
 
 <!--Top Toolbar-->
 <top>
@@ -16,6 +13,9 @@
         <Separator />
         <Button onAction="#handleUsers" text="Handle users" />
         <Button onAction="#handleProfile" text="Handle profile" />
+
+        <Separator />
+        <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" onAction="#logout" text="Logout" />
     </ToolBar>
 </top>
 

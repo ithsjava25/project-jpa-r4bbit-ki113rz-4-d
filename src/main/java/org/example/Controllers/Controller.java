@@ -152,4 +152,9 @@ public class Controller {
 //            );
 //        System.out.println();
     }
+
+    @FXML
+    private void logout() {
+
+    }
 }
