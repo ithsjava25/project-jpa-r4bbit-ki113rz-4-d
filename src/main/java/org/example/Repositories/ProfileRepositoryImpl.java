@@ -24,11 +24,17 @@ public class ProfileRepositoryImpl implements ProfileRepository {
 
     @Override
     public Optional<Profile> findById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
         return Optional.ofNullable(emf.callInTransaction(em -> em.find(Profile.class, id)));
     }
 
     @Override
     public Optional<String> bioById(Long id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
         return emf.callInTransaction(em ->
             em.createQuery(
                     "select p.bio from Profile p where p.user.id = :userId",
