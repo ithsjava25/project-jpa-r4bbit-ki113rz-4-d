@@ -45,9 +45,6 @@ public class ProfileController {
     private Button editButton;
 
     @FXML
-    private Button myPostsButton;
-
-    @FXML
     private BorderPane contentPane;
 
 
@@ -123,6 +120,21 @@ public class ProfileController {
             controller.setPostService(postService);
             controller.loadMyPosts();
             contentPane.setCenter(myPostsView);
+
+        } catch (IOException e) {
+            throw new  RuntimeException(e);
+        }
+    }
+
+    public void showSettings() {
+        try {
+            FXMLLoader loader =
+                new FXMLLoader(getClass().getResource("/userSettings.fxml"));
+            Parent settingsView = loader.load();
+
+            SettingsController controller = loader.getController();
+            controller.loadSettings();
+            contentPane.setCenter(settingsView);
 
         } catch (IOException e) {
             throw new  RuntimeException(e);
