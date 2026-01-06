@@ -24,14 +24,10 @@
                     AnchorPane.leftAnchor="0"
                     AnchorPane.rightAnchor="0">
 
-            <!-- LEFT SIDEBAR -->
             <left>
                 <VBox prefWidth="220" spacing="10" styleClass="profile-menu">
-                    <Button fx:id="myPostsButton"
-                            text="My posts"
-                            onAction="#showMyPosts" />
-
-                    <Button text="Menu 2" />
+                    <Button text="My posts" onAction="#showMyPosts" />
+                    <Button text="Settings" onAction="#showSettings"/>
                     <Button text="Menu 3" />
 
                     <Button onAction="#testMethod"
@@ -42,7 +38,6 @@
                 </VBox>
             </left>
 
-            <!-- MAIN CONTENT -->
             <center>
 
                 <BorderPane fx:id="contentPane">

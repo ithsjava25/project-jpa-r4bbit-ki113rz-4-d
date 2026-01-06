@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="20"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.Controllers.SettingsController">
+
+    <!-- TITLE -->
+    <Label text="Profile Information"/>
+
+    <!-- INFO GRID -->
+    <GridPane hgap="15" vgap="10">
+        <padding>
+            <Insets top="10"/>
+        </padding>
+
+        <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Label
+               text="name"
+               GridPane.rowIndex="0"
+               GridPane.columnIndex="1"/>
+
+        <Label text="Username:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Label
+               text="username"
+               GridPane.rowIndex="1"
+               GridPane.columnIndex="1"/>
+    </GridPane>
+
+</VBox>

@@ -64,6 +64,18 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public List<Post> getPostsByUser(User user) {
+        return emf.callInTransaction(em ->
+            em.createQuery(
+                "select p from Post p where p.author = :user order by p.createdAt desc",
+                Post.class
+            )
+            .setParameter("user", user)
+            .getResultList()
+            );
+    }
+
+    @Override
     public Optional<Post> getPostById(Long id) {
         return EntityManagerFactoryWrapper.callInTransaction(emf, em ->
             Optional.ofNullable(em.find(Post.class, id))
