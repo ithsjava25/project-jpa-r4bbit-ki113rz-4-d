@@ -47,15 +47,21 @@
                GridPane.columnIndex="1"
                GridPane.rowIndex="1"/>
 
-        <Button text="Edit username"
+        <TextField fx:id="usernameTextfield"
+                   promptText="Enter new username"
+                   visible="false"
+                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Button text="Edit"
                 GridPane.columnIndex="2"
                 GridPane.rowIndex="1"
                 onAction="#editUsername"/>
 
-        <Button fx:id="saveUsername"
+        <Button fx:id="saveUsernameButton"
                 text="Save"
                 GridPane.columnIndex="3"
-                GridPane.rowIndex="1"/>
+                GridPane.rowIndex="1"
+                visible="false" onAction="#saveUsername"/>
 
         <Button text="Change password"
                 GridPane.columnIndex="0"

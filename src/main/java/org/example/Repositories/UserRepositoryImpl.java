@@ -119,4 +119,16 @@ public class UserRepositoryImpl implements UserRepository {
         user.setLast_name(newLastName);
         save(user);
     }
+
+    @Override
+    public void updateUsername(User user, String newUsername) {
+        if(user == null) {
+            throw new IllegalArgumentException("user is null");
+        }
+        if(newUsername == null || newUsername.isBlank()) {
+            throw new IllegalArgumentException("Username is null or blank");
+        }
+        user.setUsername(newUsername);
+        save(user);
+    }
 }

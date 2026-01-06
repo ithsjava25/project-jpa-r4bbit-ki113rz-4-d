@@ -178,4 +178,15 @@ public class UserServiceImpl implements UserService {
             return false;
         }
     }
+
+    @Override
+    public void updateUsername(User user, String newUsername) {
+        if(user == null) {
+            throw new IllegalArgumentException("user is null");
+        }
+        if(newUsername == null || newUsername.isBlank()) {
+            throw new IllegalArgumentException("Username is null or blank");
+        }
+        userRepo.updateUsername(user, newUsername);
+    }
 }

@@ -12,6 +12,10 @@ import org.example.UserSession;
 
 public class SettingsController {
     @FXML
+    private TextField usernameTextfield;
+    @FXML
+    private Button saveUsernameButton;
+    @FXML
     private HBox nameEditBox;
     @FXML
     private TextField firstNameField;
@@ -70,11 +74,27 @@ public class SettingsController {
     }
 
     public void editUsername() {
-        //TODO: edit username
+        User user = UserSession.getCurrentUser().orElseThrow();
+        usernameTextfield.setText(user.getUsername());
+        usernameLabel.setVisible(false);
+        usernameTextfield.setVisible(true);
+        saveUsernameButton.setVisible(true);
+    }
+
+    public void saveUsername() {
+        User user = UserSession.getCurrentUser().orElseThrow();
+        String newUsername = usernameTextfield.getText();
+        if (newUsername.isBlank()) return;
+        userService.updateUsername(user, newUsername);
+        usernameLabel.setText(newUsername);
+        usernameLabel.setVisible(true);
+        usernameTextfield.setVisible(false);
+        saveUsernameButton.setVisible(false);
     }
 
     public void changePassword() {
         //TODO: change password
     }
+
 
 }
