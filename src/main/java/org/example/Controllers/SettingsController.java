@@ -2,6 +2,7 @@ package org.example.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,6 +12,14 @@ import org.example.Services.UserService;
 import org.example.UserSession;
 
 public class SettingsController {
+    @FXML
+    private TextField newPasswordField;
+    @FXML
+    private TextField oldPasswordField;
+    @FXML
+    private TextField confirmPasswordField;
+    @FXML
+    private Button savePasswordButton;
     @FXML
     private TextField usernameTextfield;
     @FXML
@@ -93,8 +102,63 @@ public class SettingsController {
     }
 
     public void changePassword() {
-        //TODO: change password
+        oldPasswordField.setVisible(true);
+        confirmPasswordField.setVisible(true);
+        newPasswordField.setVisible(true);
+        savePasswordButton.setVisible(true);
     }
 
 
+    public void savePassword() {
+        User user = UserSession.getCurrentUser().orElseThrow();
+        String username = user.getUsername();
+        String oldPassword = oldPasswordField.getText();
+        String newPassword = newPasswordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
+        if (oldPassword.isBlank() || newPassword.isBlank() || confirmPassword.isBlank()) {
+            showAlert(
+                Alert.AlertType.WARNING,
+                "Missing information",
+                "All password fields must be filled in."
+            );
+            return;
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            showAlert(
+                Alert.AlertType.ERROR,
+                "Password mismatch",
+                "New passwords must match."
+            );
+            return;
+        }
+
+        if (userService.updatePassword(username, oldPassword, newPassword, confirmPassword)){
+            showAlert(
+                Alert.AlertType.INFORMATION,
+                "Password updated",
+                "Your password has been successfully changed."
+            );
+            oldPasswordField.clear();
+            newPasswordField.clear();
+            confirmPasswordField.clear();
+            oldPasswordField.setVisible(false);
+            confirmPasswordField.setVisible(false);
+            newPasswordField.setVisible(false);
+            savePasswordButton.setVisible(false);
+        } else {
+            showAlert(
+                Alert.AlertType.ERROR,
+                "Update failed",
+                "Your old password is incorrect."
+            );
+        }
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
