@@ -146,6 +146,20 @@ public class UserServiceImpl implements UserService {
         return userRepo.getUserById(id);
     }
 
+    @Override
+    public void updateName(User user, String newFirstName, String newLastName) {
+        if(user == null) {
+            throw new IllegalArgumentException("user is null");
+        }
+        if(newFirstName == null || newFirstName.isBlank()) {
+            throw new IllegalArgumentException("First name is null or blank");
+        }
+        if(newLastName == null || newLastName.isBlank()) {
+            throw new IllegalArgumentException("Last name is null or blank");
+        }
+        userRepo.updateName(user, newFirstName, newLastName);
+    }
+
     /**
      * Deletes user with userId id
      * @param id users userID

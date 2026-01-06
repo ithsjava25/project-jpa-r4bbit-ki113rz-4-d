@@ -18,6 +18,8 @@ public interface UserService {
     Optional<User> login(String username, String password);
     Optional<User> getUserById(Long id);
 
+    void updateName(User user, String newFirstName, String newLastName);
+
     boolean deleteUser(Long id);
 
 }

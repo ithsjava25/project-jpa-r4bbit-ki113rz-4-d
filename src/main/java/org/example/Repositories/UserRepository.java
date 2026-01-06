@@ -17,7 +17,7 @@ public interface UserRepository {
 
     Optional<User> getUserByUsername(String username);
 
-
+    void updateName(User user, String newFirstName, String newLastName);
 }
 
 
