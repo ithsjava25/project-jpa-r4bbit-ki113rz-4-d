@@ -189,4 +189,9 @@ public class UserServiceImpl implements UserService {
         }
         userRepo.updateUsername(user, newUsername);
     }
+
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        return userRepo.getUserByUsername(username);
+    }
 }

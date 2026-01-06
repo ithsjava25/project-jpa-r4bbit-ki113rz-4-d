@@ -23,7 +23,7 @@
             <TextField fx:id="lastNameField" promptText="Last name" />
         </HBox>
 
-        <Button onAction="#editName" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+        <Button onAction="#editName" text="Edit name" GridPane.columnIndex="2" GridPane.rowIndex="0" />
 
         <Button fx:id="saveNameButton" onAction="#saveName" text="Save" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
@@ -33,21 +33,25 @@
 
         <TextField fx:id="usernameTextfield" promptText="Enter new username" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <Button onAction="#editUsername" text="Edit" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <Button onAction="#editUsername" text="Edit username" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
         <Button fx:id="saveUsernameButton" onAction="#saveUsername" text="Save" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
         <Button onAction="#changePassword" text="Change password" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <Button fx:id="savePasswordButton" onAction="#savePassword" text="Save password" GridPane.columnIndex="1" GridPane.rowIndex="2" visible="false"/>
+        <Button fx:id="savePasswordButton" onAction="#savePassword" text="Save password" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <TextField fx:id="newPasswordField" promptText="new password" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
         <TextField fx:id="confirmPasswordField" promptText="confirm password" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4" />
         <TextField fx:id="oldPasswordField" promptText="old password" visible="false" GridPane.rowIndex="4" />
+      <Button fx:id="cancelNameButton" text="Cancel" onAction="#cancelNameEdit" GridPane.columnIndex="4" GridPane.rowIndex="0" visible="false"/>
+      <Button fx:id="cancelUsernameButton" text="Cancel" onAction="#cancelUsernameEdit" GridPane.columnIndex="4" GridPane.rowIndex="1" visible="false"/>
+      <Button fx:id="cancelPasswordButton" text="Cancel" onAction="#cancelPasswordEdit" GridPane.columnIndex="4" GridPane.rowIndex="2" visible="false"/>
 
       <columnConstraints>
          <ColumnConstraints />
          <ColumnConstraints />
-         <ColumnConstraints maxWidth="146.0" minWidth="10.0" prefWidth="146.0" />
-         <ColumnConstraints maxWidth="95.0" minWidth="10.0" prefWidth="54.0" />
+         <ColumnConstraints maxWidth="146.0" minWidth="50.0" prefWidth="146.0" />
+         <ColumnConstraints maxWidth="95.0" minWidth="50.0" prefWidth="54.0" />
+         <ColumnConstraints maxWidth="95.0" minWidth="50.0" prefWidth="100.0" />
       </columnConstraints>
       <rowConstraints>
          <RowConstraints />

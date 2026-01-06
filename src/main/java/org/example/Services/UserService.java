@@ -23,5 +23,7 @@ public interface UserService {
     boolean deleteUser(Long id);
 
     void updateUsername(User user, String newUsername);
+
+    Optional<User> getUserByUsername(String username);
 }
 

@@ -13,6 +13,12 @@ import org.example.UserSession;
 
 public class SettingsController {
     @FXML
+    private Button cancelPasswordButton;
+    @FXML
+    private Button cancelUsernameButton;
+    @FXML
+    private Button cancelNameButton;
+    @FXML
     private TextField newPasswordField;
     @FXML
     private TextField oldPasswordField;
@@ -39,6 +45,8 @@ public class SettingsController {
     private Label usernameLabel;
     private UserService userService;
 
+    private String originalUsername;
+
     public void loadSettings() {
         UserSession.getCurrentUser().ifPresentOrElse(
             user -> {
@@ -64,6 +72,7 @@ public class SettingsController {
         nameLabel.setVisible(false);
         nameEditBox.setVisible(true);
         saveNameButton.setVisible(true);;
+        cancelNameButton.setVisible(true);
     }
 
     @FXML
@@ -80,25 +89,68 @@ public class SettingsController {
         nameLabel.setVisible(true);
         nameEditBox.setVisible(false);
         saveNameButton.setVisible(false);
+        cancelNameButton.setVisible(false);
     }
 
     public void editUsername() {
         User user = UserSession.getCurrentUser().orElseThrow();
-        usernameTextfield.setText(user.getUsername());
+        originalUsername = user.getUsername();
+        usernameTextfield.setText(originalUsername);
         usernameLabel.setVisible(false);
         usernameTextfield.setVisible(true);
         saveUsernameButton.setVisible(true);
+        cancelUsernameButton.setVisible(true);
     }
 
     public void saveUsername() {
         User user = UserSession.getCurrentUser().orElseThrow();
         String newUsername = usernameTextfield.getText();
-        if (newUsername.isBlank()) return;
+
+        if (newUsername.isBlank()) {
+            showAlert(Alert.AlertType.ERROR, "Invalid username", "Username cannot be empty");
+            return;
+        }
+
+        if (userService.getUserByUsername(newUsername).isPresent()){
+            showAlert(
+                Alert.AlertType.ERROR,
+                "Username already exists",
+                "That username is taken."
+            );
+            return;
+        }
         userService.updateUsername(user, newUsername);
         usernameLabel.setText(newUsername);
         usernameLabel.setVisible(true);
         usernameTextfield.setVisible(false);
         saveUsernameButton.setVisible(false);
+        cancelUsernameButton.setVisible(false);
+    }
+
+    public void cancelUsernameEdit() {
+        usernameTextfield.setText(originalUsername);
+        usernameLabel.setVisible(true);
+        usernameTextfield.setVisible(false);
+        saveUsernameButton.setVisible(false);
+        cancelUsernameButton.setVisible(false);
+    }
+
+    public void cancelNameEdit() {
+        nameLabel.setVisible(true);
+        nameEditBox.setVisible(false);
+        saveNameButton.setVisible(false);
+        cancelNameButton.setVisible(false);
+    }
+
+    public void cancelPasswordEdit() {
+        oldPasswordField.clear();
+        newPasswordField.clear();
+        confirmPasswordField.clear();
+        oldPasswordField.setVisible(false);
+        confirmPasswordField.setVisible(false);
+        newPasswordField.setVisible(false);
+        savePasswordButton.setVisible(false);
+        cancelPasswordButton.setVisible(false);
     }
 
     public void changePassword() {
@@ -106,6 +158,7 @@ public class SettingsController {
         confirmPasswordField.setVisible(true);
         newPasswordField.setVisible(true);
         savePasswordButton.setVisible(true);
+        cancelPasswordButton.setVisible(true);
     }
 
 
