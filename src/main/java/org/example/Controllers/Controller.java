@@ -145,15 +145,6 @@ public class Controller {
 
     public void handleProfile() {
         app.showProfile();
-//        UserSession
-//            .getCurrentUser()
-//            .map(User::getProfile)
-//            .map(Profile::getBio)
-//            .ifPresentOrElse(
-//                System.out::println,
-//                () -> System.out.println("No profile found!")
-//            );
-//        System.out.println();
     }
 
     @FXML
