@@ -26,7 +26,7 @@
 
             <left>
                 <VBox prefWidth="220" spacing="10" styleClass="profile-menu">
-                    <Button text="My posts" onAction="#showMyPosts" />
+                    <Button text="My Notes" onAction="#showMyPosts" />
                     <Button text="Settings" onAction="#showSettings"/>
                     <Button text="Menu 3" />
 
