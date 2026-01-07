@@ -19,6 +19,12 @@
               wrapText="true"
               prefRowCount="4"/>
 
+    <Label fx:id="charCountLabel"
+           text="0 / 255"
+           style="-fx-font-size: 10; -fx-text-fill: #777;"
+           alignment="CENTER_RIGHT"
+           maxWidth="Infinity"/>
+
     <MenuButton fx:id="categoryMenu"
                 text="Choose category"/>
 
