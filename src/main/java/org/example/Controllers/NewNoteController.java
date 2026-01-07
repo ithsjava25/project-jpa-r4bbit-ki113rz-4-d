@@ -3,7 +3,7 @@ package org.example.Controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
@@ -111,7 +111,11 @@ public class NewNoteController {
 
         if (subject == null || subject.isBlank()
             || message == null || message.isBlank()) {
-            System.out.println("Subject or Message is null or blank!");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Missing required fields");
+            alert.setContentText("Please enter both subject and message.");
+            alert.showAndWait();
             return;
         }
 
@@ -121,7 +125,11 @@ public class NewNoteController {
             .toList();
 
         if (categoryIds.isEmpty()) {
-            System.out.println("No category selected!");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("No category selected");
+            alert.setContentText("Please select at least one category.");
+            alert.showAndWait();
             return;
         }
 

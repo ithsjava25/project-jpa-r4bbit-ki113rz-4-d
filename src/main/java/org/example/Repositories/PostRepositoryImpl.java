@@ -67,7 +67,7 @@ public class PostRepositoryImpl implements PostRepository {
     public List<Post> getPostsByUser(User user) {
         return emf.callInTransaction(em ->
             em.createQuery(
-                "select p from Post p where p.author = :user order by p.createdAt desc",
+                "select p from Post p JOIN FETCH p.author where p.author = :user order by p.createdAt desc",
                 Post.class
             )
             .setParameter("user", user)
@@ -85,7 +85,7 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> findAll() {
         return EntityManagerFactoryWrapper.callInTransaction(emf, em ->
-            em.createQuery("SELECT p FROM Post p ORDER BY p.createdAt DESC", Post.class)
+            em.createQuery("SELECT p FROM Post p JOIN FETCH p.author ORDER BY p.createdAt DESC", Post.class)
                 .getResultList()
         );
     }
