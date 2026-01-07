@@ -15,14 +15,16 @@
                promptText="Subject"/>
 
     <TextArea fx:id="messageArea"
-              promptText="Message"/>
+              promptText="Message"
+              wrapText="true"
+              prefRowCount="4"/>
 
     <MenuButton fx:id="categoryMenu"
-              text="Choose category"/>
+                text="Choose category"/>
 
     <HBox spacing="10" alignment="CENTER_RIGHT">
-    <Button text="Cancel" onAction="#handleCancel"/>
-    <Button fx:id="saveButton" text="Post note" onAction="#handleSave"/>
+        <Button text="Cancel" onAction="#handleCancel"/>
+        <Button fx:id="saveButton" text="Post note" onAction="#handleSave"/>
     </HBox>
 
 </VBox>
