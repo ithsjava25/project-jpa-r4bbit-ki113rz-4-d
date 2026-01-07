@@ -20,12 +20,14 @@ public class NewNoteController {
     @FXML private TextArea messageArea;
     @FXML private MenuButton categoryMenu;
     @FXML private Button saveButton;
+    @FXML private Label charCountLabel;
 
     private PostService postService;
     private Runnable onPostSaved;
     private CategoryService categoryService;
     private Post postToEdit;
     private boolean categoriesLoaded = false;
+    private static final int MAX_LENGHT = 255;
 
     private final Map<Long, CheckMenuItem> categoryItems = new HashMap<>();
 
@@ -158,5 +160,20 @@ public class NewNoteController {
     public void closeWindow() {
         Stage stage = (Stage) subjectField.getScene().getWindow();
         stage.close();
+    }
+    @FXML
+    public void initialize(){
+        messageArea.setWrapText(true);
+
+        messageArea.setTextFormatter(new TextFormatter<String>(change -> {
+            if (change.getControlNewText().length() <= MAX_LENGHT){
+                return change;
+            }
+            return null;
+        }));
+
+        messageArea.textProperty().addListener((obs, oldText, newText) -> {
+            charCountLabel.setText(newText.length() + " / " + MAX_LENGHT);
+        });
     }
 }
