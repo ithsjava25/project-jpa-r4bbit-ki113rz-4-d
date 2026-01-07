@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <VBox spacing="10"
+      style=" -fx-padding: 15;"
       xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.example.Controllers.NewNoteController">
@@ -15,14 +16,22 @@
                promptText="Subject"/>
 
     <TextArea fx:id="messageArea"
-              promptText="Message"/>
+              promptText="Message"
+              wrapText="true"
+              prefRowCount="4"/>
+
+    <Label fx:id="charCountLabel"
+           text="0 / 255"
+           style="-fx-font-size: 10; -fx-text-fill: #777;"
+           alignment="CENTER_RIGHT"
+           maxWidth="Infinity"/>
 
     <MenuButton fx:id="categoryMenu"
-              text="Choose category"/>
+                text="Choose category"/>
 
     <HBox spacing="10" alignment="CENTER_RIGHT">
-    <Button text="Cancel" onAction="#handleCancel"/>
-    <Button fx:id="saveButton" text="Post note" onAction="#handleSave"/>
+        <Button text="Cancel" onAction="#handleCancel"/>
+        <Button fx:id="saveButton" text="Post note" onAction="#handleSave"/>
     </HBox>
 
 </VBox>

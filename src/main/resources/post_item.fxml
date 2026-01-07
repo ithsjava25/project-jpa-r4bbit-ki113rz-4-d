@@ -10,7 +10,9 @@
            xmlns="http://javafx.com/javafx/17.0.12"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="org.example.Controllers.PostItemController"
-           focusTraversable="true">
+           focusTraversable="true"
+           prefWidth="200"
+           prefHeight="200">
 
 
     <children>

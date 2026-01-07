@@ -146,6 +146,20 @@ public class UserServiceImpl implements UserService {
         return userRepo.getUserById(id);
     }
 
+    @Override
+    public void updateName(User user, String newFirstName, String newLastName) {
+        if(user == null) {
+            throw new IllegalArgumentException("user is null");
+        }
+        if(newFirstName == null || newFirstName.isBlank()) {
+            throw new IllegalArgumentException("First name is null or blank");
+        }
+        if(newLastName == null || newLastName.isBlank()) {
+            throw new IllegalArgumentException("Last name is null or blank");
+        }
+        userRepo.updateName(user, newFirstName, newLastName);
+    }
+
     /**
      * Deletes user with userId id
      * @param id users userID
@@ -163,5 +177,21 @@ public class UserServiceImpl implements UserService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void updateUsername(User user, String newUsername) {
+        if(user == null) {
+            throw new IllegalArgumentException("user is null");
+        }
+        if(newUsername == null || newUsername.isBlank()) {
+            throw new IllegalArgumentException("Username is null or blank");
+        }
+        userRepo.updateUsername(user, newUsername);
+    }
+
+    @Override
+    public Optional<User> getUserByUsername(String username) {
+        return userRepo.getUserByUsername(username);
     }
 }
