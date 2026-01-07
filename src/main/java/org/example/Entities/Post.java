@@ -28,7 +28,7 @@ public class Post {
     @Column (name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne (fetch = FetchType.LAZY, optional = false)
+    @ManyToOne (fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="user_id", nullable = false)
     private User author;
 
@@ -92,7 +92,7 @@ public class Post {
         this.author = author;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "post_categories",
         joinColumns = @JoinColumn (name = "post_id"),
