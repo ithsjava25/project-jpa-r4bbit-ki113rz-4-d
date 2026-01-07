@@ -72,12 +72,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void updatePost(Post post) {
-        if (post == null || post.getPostId() == 0){
-            throw new IllegalArgumentException("Post or postId missing");
+    public void updatePost(Post post, String subject, String message, List<Long> categoryIds) {
+        post.setSubject(subject);
+        post.setMessage(message);
+        post.getCategories().clear();
+        for (Long id : categoryIds) {
+            Category c = categoryRepo.getById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Category not found: " + id));
+            post.getCategories().add(c);
         }
-        validate(post);
-        postRepo.updatePost(post);
+        postRepo.save(post);
     }
 
     @Override

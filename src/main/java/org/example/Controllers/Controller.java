@@ -92,6 +92,7 @@ public class Controller {
             PostItemController controller = loader.getController();
             controller.setPost(post);
             controller.setPostService(postService);
+            controller.setCategoryService(categoryService);
             controller.setOnPostChanged(() -> {
                 try {
                     loadPosts();
