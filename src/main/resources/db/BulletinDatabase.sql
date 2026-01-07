@@ -30,3 +30,11 @@ create table if not exists profile (
     user_id bigint not null unique ,
     foreign key (user_id) references user_account(userId) on delete cascade
 );
+
+create table if not exists post_categories (
+    post_id bigint not null ,
+    category_id bigint not null ,
+    PRIMARY KEY (post_id, category_id) ,
+    foreign key (post_id) references posts(postId) on DELETE cascade ,
+    foreign key (category_id) references categories(categoryId) on DELETE cascade
+);
