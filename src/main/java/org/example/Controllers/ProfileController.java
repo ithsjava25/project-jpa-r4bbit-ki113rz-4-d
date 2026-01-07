@@ -71,6 +71,7 @@ public class ProfileController {
         this.app = app;
         this.userService = userService;
         this.postService = postService;
+        this.categoryService = categoryService;
         showMyPosts();
     }
     public void testMethod() {
@@ -118,6 +119,7 @@ public class ProfileController {
 
             MyPostsController controller = loader.getController();
             controller.setPostService(postService);
+            controller.setCategoryService(categoryService);
             controller.loadMyPosts();
             contentPane.setCenter(myPostsView);
 
