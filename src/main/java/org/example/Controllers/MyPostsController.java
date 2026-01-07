@@ -1,7 +1,9 @@
 package org.example.Controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -53,13 +55,11 @@ public class MyPostsController {
         HBox.setHgrow(textBox, Priority.ALWAYS);
 
         Button updateButton = new Button("Edit post");
-        updateButton.setStyle("-fx-text-fill: green;");
 
         Button deleteButton = new Button("Delete");
         deleteButton.setStyle("-fx-text-fill: darkred;");
         deleteButton.setOnAction(e -> {
-            postService.deletePost(post);
-            loadMyPosts();
+            handleDeleteButton(post);
         });
 
         HBox row = new HBox(10, textBox, updateButton, deleteButton);
@@ -72,5 +72,19 @@ public class MyPostsController {
         """);
 
         return row;
+    }
+
+    private void handleDeleteButton(Post post) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete post");
+        confirm.setHeaderText("Are you sure?");
+        confirm.setContentText("This post will be permanently deleted.");
+
+        Optional<ButtonType> result = confirm.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            postService.deletePost(post);
+            loadMyPosts();
+        }
     }
 }

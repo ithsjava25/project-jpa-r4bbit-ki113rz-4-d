@@ -113,7 +113,7 @@ public class ProfileController {
     public void showMyPosts() {
         try {
             FXMLLoader loader =
-                new FXMLLoader(getClass().getResource("/myPosts.fxml"));
+                new FXMLLoader(getClass().getResource("/myNotes.fxml"));
             Parent myPostsView = loader.load();
 
             MyPostsController controller = loader.getController();
