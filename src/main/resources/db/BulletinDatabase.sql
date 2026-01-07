@@ -8,3 +8,8 @@ create table if not exists user_account (
     username varchar(255) not null unique ,
     password varchar(255) not null
 );
+
+create table if not exists categories (
+    categoryId bigint auto_increment primary key ,
+    name varchar(255) not null unique
+);
