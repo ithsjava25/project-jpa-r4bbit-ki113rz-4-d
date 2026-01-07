@@ -87,6 +87,11 @@ public class MyPostsController {
         VBox textBox = new VBox(4, subject, message);
         HBox.setHgrow(textBox, Priority.ALWAYS);
 
+        Button showPostButton = new Button("Show post");
+        showPostButton.setOnAction(e -> {
+            handleShowPostButton(post);
+        });
+
         Button updateButton = new Button("Edit post");
         updateButton.setOnAction(e -> {
             handleUpdateButton(post);
@@ -98,7 +103,7 @@ public class MyPostsController {
             handleDeleteButton(post);
         });
 
-        HBox row = new HBox(10, textBox, updateButton, deleteButton);
+        HBox row = new HBox(10, textBox,showPostButton, updateButton, deleteButton);
         row.setStyle("""
             -fx-padding: 10;
             -fx-background-color: #f7f3ea;
@@ -108,6 +113,27 @@ public class MyPostsController {
         """);
 
         return row;
+    }
+
+    private void handleShowPostButton(Post post) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PostView.fxml"));
+            Parent root = loader.load();
+            PostViewController controller = loader.getController();
+            controller.setPost(post);
+
+            Stage stage = new Stage();
+            stage.setTitle("Show post");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root, 800, 800));
+            stage.showAndWait();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to open edit dialog");
+            alert.setContentText("Could not load the edit form: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     /**

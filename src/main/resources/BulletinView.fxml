@@ -11,7 +11,7 @@
     <ToolBar>
         <Button onAction="#newPost" text="New note" />
         <Separator />
-        <Button onAction="#handleProfile" text="Handle profile" />
+        <Button onAction="#handleProfile" text="Profile" />
 
         <Separator />
          <Region HBox.hgrow="ALWAYS"/>
