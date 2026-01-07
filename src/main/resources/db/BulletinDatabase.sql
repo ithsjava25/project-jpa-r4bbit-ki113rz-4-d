@@ -23,3 +23,10 @@ create table if not exists posts (
     user_id bigint not null ,
     foreign key (user_id) references user_account(userId) on delete cascade
 );
+
+create table if not exists profile (
+    id bigint auto_increment primary key,
+    bio text,
+    user_id bigint not null unique ,
+    foreign key (user_id) references user_account(userId) on delete cascade
+);
