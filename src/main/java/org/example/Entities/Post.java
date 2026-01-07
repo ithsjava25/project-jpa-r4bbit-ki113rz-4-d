@@ -28,7 +28,7 @@ public class Post {
     @Column (name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne (fetch = FetchType.EAGER, optional = false)
+    @ManyToOne (fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name="user_id", nullable = false)
     private User author;
 

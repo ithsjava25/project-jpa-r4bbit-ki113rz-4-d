@@ -38,6 +38,11 @@
                textAlignment="CENTER"
                wrapText="true" />
 
+            <FlowPane fx:id="categoryPane"
+                      hgap="4"
+                      vgap="4"
+                      alignment="CENTER"/>
+
         <Label fx:id="authorLabel"
                style="-fx-font-size: 10; -fx-text-fill: #555;"/>
 
@@ -54,7 +59,7 @@
           StackPane.alignment="TOP_RIGHT">
 
         <children>
-        <Button text="Show message" />
+        <Button onAction="#handleShow" text="Show message" />
         <Button onAction="#handleUpdate" text="Update post" />
         <Button onAction="#handleDelete" text="Delete post" />
         </children>

@@ -6,17 +6,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import java.time.format.DateTimeFormatter;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.io.IOException;
+import javafx.scene.control.Alert;
+
 
 public class PostItemController {
     @FXML private StackPane root;
@@ -26,6 +30,7 @@ public class PostItemController {
     @FXML private ImageView postItImage;
     @FXML private Label authorLabel;
     @FXML private Label createdAtLabel;
+    @FXML private FlowPane categoryPane;
 
     private Post post;
     private CategoryService categoryService;
@@ -38,6 +43,20 @@ public class PostItemController {
 
         root.setOnMouseEntered(e -> actionBox.setVisible(true));
         root.setOnMouseExited(e -> actionBox.setVisible(false));
+    }
+
+    private void renderCategories() {
+        categoryPane.getChildren().clear();
+        for (Category c : post.getCategories()) {
+            Label tag = new Label(c.getName());
+            tag.setStyle("""
+                    -fx-background-color: rgba(0,0,0,0.1);
+                    -fx-padding: 3 6;
+                    -fx-background-radius: 10;
+                    -fx-font-size: 10;
+                """);
+            categoryPane.getChildren().add(tag);
+        }
     }
 
     public void setPost(Post post) {
@@ -59,6 +78,7 @@ public class PostItemController {
         } else {
             createdAtLabel.setText("");
         }
+        renderCategories();
     }
 
     public void setPostService(PostService postService) {
@@ -92,7 +112,11 @@ public class PostItemController {
             stage.showAndWait();
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to open edit dialog");
+            alert.setContentText("Could not load the edit form: " + e.getMessage());
+            alert.showAndWait();
         }
     }
 
@@ -113,7 +137,23 @@ public class PostItemController {
 
     @FXML
     private void handleShow() {
-        // EJ KLART
-        System.out.println("Show message: " + post.getSubject());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PostView.fxml"));
+            Parent root = loader.load();
+            PostViewController controller = loader.getController();
+            controller.setPost(post);
+
+            Stage stage = new Stage();
+            stage.setTitle("Show post");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root, 800, 800));
+            stage.showAndWait();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to open edit dialog");
+            alert.setContentText("Could not load the edit form: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 }

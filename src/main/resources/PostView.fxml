@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane fx:id="root"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.Controllers.PostViewController"
+            stylesheets="@/css/post-view.css"
+            styleClass="post-view-root">
+
+    <top>
+        <VBox spacing="10"
+              alignment="CENTER"
+              style="-fx-padding: 40 40 20 40;">
+        <Label fx:id="subjectLabel"
+               style="-fx-font-size: 28; -fx-font-weight: bold;"/>
+
+        <Label fx:id="metaLabel"
+               style="-fx-font-size: 13; -fx-text-fill: #555;"/>
+
+        <FlowPane fx:id="categoryPane"
+                  hgap="8"
+                  vgap="8"
+                  alignment="CENTER"/>
+        </VBox>
+    </top>
+
+
+    <center>
+    <ScrollPane fx:id="scrollPane"
+                fitToWidth="true"
+                styleClass="post-scroll">
+        <VBox alignment="TOP_CENTER"
+              style="-fx-padding: 40 60;">
+            <Label fx:id="messageLabel"
+                   wrapText="true"
+                   maxWidth="600"
+                   styleClass="post-message"/>
+        </VBox>
+    </ScrollPane>
+    </center>
+
+    <bottom>
+    <HBox alignment="CENTER" styleClass="post-footer">
+
+        <Button text="Close"
+                onAction="#handleClose"/>
+    </HBox>
+    </bottom>
+</BorderPane>
