@@ -57,13 +57,27 @@
 
     <HBox fx:id="actionBox"
           alignment="TOP_RIGHT"
+          spacing="4"
           visible="false"
-          StackPane.alignment="TOP_RIGHT">
+          StackPane.alignment="TOP_RIGHT"
+          style="-fx-padding: 6;">
 
         <children>
-        <Button onAction="#handleShow" text="Show message" />
-        <Button onAction="#handleUpdate" text="Update post" />
-        <Button onAction="#handleDelete" text="Delete post" />
+        <Button fx:id="editButton"
+                onAction="#handleUpdate"
+                styleClass="icon-button">
+            <graphic>
+                <Label text="✏"/>
+            </graphic>
+        </Button>
+
+        <Button fx:id="deleteButton"
+                onAction="#handleDelete"
+                styleClass="icon-button delete-button">
+            <graphic>
+                <Label text="🗑"/>
+            </graphic>
+        </Button>
         </children>
     </HBox>
     </children>
