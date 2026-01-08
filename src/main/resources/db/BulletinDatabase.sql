@@ -18,11 +18,11 @@ create table if not exists categories (
 
 INSERT IGNORE INTO categories (name)
 VALUES
-    ('Skola'),
-    ('Job'),
-    ('Privat'),
-    ('Viktigt'),
-    ('Övrigt');
+    ('School'),
+    ('Work'),
+    ('Personal'),
+    ('Important'),
+    ('Other');
 
 
 create table if not exists posts (
@@ -73,4 +73,4 @@ INSERT INTO post_categories (post_id, category_id)
 SELECT p.postId, c.categoryId
 FROM posts p, categories c
 WHERE p.subject = 'What else should I get at the store?'
-  AND c.name IN ('Privat');
+  AND c.name IN ('Personal');
