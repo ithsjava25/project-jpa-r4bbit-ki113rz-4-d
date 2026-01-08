@@ -1,35 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox spacing="20"
-      xmlns="http://javafx.com/javafx/21"
+<VBox styleClass="settings-root"
+      xmlns="http://javafx.com/javafx/17.0.12"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.Controllers.SettingsController">
+      fx:controller="org.example.Controllers.SettingsController"
+      spacing="20">
 
-    <!-- TITLE -->
-    <Label text="Profile Information"/>
+    <Label text="Profile Information"
+           styleClass="title"/>
 
-    <!-- INFO GRID -->
-    <GridPane hgap="15" vgap="10">
+    <GridPane hgap="15" vgap="12" styleClass="settings-grid">
+
         <padding>
             <Insets top="10"/>
         </padding>
 
-        <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <Label
-               text="name"
-               GridPane.rowIndex="0"
-               GridPane.columnIndex="1"/>
+        <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
 
-        <Label text="Username:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <Label
-               text="username"
-               GridPane.rowIndex="1"
-               GridPane.columnIndex="1"/>
+        <Label fx:id="nameLabel"
+               GridPane.columnIndex="1"
+               GridPane.rowIndex="0"/>
+
+        <HBox fx:id="nameEditBox"
+              spacing="8"
+              visible="false"
+              GridPane.columnIndex="1"
+              GridPane.rowIndex="0">
+            <TextField fx:id="firstNameField"
+                       promptText="First name"/>
+            <TextField fx:id="lastNameField"
+                       promptText="Last name"/>
+        </HBox>
+
+        <Button text="Edit"
+                onAction="#editName"
+                GridPane.columnIndex="2"
+                GridPane.rowIndex="0"/>
+
+        <Button fx:id="saveNameButton"
+                text="Save"
+                visible="false"
+                onAction="#saveName"
+                GridPane.columnIndex="3"
+                GridPane.rowIndex="0"/>
+
+        <Button fx:id="cancelNameButton"
+                text="Cancel"
+                visible="false"
+                styleClass="secondary"
+                onAction="#cancelNameEdit"
+                GridPane.columnIndex="4"
+                GridPane.rowIndex="0"/>
+
+        <Label text="Username:"
+               GridPane.columnIndex="0"
+               GridPane.rowIndex="1"/>
+
+        <Label fx:id="usernameLabel"
+               GridPane.columnIndex="1"
+               GridPane.rowIndex="1"/>
+
+        <TextField fx:id="usernameTextfield"
+                   promptText="Enter new username"
+                   visible="false"
+                   GridPane.columnIndex="1"
+                   GridPane.rowIndex="1"/>
+
+        <Button text="Edit"
+                onAction="#editUsername"
+                GridPane.columnIndex="2"
+                GridPane.rowIndex="1"/>
+
+        <Button fx:id="saveUsernameButton"
+                text="Save"
+                visible="false"
+                onAction="#saveUsername"
+                GridPane.columnIndex="3"
+                GridPane.rowIndex="1"/>
+
+        <Button fx:id="cancelUsernameButton"
+                text="Cancel"
+                visible="false"
+                styleClass="secondary"
+                onAction="#cancelUsernameEdit"
+                GridPane.columnIndex="4"
+                GridPane.rowIndex="1"/>
+
+        <Label text="Password:"
+               GridPane.columnIndex="0"
+               GridPane.rowIndex="2"/>
+
+        <Button text="Change password"
+                onAction="#changePassword"
+                GridPane.columnIndex="1"
+                GridPane.rowIndex="2"/>
+
+        <Button fx:id="savePasswordButton"
+                text="Save"
+                visible="false"
+                onAction="#savePassword"
+                GridPane.columnIndex="3"
+                GridPane.rowIndex="2"/>
+
+        <Button fx:id="cancelPasswordButton"
+                text="Cancel"
+                visible="false"
+                styleClass="secondary"
+                onAction="#cancelPasswordEdit"
+                GridPane.columnIndex="4"
+                GridPane.rowIndex="2"/>
+
+        <PasswordField fx:id="oldPasswordField"
+                       promptText="Old password"
+                       visible="false"
+                       GridPane.columnIndex="0"
+                       GridPane.rowIndex="3"/>
+
+        <PasswordField fx:id="newPasswordField"
+                       promptText="New password"
+                       visible="false"
+                       GridPane.columnIndex="1"
+                       GridPane.rowIndex="3"/>
+
+        <PasswordField fx:id="confirmPasswordField"
+                       promptText="Confirm password"
+                       visible="false"
+                       GridPane.columnIndex="2"
+                       GridPane.rowIndex="3"/>
+
+        <columnConstraints>
+            <ColumnConstraints minWidth="100"/>
+            <ColumnConstraints minWidth="140"/>
+            <ColumnConstraints minWidth="130"/>
+            <ColumnConstraints minWidth="90"/>
+            <ColumnConstraints minWidth="90"/>
+        </columnConstraints>
+
     </GridPane>
 
 </VBox>
+

@@ -10,7 +10,9 @@
            xmlns="http://javafx.com/javafx/17.0.12"
            xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="org.example.Controllers.PostItemController"
-           focusTraversable="true">
+           focusTraversable="true"
+           prefWidth="200"
+           prefHeight="200">
 
 
     <children>
@@ -31,24 +33,51 @@
                style="-fx-font-weight: bold; -fx-font-size: 14; -fx-text-fill: #2c3e50;"
                text="Subject"
                wrapText="true" />
+
         <Label fx:id="messageLabel"
                style="-fx-font-size: 12; -fx-text-fill: #34495e;"
                text="Message..."
                textAlignment="CENTER"
                wrapText="true" />
+
+            <FlowPane fx:id="categoryPane"
+                      hgap="4"
+                      vgap="4"
+                      alignment="CENTER"/>
+
+        <Label fx:id="authorLabel"
+               style="-fx-font-size: 10; -fx-text-fill: #555;"/>
+
+        <Label fx:id="createdAtLabel"
+               style="-fx-font-size: 10; -fx-text-fill: #777;"/>
+
         </children>
 
     </VBox>
 
     <HBox fx:id="actionBox"
           alignment="TOP_RIGHT"
+          spacing="4"
           visible="false"
-          StackPane.alignment="TOP_RIGHT">
+          StackPane.alignment="TOP_RIGHT"
+          style="-fx-padding: 6;">
 
         <children>
-        <Button text="Show message" />
-        <Button onAction="#handleUpdate" text="Update post" />
-        <Button onAction="#handleDelete" text="Delete post" />
+        <Button fx:id="editButton"
+                onAction="#handleUpdate"
+                styleClass="icon-button">
+            <graphic>
+                <Label text="✏"/>
+            </graphic>
+        </Button>
+
+        <Button fx:id="deleteButton"
+                onAction="#handleDelete"
+                styleClass="icon-button delete-button">
+            <graphic>
+                <Label text="🗑"/>
+            </graphic>
+        </Button>
         </children>
     </HBox>
     </children>

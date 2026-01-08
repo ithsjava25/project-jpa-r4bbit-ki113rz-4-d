@@ -71,6 +71,7 @@ public class ProfileController {
         this.app = app;
         this.userService = userService;
         this.postService = postService;
+        this.categoryService = categoryService;
         showMyPosts();
     }
     public void testMethod() {
@@ -113,11 +114,12 @@ public class ProfileController {
     public void showMyPosts() {
         try {
             FXMLLoader loader =
-                new FXMLLoader(getClass().getResource("/myPosts.fxml"));
+                new FXMLLoader(getClass().getResource("/myNotes.fxml"));
             Parent myPostsView = loader.load();
 
             MyPostsController controller = loader.getController();
             controller.setPostService(postService);
+            controller.setCategoryService(categoryService);
             controller.loadMyPosts();
             contentPane.setCenter(myPostsView);
 
@@ -134,6 +136,7 @@ public class ProfileController {
 
             SettingsController controller = loader.getController();
             controller.loadSettings();
+            controller.setUserService(userService);
             contentPane.setCenter(settingsView);
 
         } catch (IOException e) {

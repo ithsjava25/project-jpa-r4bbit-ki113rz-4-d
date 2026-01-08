@@ -92,6 +92,7 @@ public class Controller {
             PostItemController controller = loader.getController();
             controller.setPost(post);
             controller.setPostService(postService);
+            controller.setCategoryService(categoryService);
             controller.setOnPostChanged(() -> {
                 try {
                     loadPosts();
@@ -144,15 +145,6 @@ public class Controller {
 
     public void handleProfile() {
         app.showProfile();
-//        UserSession
-//            .getCurrentUser()
-//            .map(User::getProfile)
-//            .map(Profile::getBio)
-//            .ifPresentOrElse(
-//                System.out::println,
-//                () -> System.out.println("No profile found!")
-//            );
-//        System.out.println();
     }
 
     @FXML

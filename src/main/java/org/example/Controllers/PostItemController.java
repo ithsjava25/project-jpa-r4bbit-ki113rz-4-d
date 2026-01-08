@@ -1,26 +1,44 @@
 package org.example.Controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
+import java.time.format.DateTimeFormatter;
+
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import org.example.Entities.Category;
 import org.example.Entities.Post;
+import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
+import java.io.IOException;
+import javafx.scene.control.Alert;
+
 
 public class PostItemController {
-
+    @FXML private StackPane root;
     @FXML private HBox actionBox;
     @FXML private Label subjectLabel;
     @FXML private Label messageLabel;
-    @FXML private StackPane root;
     @FXML private ImageView postItImage;
+    @FXML private Label authorLabel;
+    @FXML private Label createdAtLabel;
+    @FXML private FlowPane categoryPane;
+    @FXML private Button editButton;
+    @FXML private Button deleteButton;
 
     private Post post;
+    private CategoryService categoryService;
     private PostService postService;
     private Runnable onPostChanged;
 
@@ -28,53 +46,132 @@ public class PostItemController {
     @FXML void initialize() {
         actionBox.setVisible(false);
 
-        root.setOnMouseEntered(event -> actionBox.setVisible(true));
-        root.setOnMouseExited(event -> actionBox.setVisible(false));
+        root.setOnMouseEntered(e -> actionBox.setVisible(true));
+        root.setOnMouseExited(e -> actionBox.setVisible(false));
 
-        root.setFocusTraversable(true);
-        root.setOnMouseClicked(event -> root.requestFocus());
+        Tooltip.install(editButton, new Tooltip("Update Post"));
+        Tooltip.install(deleteButton, new Tooltip("Delete Post"));
 
-        root.setOnKeyPressed((KeyEvent event) -> {
-            if (event.getCode() == KeyCode.DELETE) {
-                handleDelete();
-                event.consume();
+        Tooltip editTip = new Tooltip("Update Post");
+        Tooltip deleteTip = new Tooltip("Delete Post");
+
+        root.setOnMouseClicked(e-> {
+            if (e.getTarget() instanceof Button) {
+                return;
             }
+        handleShow();
         });
     }
+
+    private void renderCategories() {
+        categoryPane.getChildren().clear();
+        for (Category c : post.getCategories()) {
+            Label tag = new Label(c.getName());
+            tag.setStyle("""
+                    -fx-background-color: rgba(0,0,0,0.1);
+                    -fx-padding: 3 6;
+                    -fx-background-radius: 10;
+                    -fx-font-size: 10;
+                """);
+            categoryPane.getChildren().add(tag);
+        }
+    }
+
     public void setPost(Post post) {
         this.post = post;
         subjectLabel.setText(post.getSubject());
         messageLabel.setText(post.getMessage());
 
-        String colorPath = post.getPostItColor();
-        if (colorPath == null || colorPath.isBlank()) {
-            colorPath = "/Images/PostIt_Blue.jpg";
+        postItImage.setImage(new Image(post.getPostItColor()));
+
+        if (post.getAuthor() != null) {
+            authorLabel.setText("Author: " + post.getAuthor().getUsername());
+        } else {
+            authorLabel.setText("");
         }
-        postItImage.setImage(new Image(colorPath));
+        if (post.getCreatedAt() != null) {
+            DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            createdAtLabel.setText(post.getCreatedAt().format(formatter));
+        } else {
+            createdAtLabel.setText("");
+        }
+        renderCategories();
     }
+
     public void setPostService(PostService postService) {
         this.postService = postService;
     }
+
+    public void setCategoryService(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
+
     public void setOnPostChanged(Runnable onPostChanged) {
         this.onPostChanged = onPostChanged;
     }
 
+    // ==== Button handlers ====
     @FXML public void handleUpdate() {
-        System.out.println("Update post");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/NewNote.fxml"));
+            Parent root = loader.load();
+
+            NewNoteController controller = loader.getController();
+            controller.setPostService(postService);
+            controller.setCategoryService(categoryService);
+            controller.setPostToEdit(post);
+            controller.setOnPostSaved(onPostChanged);
+
+            Stage stage = new Stage();
+            stage.setTitle("Update post");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to open edit dialog");
+            alert.setContentText("Could not load the edit form: " + e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     @FXML public void handleDelete() {
         //Ta bort post-it från databas
         if (postService != null && post != null) {
             postService.deletePost(post);
+            System.out.println("Post deleted!");
+        }
+        if (onPostChanged != null) {
+            onPostChanged.run();
         }
         //Ta bort post-it från GUI
         if (root.getParent() instanceof Pane parent) {
             parent.getChildren().remove(root);
         }
-        if (onPostChanged != null) {
-            onPostChanged.run();
+    }
+
+    @FXML
+    private void handleShow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/PostView.fxml"));
+            Parent root = loader.load();
+            PostViewController controller = loader.getController();
+            controller.setPost(post);
+
+            Stage stage = new Stage();
+            stage.setTitle("Show post");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root, 800, 800));
+            stage.showAndWait();
+        } catch (IOException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to open edit dialog");
+            alert.setContentText("Could not load the edit form: " + e.getMessage());
+            alert.showAndWait();
         }
-        System.out.println("Post deleted!");
     }
 }

@@ -92,7 +92,7 @@ public class Post {
         this.author = author;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "post_categories",
         joinColumns = @JoinColumn (name = "post_id"),

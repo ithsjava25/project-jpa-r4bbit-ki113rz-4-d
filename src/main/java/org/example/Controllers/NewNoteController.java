@@ -3,13 +3,13 @@ package org.example.Controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.UserSession;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,16 +19,17 @@ public class NewNoteController {
     @FXML private TextField subjectField;
     @FXML private TextArea messageArea;
     @FXML private MenuButton categoryMenu;
-
-    private final Map<Long, CheckMenuItem> categoryItems = new HashMap<>();
+    @FXML private Button saveButton;
+    @FXML private Label charCountLabel;
 
     private PostService postService;
     private Runnable onPostSaved;
     private CategoryService categoryService;
+    private Post postToEdit;
+    private boolean categoriesLoaded = false;
+    private static final int MAX_LENGHT = 255;
 
-    public void initialize(){
-        loadCategories();
-    }
+    private final Map<Long, CheckMenuItem> categoryItems = new HashMap<>();
 
     public void setPostService(PostService postService) {
         this.postService = postService;
@@ -37,12 +38,18 @@ public class NewNoteController {
     public void setCategoryService(CategoryService categoryService) {
         this.categoryService = categoryService;
         loadCategories();
+        categoriesLoaded = true;
+
+        if (postToEdit != null) {
+            selectPostCategories();
+        }
     }
 
     public void setOnPostSaved(Runnable onPostSaved) {
         this.onPostSaved = onPostSaved;
     }
 
+//===LOAD CATEGORIES===
     private void loadCategories() {
         if (categoryService==null || categoryMenu == null)  return;
 
@@ -51,23 +58,64 @@ public class NewNoteController {
 
         for (Category c : categoryService.getAllCategories()) {
             CheckMenuItem item = new CheckMenuItem(c.getName());
+            item.setOnAction(e -> updateMenuText());
+
             categoryMenu.getItems().add(item);
             categoryItems.put(c.getCategoryId(), item);
         }
+        updateMenuText();
     }
 
+    private void selectPostCategories() {
+        if (postToEdit == null) return;
 
-//Save new note
+        for (Category c : postToEdit.getCategories()) {
+            CheckMenuItem item = categoryItems.get(c.getCategoryId());
+            if (item != null) {
+                item.setSelected(true);
+            }
+        }
+        updateMenuText();
+    }
+
+    private void updateMenuText() {
+        List <String> selected = categoryItems.values().stream()
+            .filter(CheckMenuItem::isSelected)
+            .map(CheckMenuItem::getText)
+            .toList();
+
+        if (selected.isEmpty()) {
+            categoryMenu.setText("Category..");
+        } else {
+            categoryMenu.setText(String.join(", ", selected));
+        }
+    }
+
+// ===EDIT-MODE===
+    public void setPostToEdit(Post post){
+        this.postToEdit = post;
+
+        subjectField.setText(post.getSubject());
+        messageArea.setText(post.getMessage());
+
+        if (categoriesLoaded) {
+            selectPostCategories();
+        }
+    }
+
+// ===Save===
     @FXML
     private void handleSave() {
         String subject = subjectField.getText();
         String message = messageArea.getText();
 
-        User author = UserSession.getCurrentUser()
-            .orElseThrow(() -> new IllegalStateException("No user logged in"));
-
         if (subject == null || subject.isBlank()
             || message == null || message.isBlank()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Missing required fields");
+            alert.setContentText("Please enter both subject and message.");
+            alert.showAndWait();
             return;
         }
 
@@ -76,16 +124,38 @@ public class NewNoteController {
             .map(Map.Entry::getKey)
             .toList();
 
-        if (categoryIds.isEmpty())
+        if (categoryIds.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("No category selected");
+            alert.setContentText("Please select at least one category.");
+            alert.showAndWait();
             return;
+        }
 
-        //Save through service
-        postService.createPost(subject, message, categoryIds, author);
+        //Update existing post
+        if (postToEdit != null) {
+            postService.updatePost(
+                postToEdit,
+                subject,
+                message,
+                categoryIds);
+        }
+        //Create new post
+        else {
+            User author = UserSession.getCurrentUser()
+                .orElseThrow(() -> new IllegalStateException("No user logged in"));
 
+                postService.createPost(
+                    subject,
+                    message,
+                    categoryIds,
+                    author
+                );
+            }
         if (onPostSaved != null) {
             onPostSaved.run();
         }
-
         closeWindow();
     }
 
@@ -98,5 +168,20 @@ public class NewNoteController {
     public void closeWindow() {
         Stage stage = (Stage) subjectField.getScene().getWindow();
         stage.close();
+    }
+    @FXML
+    public void initialize(){
+        messageArea.setWrapText(true);
+
+        messageArea.setTextFormatter(new TextFormatter<String>(change -> {
+            if (change.getControlNewText().length() <= MAX_LENGHT){
+                return change;
+            }
+            return null;
+        }));
+
+        messageArea.textProperty().addListener((obs, oldText, newText) -> {
+            charCountLabel.setText(newText.length() + " / " + MAX_LENGHT);
+        });
     }
 }
