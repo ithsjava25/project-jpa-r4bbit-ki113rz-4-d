@@ -21,3 +21,19 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
+
+.icon-button {
+    -fx-background-color: transparent;
+    -fx-border-width: transparent;
+    -fx-padding: 4;
+    -fx-cursor: hand;
+}
+
+.icon-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.08);
+    -fx-background-radius: 6;
+}
+
+.delete-button:hover {
+    -fx-background-color: rgba(231, 76, 60, 0.15);
+}

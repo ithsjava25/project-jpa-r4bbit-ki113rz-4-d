@@ -4,8 +4,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import java.time.format.DateTimeFormatter;
+
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -31,6 +34,8 @@ public class PostItemController {
     @FXML private Label authorLabel;
     @FXML private Label createdAtLabel;
     @FXML private FlowPane categoryPane;
+    @FXML private Button editButton;
+    @FXML private Button deleteButton;
 
     private Post post;
     private CategoryService categoryService;
@@ -43,6 +48,19 @@ public class PostItemController {
 
         root.setOnMouseEntered(e -> actionBox.setVisible(true));
         root.setOnMouseExited(e -> actionBox.setVisible(false));
+
+        Tooltip.install(editButton, new Tooltip("Update Post"));
+        Tooltip.install(deleteButton, new Tooltip("Delete Post"));
+
+        Tooltip editTip = new Tooltip("Update Post");
+        Tooltip deleteTip = new Tooltip("Delete Post");
+
+        root.setOnMouseClicked(e-> {
+            if (e.getTarget() instanceof Button) {
+                return;
+            }
+        handleShow();
+        });
     }
 
     private void renderCategories() {
