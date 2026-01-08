@@ -1,3 +1,5 @@
+drop database bulletin_demo;
+
 create database if not exists bulletin_demo;
 use bulletin_demo;
 
@@ -38,3 +40,18 @@ create table if not exists post_categories (
     foreign key (post_id) references posts(postId) on DELETE cascade ,
     foreign key (category_id) references categories(categoryId) on DELETE cascade
 );
+
+insert ignore into user_account (first_name, last_name, username, password)
+VALUES
+    ('Fiona', 'Fribe', 'FiffenBiffen' , '123123'),
+    ('Sandra' , 'Nelj' , 'Sandra' , 'sandra'),
+    ('Daniel' , 'Mart' , 'Daniel' , 'daniel'),
+    ('Edvin' , 'Karl' , 'Edvin' , 'edvin'),
+    ('Ulf' , 'Bilt' , 'Cool_Ulf' , 'ulf'),
+    ('Martin' , 'Blom' , 'JavaKiiingMartin' , 'martin'),
+    ('Amy' , 'Deasi' , 'DiamantAmy' , 'amy'),
+    ('Drew' , 'Good' , 'VineLord' , 'drew'),
+    ('Rick' , 'Astley' , 'rickroller' , 'rick'),
+    ('Skal' , 'Man' , 'Skalman', 'skalman'),
+    ('Steve' , 'Minecraft' , 'CreeperDestroyer' , 'steve')
+;

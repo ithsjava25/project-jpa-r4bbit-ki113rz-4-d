@@ -51,10 +51,10 @@ public class App extends Application {
 
         //Creates a connection config with database
         final PersistenceConfiguration cfg = new HibernatePersistenceConfiguration("emf")
-            .jdbcUrl("jdbc:mysql://localhost:3306/bulletin")
+            .jdbcUrl("jdbc:mysql://localhost:3306/bulletin_demo")
             .jdbcUsername("root")
             .jdbcPassword("root")
-            .property("hibernate.hbm2ddl.auto", "update")
+            .property("hibernate.hbm2ddl.auto", "validate")
             .property("hibernate.show_sql", "true")
             .property("hibernate.format_sql", "true")
             .property("hibernate.highlight_sql", "true")
