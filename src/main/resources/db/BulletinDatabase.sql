@@ -16,6 +16,15 @@ create table if not exists categories (
     name varchar(255) not null unique
 );
 
+INSERT IGNORE INTO categories (name)
+VALUES
+    ('Skola'),
+    ('Job'),
+    ('Privat'),
+    ('Viktigt'),
+    ('Övrigt');
+
+
 create table if not exists posts (
     postId bigint auto_increment primary key ,
     postit_color varchar(255) not null ,
@@ -55,3 +64,13 @@ VALUES
     ('Skal' , 'Man' , 'Skalman', 'skalman'),
     ('Steve' , 'Minecraft' , 'CreeperDestroyer' , 'steve')
 ;
+INSERT INTO posts (postit_color, subject, message, created_at, user_id)
+VALUES ('/Images/PostIt_Blue.jpg', 'What else should I get at the store?',
+        'I already put this on my list, please send a fax with additional items you would like.\nCoffee, Milk, PS5 \n// Fiona',
+        NOW(), 1);
+
+INSERT INTO post_categories (post_id, category_id)
+SELECT p.postId, c.categoryId
+FROM posts p, categories c
+WHERE p.subject = 'What else should I get at the store?'
+  AND c.name IN ('Privat');
