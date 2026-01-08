@@ -42,10 +42,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void seedDefaultCategories() {
-        createCategory("Skola");
-        createCategory("Job");
-        createCategory("Privat");
-        createCategory("Viktigt");
-        createCategory("Övrigt");
+        createCategory("School");
+        createCategory("Work");
+        createCategory("Personal");
+        createCategory("Important");
+        createCategory("Other");
     }
 }
