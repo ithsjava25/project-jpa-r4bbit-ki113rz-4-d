@@ -1,8 +1,5 @@
 .post-view-root {
-    -fx-background-image: url("/Images/PostIt_Blue.jpg");
-    -fx-background-size: contain;
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center;
+    -fx-background-color: transparent;
 }
 
     .post-view-header,
@@ -11,8 +8,10 @@
         -fx-background-color: transparent;
     }
 
-    .post-scroll > .viewport {
-        -fx-background-color: transparent;
+    .post-scroll,
+    .post-scroll > .viewport,
+    .post-scroll .content {
+    -fx-background-color: transparent;
     }
 
     .post-title {
