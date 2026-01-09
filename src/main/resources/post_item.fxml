@@ -22,7 +22,7 @@
                preserveRatio="true"/>
 
 
-    <VBox alignment="CENTER"
+    <VBox alignment="TOP_CENTER"
           prefHeight="158.0"
           prefWidth="205.0"
           spacing="5.0"
