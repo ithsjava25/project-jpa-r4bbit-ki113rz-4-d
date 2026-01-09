@@ -4,6 +4,10 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="root"
+            prefWidth="800"
+            prefHeight="800"
+            maxWidth="Infinity"
+            maxHeight="Infinity"
             xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.Controllers.PostViewController"
@@ -27,19 +31,22 @@
         </VBox>
     </top>
 
-
     <center>
-    <ScrollPane fx:id="scrollPane"
-                fitToWidth="true"
-                styleClass="post-scroll">
-        <VBox alignment="TOP_CENTER"
-              style="-fx-padding: 40 60;">
-            <Label fx:id="messageLabel"
-                   wrapText="true"
-                   maxWidth="600"
-                   styleClass="post-message"/>
-        </VBox>
-    </ScrollPane>
+        <ScrollPane fx:id="scrollPane"
+                    fitToWidth="true"
+                    style="-fx-background-color: transparent;"
+                    styleClass="post-scroll">
+
+            <VBox alignment="TOP_CENTER"
+                  style="-fx-background-color: transparent; -fx-padding: 140 120 120 120;">
+
+                <Label fx:id="messageLabel"
+                       wrapText="true"
+                       maxWidth="500"
+                       styleClass="post-message"/>
+            </VBox>
+
+        </ScrollPane>
     </center>
 
     <bottom>

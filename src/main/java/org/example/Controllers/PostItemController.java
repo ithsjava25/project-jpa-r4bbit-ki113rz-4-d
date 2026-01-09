@@ -49,6 +49,7 @@ public class PostItemController {
         root.setOnMouseEntered(e -> actionBox.setVisible(true));
         root.setOnMouseExited(e -> actionBox.setVisible(false));
 
+
         Tooltip.install(editButton, new Tooltip("Update Post"));
         Tooltip.install(deleteButton, new Tooltip("Delete Post"));
 
@@ -158,19 +159,25 @@ public class PostItemController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/PostView.fxml"));
             Parent root = loader.load();
+
             PostViewController controller = loader.getController();
             controller.setPost(post);
 
             Stage stage = new Stage();
             stage.setTitle("Show post");
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(root, 800, 800));
+
+            Scene scene = new Scene(root, 800, 800);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+
+            stage.setScene(scene);
             stage.showAndWait();
+
         } catch (IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Failed to open edit dialog");
-            alert.setContentText("Could not load the edit form: " + e.getMessage());
+            alert.setHeaderText("Failed to open show dialog");
+            alert.setContentText("Could not load the post view: " + e.getMessage());
             alert.showAndWait();
         }
     }
