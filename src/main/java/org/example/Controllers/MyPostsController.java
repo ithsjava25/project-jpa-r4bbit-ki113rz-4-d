@@ -85,20 +85,27 @@ public class MyPostsController {
         message.setWrapText(true);
 
         VBox textBox = new VBox(4, subject, message);
+        textBox.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(textBox, Priority.ALWAYS);
 
-        Button showPostButton = new Button("Show post");
+        Button showPostButton = new Button("Show");
+        showPostButton.setMinWidth(80);
+        showPostButton.setPrefWidth(80);
         showPostButton.setOnAction(e -> {
             handleShowPostButton(post);
         });
 
-        Button updateButton = new Button("Edit post");
+        Button updateButton = new Button("Edit");
+        updateButton.setMinWidth(80);
+        updateButton.setPrefWidth(80);
         updateButton.setOnAction(e -> {
             handleUpdateButton(post);
         });
 
         Button deleteButton = new Button("Delete");
         deleteButton.setStyle("-fx-text-fill: darkred;");
+        deleteButton.setMinWidth(80);
+        deleteButton.setPrefWidth(80);
         deleteButton.setOnAction(e -> {
             handleDeleteButton(post);
         });

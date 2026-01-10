@@ -75,7 +75,7 @@ public class ProfileController {
         this.categoryService = categoryService;
         showMyPosts();
     }
-    public void testMethod() {
+    public void showBoard() {
         App app = App.getAppInstance();
         app.showBoard();
     }
@@ -137,7 +137,7 @@ public class ProfileController {
 
             SettingsController controller = loader.getController();
             controller.loadSettings();
-            controller.setUserService(userService);
+            controller.setUserService(userService, app);
             contentPane.setCenter(settingsView);
 
         } catch (IOException e) {
