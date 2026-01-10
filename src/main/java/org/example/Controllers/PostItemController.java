@@ -4,11 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+
 import java.time.format.DateTimeFormatter;
 
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -17,12 +16,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
+import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.example.UserSession;
+
 import java.io.IOException;
-import javafx.scene.control.Alert;
+import java.util.Optional;
 
 
 public class PostItemController {
@@ -114,6 +116,9 @@ public class PostItemController {
 
     // ==== Button handlers ====
     @FXML public void handleUpdate() {
+        if(!isCurrentUser(post)){
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/NewNote.fxml"));
             Parent root = loader.load();
@@ -141,7 +146,19 @@ public class PostItemController {
 
     @FXML public void handleDelete() {
         //Ta bort post-it från databas
-        if (postService != null && post != null) {
+
+        if(!isCurrentUser(post)){
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete post");
+        confirm.setHeaderText("Are you sure?");
+        confirm.setContentText("This post will be permanently deleted.");
+
+        Optional<ButtonType> result = confirm.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK && postService != null && post != null) {
             postService.deletePost(post);
             System.out.println("Post deleted!");
         }
@@ -180,5 +197,18 @@ public class PostItemController {
             alert.setContentText("Could not load the post view: " + e.getMessage());
             alert.showAndWait();
         }
+    }
+
+    public boolean isCurrentUser(Post post) {
+        User currentUser = UserSession.getCurrentUser().orElseThrow();
+        if(!post.getAuthor().getUserId().equals(currentUser.getUserId())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Wrong user");
+            alert.setHeaderText("Not your post!");
+            alert.setContentText("You do not have permission to do that!");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
     }
 }
