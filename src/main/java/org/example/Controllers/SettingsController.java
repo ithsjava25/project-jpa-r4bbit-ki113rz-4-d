@@ -2,14 +2,14 @@ package org.example.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import org.example.App;
 import org.example.Entities.User;
 import org.example.Services.UserService;
 import org.example.UserSession;
+
+import java.util.Optional;
 
 /**
  * This class handles the settings view in the profile
@@ -46,6 +46,7 @@ public class SettingsController {
     @FXML
     private Label usernameLabel;
     private UserService userService;
+    private App app;
 
     private String originalUsername;
 
@@ -68,8 +69,9 @@ public class SettingsController {
      * Injects userService instance
      * @param userService
      */
-    public void setUserService(UserService userService){
+    public void setUserService(UserService userService, App app){
         this.userService = userService;
+        this.app = app;
     }
 
     /**
@@ -274,6 +276,19 @@ public class SettingsController {
     }
 
     public void handleDeleteAccount() {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete post");
+        confirm.setHeaderText("Are you sure?");
+        confirm.setContentText("Your account and all your posts will be permanently deleted.");
+
+        Optional<ButtonType> result = confirm.showAndWait();
+        User user = UserSession.getCurrentUser().orElseThrow();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            userService.deleteUser(user.getUserId());
+            System.out.println("User deleted successfully");
+            app.logout();
+        }
 
     }
 }

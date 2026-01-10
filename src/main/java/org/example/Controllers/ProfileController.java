@@ -137,7 +137,7 @@ public class ProfileController {
 
             SettingsController controller = loader.getController();
             controller.loadSettings();
-            controller.setUserService(userService);
+            controller.setUserService(userService, app);
             contentPane.setCenter(settingsView);
 
         } catch (IOException e) {
