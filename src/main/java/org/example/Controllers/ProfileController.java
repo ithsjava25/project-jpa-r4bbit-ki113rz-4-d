@@ -75,7 +75,7 @@ public class ProfileController {
         this.categoryService = categoryService;
         showMyPosts();
     }
-    public void testMethod() {
+    public void showBoard() {
         App app = App.getAppInstance();
         app.showBoard();
     }
