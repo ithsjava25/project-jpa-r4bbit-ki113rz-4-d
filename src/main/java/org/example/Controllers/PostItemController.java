@@ -16,10 +16,13 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
+import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.example.UserSession;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -113,6 +116,9 @@ public class PostItemController {
 
     // ==== Button handlers ====
     @FXML public void handleUpdate() {
+        if(!isCurrentUser(post)){
+            return;
+        }
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/NewNote.fxml"));
             Parent root = loader.load();
@@ -140,6 +146,11 @@ public class PostItemController {
 
     @FXML public void handleDelete() {
         //Ta bort post-it från databas
+
+        if(!isCurrentUser(post)){
+            return;
+        }
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Delete post");
         confirm.setHeaderText("Are you sure?");
@@ -186,5 +197,18 @@ public class PostItemController {
             alert.setContentText("Could not load the post view: " + e.getMessage());
             alert.showAndWait();
         }
+    }
+
+    public boolean isCurrentUser(Post post) {
+        User currentUser = UserSession.getCurrentUser().orElseThrow();
+        if(!post.getAuthor().getUserId().equals(currentUser.getUserId())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Wrong user");
+            alert.setHeaderText("Not your post!");
+            alert.setContentText("You do not have permission to do that!");
+            alert.showAndWait();
+            return false;
+        }
+        return true;
     }
 }
