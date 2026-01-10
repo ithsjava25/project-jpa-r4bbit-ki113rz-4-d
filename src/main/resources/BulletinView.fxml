@@ -21,11 +21,12 @@
 
 <!--Center Board-->
     <center>
-        <VBox>
+        <VBox VBox.vgrow="ALWAYS">
             <padding>
-                <Insets right="10" bottom="23" left="60"/>
+                <Insets right="10" bottom="23" left="80"/>
             </padding>
-            <ScrollPane fitToWidth="true" pannable="true" style="-fx-background-color: transparent;">
+
+            <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
                 <FlowPane fx:id="postContainer" hgap="20" prefWidth="440.0" vgap="20">
                     <padding>
                         <Insets bottom="20.0" right="20.0" top="20.0" />
