@@ -28,8 +28,6 @@
                 <VBox prefWidth="220" spacing="10" styleClass="profile-menu">
                     <Button text="My Notes" onAction="#showMyPosts" />
                     <Button text="Settings" onAction="#showSettings"/>
-                    <Button text="Menu 3" />
-
                     <Button onAction="#showBoard"
                             text="View Bulletin" />
 
