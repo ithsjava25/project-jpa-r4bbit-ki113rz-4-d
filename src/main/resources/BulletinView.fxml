@@ -14,7 +14,7 @@
         <Button onAction="#handleProfile" text="Profile" />
 
         <Separator />
-         <Region HBox.hgrow="ALWAYS"/>
+         <Region HBox.hgrow="ALWAYS" />
         <Button onAction="#logout" text="Logout" />
     </ToolBar>
 </top>
@@ -22,7 +22,7 @@
 <!--Center Board-->
 <center>
 <ScrollPane fitToWidth="true" pannable="true" style="-fx-background-color: transparent;">
-<FlowPane fx:id="postContainer" hgap="20" vgap="20">
+<FlowPane fx:id="postContainer" hgap="20" prefWidth="440.0" vgap="20">
           <padding>
               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
           </padding>

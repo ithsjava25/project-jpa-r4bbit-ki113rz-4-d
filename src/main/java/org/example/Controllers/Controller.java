@@ -23,8 +23,12 @@ import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.Services.UserService;
-import org.example.UserSession;
-
+import javafx.animation.FadeTransition;
+import javafx.animation.TranslateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.Interpolator;
+import javafx.util.Duration;
 import java.io.IOException;
 import java.util.List;
 
@@ -101,6 +105,7 @@ public class Controller {
                 }
             });
             postContainer.getChildren().add(postNode);
+            animatePostIn(postNode);
         }
     }
 
@@ -157,5 +162,29 @@ public class Controller {
             app.logout();
         }
 
+    }
+
+    private void animatePostIn(Node node) {
+        node.setOpacity(0);
+        node.setTranslateY(-40);
+        node.setScaleX(0.95);
+        node.setScaleY(0.95);
+
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(250), node);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        TranslateTransition slideIn = new TranslateTransition(Duration.millis(350), node);
+        slideIn.setFromY(-40);
+        slideIn.setToY(0);
+        slideIn.setInterpolator(Interpolator.EASE_OUT);
+
+        ScaleTransition scale = new ScaleTransition(Duration.millis(250), node);
+        scale.setFromX(0.95);
+        scale.setFromY(0.95);
+        scale.setToX(1);
+        scale.setToY(1);
+
+        new ParallelTransition(fadeIn, slideIn, scale).play();
     }
 }

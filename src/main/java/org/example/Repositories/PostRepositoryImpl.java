@@ -85,9 +85,27 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> findAll() {
         return EntityManagerFactoryWrapper.callInTransaction(emf, em ->
-            em.createQuery("SELECT p FROM Post p JOIN FETCH p.author ORDER BY p.createdAt DESC", Post.class)
+            em.createQuery("SELECT DISTINCT p " +
+                    "FROM Post p " +
+                    "LEFT JOIN FETCH p.author " +
+                    "LEFT JOIN FETCH p.categories " +
+                    "ORDER BY p.createdAt DESC", Post.class)
                 .getResultList()
         );
+    }
+    @Override
+    public Post findByIdWithAuthorAndCategories(long id) {
+        return EntityManagerFactoryWrapper.callInTransaction(emf, em ->
+            em.createQuery("""
+            select p
+            FROM Post p
+            LEFT JOIN FETCH p.author
+            LEFT JOIN FETCH p.categories
+            LEFT JOIN FETCH p.updatedBy
+            WHERE p.postId = :id
+        """, Post.class)
+                .setParameter("id", id)
+                .getSingleResult());
     }
 
     @Override

@@ -132,6 +132,8 @@ public class NewNoteController {
             alert.showAndWait();
             return;
         }
+        User currentUser = UserSession.getCurrentUser()
+            .orElseThrow(()->new IllegalStateException("No user logged in!"));
 
         //Update existing post
         if (postToEdit != null) {
@@ -139,7 +141,8 @@ public class NewNoteController {
                 postToEdit,
                 subject,
                 message,
-                categoryIds);
+                categoryIds,
+                currentUser);
         }
         //Create new post
         else {
@@ -150,8 +153,7 @@ public class NewNoteController {
                     subject,
                     message,
                     categoryIds,
-                    author
-                );
+                    currentUser);
             }
         if (onPostSaved != null) {
             onPostSaved.run();
