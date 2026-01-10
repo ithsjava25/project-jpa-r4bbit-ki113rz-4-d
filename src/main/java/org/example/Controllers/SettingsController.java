@@ -1,5 +1,6 @@
 package org.example.Controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -270,5 +271,9 @@ public class SettingsController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void handleDeleteAccount() {
+
     }
 }

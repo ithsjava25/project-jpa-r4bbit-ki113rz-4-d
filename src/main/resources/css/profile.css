@@ -166,3 +166,35 @@
     -fx-border-color: #6b8e23;
     -fx-border-width: 2;
 }
+
+.delete-account-button {
+    -fx-background-color: #b22222;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(178, 34, 34, 0.35),
+        8, 0, 0, 2
+    );
+}
+
+.delete-account-button:hover {
+    -fx-background-color: #8b0000;
+}
+
+
+.delete-account-button:pressed {
+    -fx-background-color: #5c0000;
+}
+
+.delete-account-button:disabled {
+    -fx-background-color: #caa;
+    -fx-text-fill: #eee;
+}
