@@ -20,13 +20,19 @@
 </top>
 
 <!--Center Board-->
-<center>
-<ScrollPane fitToWidth="true" pannable="true" style="-fx-background-color: transparent;">
-<FlowPane fx:id="postContainer" hgap="20" prefWidth="440.0" vgap="20">
-          <padding>
-              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-          </padding>
-        </FlowPane>
-        </ScrollPane>
+    <center>
+        <VBox VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets right="10" bottom="23" left="80"/>
+            </padding>
+
+            <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+                <FlowPane fx:id="postContainer" hgap="20" prefWidth="440.0" vgap="20">
+                    <padding>
+                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                    </padding>
+                </FlowPane>
+            </ScrollPane>
+        </VBox>
     </center>
 </BorderPane>
