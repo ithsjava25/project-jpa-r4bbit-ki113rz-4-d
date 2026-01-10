@@ -1,6 +1,6 @@
 .root {
-    -fx-background-image: url("/images/Background.jpeg");
-    -fx-background-size: cover;
+    -fx-background-image: url("/images/board.jpg");
+    -fx-background-size: 98% 98%;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
 }
@@ -16,6 +16,14 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10,0,0,10);
 }
 
+.updated-tag {
+    -fx-background-color: #f39c12;
+    -fx-text-fill: white;
+    -fx-font-size: 9;
+    -fx-padding: 2 6;
+    -fx-background-radius: 8;
+}
+
 /* Hover animation */
 .post-it:hover {
     -fx-scale-x: 1.05;
@@ -24,7 +32,6 @@
 
 .icon-button {
     -fx-background-color: transparent;
-    -fx-border-width: transparent;
     -fx-padding: 4;
     -fx-cursor: hand;
 }

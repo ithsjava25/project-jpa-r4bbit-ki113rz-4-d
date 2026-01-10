@@ -31,8 +31,11 @@ create table if not exists posts (
     subject varchar(255) not null ,
     message varchar(255) not null ,
     created_at datetime not null ,
+    updated_at datetime null default null,
     user_id bigint not null ,
-    foreign key (user_id) references user_account(userId) on delete cascade
+    updated_by bigint null ,
+    foreign key (user_id) references user_account(userId) on delete cascade ,
+    foreign key (updated_by) references user_account(userId) on delete set null
 );
 
 create table if not exists profile (

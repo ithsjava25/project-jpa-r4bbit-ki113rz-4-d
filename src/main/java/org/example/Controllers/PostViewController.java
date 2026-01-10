@@ -23,10 +23,17 @@ public class PostViewController {
         subjectLabel.setText(post.getSubject());
         messageLabel.setText(post.getMessage());
 
-        metaLabel.setText(
-            "By" + post.getAuthor().getUsername() +
-                "•" + post.getCreatedAt().format(formatter)
-        );
+        String metaText =
+            "By " + post.getAuthor().getUsername() +
+                " • " + post.getCreatedAt().format(formatter);
+
+        if (post.getUpdatedAt() != null && post.getUpdatedBy() != null) {
+            metaText += "\nUpdated by " +
+                post.getUpdatedBy().getUsername() +
+                " • " + post.getUpdatedAt().format(formatter);
+        }
+
+        metaLabel.setText(metaText);
 
         root.setStyle(
             "-fx-background-image: url('" + post.getPostItColor() + "');" +

@@ -38,6 +38,7 @@ public class PostItemController {
     @FXML private FlowPane categoryPane;
     @FXML private Button editButton;
     @FXML private Button deleteButton;
+    @FXML private Label updatedLabel;
 
     private Post post;
     private CategoryService categoryService;
@@ -99,6 +100,7 @@ public class PostItemController {
         } else {
             createdAtLabel.setText("");
         }
+        updatedLabel.setVisible(post.getUpdatedAt() != null);
         renderCategories();
     }
 
@@ -127,7 +129,24 @@ public class PostItemController {
             controller.setPostService(postService);
             controller.setCategoryService(categoryService);
             controller.setPostToEdit(post);
-            controller.setOnPostSaved(onPostChanged);
+
+            controller.setOnPostSaved(() -> {
+                Post updated = postService.updatePost(post,
+                    post.getSubject(),
+                    post.getMessage(),
+                    post.getCategories()
+                        .stream()
+                        .map(c-> c.getCategoryId())
+                        .toList(),
+                    post.getUpdatedBy());
+
+                this.post = updated;
+                setPost(updated);
+
+                if (onPostChanged != null) {
+                    onPostChanged.run();
+                }
+                });
 
             Stage stage = new Stage();
             stage.setTitle("Update post");

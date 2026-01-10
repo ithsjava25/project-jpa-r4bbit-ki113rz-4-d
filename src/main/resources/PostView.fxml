@@ -3,57 +3,36 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="root"
-            prefWidth="800"
-            prefHeight="800"
-            maxWidth="Infinity"
-            maxHeight="Infinity"
-            xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.Controllers.PostViewController"
-            stylesheets="@/css/post-view.css"
-            styleClass="post-view-root">
+<?import javafx.geometry.Insets?>
+<BorderPane fx:id="root" maxHeight="Infinity" maxWidth="Infinity" prefHeight="800" prefWidth="800" styleClass="post-view-root" stylesheets="@/css/post-view.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.PostViewController">
 
     <top>
-        <VBox spacing="10"
-              alignment="CENTER"
-              style="-fx-padding: 40 40 20 40;">
-        <Label fx:id="subjectLabel"
-               style="-fx-font-size: 28; -fx-font-weight: bold;"/>
+        <VBox alignment="CENTER" spacing="10" style="-fx-padding: 40 40 20 40;">
+        <Label fx:id="subjectLabel" style="-fx-font-size: 20; -fx-font-weight: bold;" />
 
-        <Label fx:id="metaLabel"
-               style="-fx-font-size: 13; -fx-text-fill: #555;"/>
+        <Label fx:id="metaLabel" style="-fx-font-size: 13; -fx-text-fill: #555;" />
 
-        <FlowPane fx:id="categoryPane"
-                  hgap="8"
-                  vgap="8"
-                  alignment="CENTER"/>
+        <FlowPane fx:id="categoryPane" alignment="CENTER" hgap="8" vgap="8" />
         </VBox>
     </top>
 
     <center>
-        <ScrollPane fx:id="scrollPane"
-                    fitToWidth="true"
-                    style="-fx-background-color: transparent;"
-                    styleClass="post-scroll">
+        <ScrollPane fx:id="scrollPane" fitToWidth="true" style="-fx-background-color: transparent;" styleClass="post-scroll">
 
-            <VBox alignment="TOP_CENTER"
-                  style="-fx-background-color: transparent; -fx-padding: 140 120 120 120;">
+            <VBox alignment="TOP_CENTER" style="-fx-background-color: transparent; -fx-padding: 140 120 120 120;">
 
-                <Label fx:id="messageLabel"
-                       wrapText="true"
-                       maxWidth="500"
-                       styleClass="post-message"/>
+                <Label fx:id="messageLabel" maxWidth="600" styleClass="post-message" wrapText="true" />
             </VBox>
 
         </ScrollPane>
     </center>
 
     <bottom>
-    <HBox alignment="CENTER" styleClass="post-footer">
-
-        <Button text="Close"
-                onAction="#handleClose"/>
+    <HBox alignment="CENTER" styleClass="post-footer" spacing="0">
+        <padding>
+            <Insets top="5" right="0" bottom="15" left="0"/>
+        </padding>
+        <Button onAction="#handleClose" prefHeight="30.0" prefWidth="70.0" text="Close" />
     </HBox>
     </bottom>
 </BorderPane>

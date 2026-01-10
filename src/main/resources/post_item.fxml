@@ -51,6 +51,12 @@
         <Label fx:id="createdAtLabel"
                style="-fx-font-size: 10; -fx-text-fill: #777;"/>
 
+        <Label fx:id="updatedLabel"
+               text="Updated"
+               visible="false"
+               styleClass="updated-tag"
+               StackPane.alignment="TOP_LEFT"/>
+
         </children>
 
     </VBox>

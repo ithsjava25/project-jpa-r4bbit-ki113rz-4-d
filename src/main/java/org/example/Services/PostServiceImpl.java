@@ -5,6 +5,8 @@ import org.example.Entities.Post;
 import org.example.Entities.User;
 import org.example.Repositories.CategoryRepository;
 import org.example.Repositories.PostRepository;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -72,16 +74,20 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void updatePost(Post post, String subject, String message, List<Long> categoryIds) {
+    public Post updatePost(Post post, String subject, String message, List<Long> categoryIds, User updatedBy) {
         post.setSubject(subject);
         post.setMessage(message);
+
+        post.setUpdated(updatedBy);
+
         post.getCategories().clear();
         for (Long id : categoryIds) {
             Category c = categoryRepo.getById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Category not found: " + id));
             post.getCategories().add(c);
         }
-        postRepo.save(post);
+        Post saved = postRepo.save(post);
+        return postRepo.findByIdWithAuthorAndCategories(saved.getPostId());
     }
 
     @Override

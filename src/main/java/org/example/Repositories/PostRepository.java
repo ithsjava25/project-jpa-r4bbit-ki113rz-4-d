@@ -17,6 +17,6 @@ public interface PostRepository {
     List<Post> findAll();
     void deleteById(int postId);
     Post updatePost(Post post);
-
     List<Post> getPostsByUser(User user);
+    Post findByIdWithAuthorAndCategories(long id);
 }

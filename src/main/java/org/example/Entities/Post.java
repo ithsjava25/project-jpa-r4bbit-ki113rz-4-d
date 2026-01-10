@@ -28,7 +28,14 @@ public class Post {
     @Column (name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @ManyToOne (fetch = FetchType.LAZY, optional = false)
+    @Column (name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @ManyToOne (fetch = FetchType.EAGER)
+    @JoinColumn(name="updated_by")
+    private User updatedBy;
+
+    @ManyToOne (fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name="user_id", nullable = false)
     private User author;
 
@@ -90,6 +97,17 @@ public class Post {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+    public User getUpdatedBy() {
+        return updatedBy;
+    }
+    public void setUpdated(User user) {
+        this.updatedBy = user;
+        this.updatedAt = LocalDateTime.now();
     }
 
     @ManyToMany(fetch = FetchType.EAGER)

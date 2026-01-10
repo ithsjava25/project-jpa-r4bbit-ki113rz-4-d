@@ -14,8 +14,7 @@ import java.util.Optional;
 public interface PostService {
     Post createPost(String subject, String message, List<Long> categoryIds, User author);
     List<Post> getAllPosts();
-    void updatePost(Post post, String subject, String message, List<Long> categoryIds);
+    Post updatePost(Post post, String subject, String message, List<Long> categoryIds, User updatedBy);
     void deletePost(Post post);
-
     List<Post> getPostsByUser(User user);
 }
