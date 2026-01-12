@@ -1,8 +1,8 @@
 .root {
     -fx-background-image: url("/images/board.jpg");
-    -fx-background-size: 98% 98%;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-background-size: cover;
 }
 
 .scroll-pane,

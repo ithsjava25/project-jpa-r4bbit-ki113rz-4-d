@@ -8,6 +8,20 @@ import org.example.Entities.Category;
 import org.example.Entities.Post;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Controller connected to PostView.fxml.
+ *
+ * Responsible for displaying a single post in a full-screen or detailed view.
+ * Shows the complete content of the post, including subject, message,
+ * author information, timestamps, and categories.
+ *
+ * This controller is strictly read-only and does not allow editing or
+ * deleting posts. It focuses solely on presentation and layout.
+ *
+ * The view is typically opened from a PostItemController and uses
+ * the provided Post object to render all visual elements.
+ */
+
 public class PostViewController {
     @FXML private Label subjectLabel;
     @FXML private Label messageLabel;
@@ -23,9 +37,12 @@ public class PostViewController {
         subjectLabel.setText(post.getSubject());
         messageLabel.setText(post.getMessage());
 
-        String metaText =
-            "By " + post.getAuthor().getUsername() +
-                " • " + post.getCreatedAt().format(formatter);
+        String metaText = "";
+
+        if (post.getAuthor() != null && post.getCreatedAt() != null) {
+            metaText =
+                "By " + post.getAuthor().getUsername() + " • " + post.getCreatedAt().format(formatter);
+        }
 
         if (post.getUpdatedAt() != null && post.getUpdatedBy() != null) {
             metaText += "\nUpdated by " +

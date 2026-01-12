@@ -54,8 +54,7 @@
         <Label fx:id="updatedLabel"
                text="Updated"
                visible="false"
-               styleClass="updated-tag"
-               StackPane.alignment="TOP_LEFT"/>
+               styleClass="updated-tag"/>
 
         </children>
 

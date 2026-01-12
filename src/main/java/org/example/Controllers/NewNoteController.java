@@ -13,6 +13,22 @@ import org.example.UserSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+
+/**
+ * Controller connected to NewNote.fxml.
+ *
+ * Responsible for creating and editing posts through a form-based UI.
+ * Handles all user interactions inside the "new / edit post" dialog,
+ * such as typing in text fields, selecting categories, and clicking save or cancel.
+ *
+ * This controller validates user input and delegates all business logic
+ * related to creating or updating posts to the PostService.
+ * It does not perform any database operations directly.
+ *
+ * The dialog is modal and short-lived, and will close once the post
+ * has been successfully saved or the action is cancelled.
+ */
 
 public class NewNoteController {
 
@@ -23,7 +39,7 @@ public class NewNoteController {
     @FXML private Label charCountLabel;
 
     private PostService postService;
-    private Runnable onPostSaved;
+    private Consumer<Post> onPostSaved;
     private CategoryService categoryService;
     private Post postToEdit;
     private boolean categoriesLoaded = false;
@@ -45,7 +61,7 @@ public class NewNoteController {
         }
     }
 
-    public void setOnPostSaved(Runnable onPostSaved) {
+    public void setOnPostSaved(Consumer<Post> onPostSaved) {
         this.onPostSaved = onPostSaved;
     }
 
@@ -134,10 +150,11 @@ public class NewNoteController {
         }
         User currentUser = UserSession.getCurrentUser()
             .orElseThrow(()->new IllegalStateException("No user logged in!"));
+        Post result;
 
         //Update existing post
         if (postToEdit != null) {
-            postService.updatePost(
+            result = postService.updatePost(
                 postToEdit,
                 subject,
                 message,
@@ -146,17 +163,14 @@ public class NewNoteController {
         }
         //Create new post
         else {
-            User author = UserSession.getCurrentUser()
-                .orElseThrow(() -> new IllegalStateException("No user logged in"));
-
-                postService.createPost(
+                result = postService.createPost(
                     subject,
                     message,
                     categoryIds,
                     currentUser);
             }
         if (onPostSaved != null) {
-            onPostSaved.run();
+            onPostSaved.accept(result);
         }
         closeWindow();
     }

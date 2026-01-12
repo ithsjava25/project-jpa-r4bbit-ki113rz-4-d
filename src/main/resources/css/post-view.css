@@ -20,8 +20,10 @@
     }
 
     .post-meta {
-        -fx-font-size: 13;
-        -fx-text-fill: #444;
+        -fx-font-size: 11px;
+        -fx-font-style: italic;
+        -fx-text-fill: #666;
+        -fx-opacity: 0.85;
     }
     .post-message {
         -fx-font-size: 16;

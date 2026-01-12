@@ -4,24 +4,41 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
-<BorderPane fx:id="root" maxHeight="Infinity" maxWidth="Infinity" prefHeight="800" prefWidth="800" styleClass="post-view-root" stylesheets="@/css/post-view.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.Controllers.PostViewController">
+<BorderPane fx:id="root"
+            maxHeight="Infinity"
+            maxWidth="Infinity"
+            prefHeight="800"
+            prefWidth="800"
+            styleClass="post-view-root"
+            stylesheets="@/css/post-view.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.Controllers.PostViewController">
 
     <top>
-        <VBox alignment="CENTER" spacing="10" style="-fx-padding: 40 40 20 40;">
-        <Label fx:id="subjectLabel" style="-fx-font-size: 20; -fx-font-weight: bold;" />
+        <VBox alignment="CENTER" spacing="6" style="-fx-padding: 40 40 24 40;">
+        <Label fx:id="subjectLabel" style="-fx-font-size: 18; -fx-font-weight: bold;" />
 
-        <Label fx:id="metaLabel" style="-fx-font-size: 13; -fx-text-fill: #555;" />
+        <Label fx:id="metaLabel" styleClass="post-meta"/>
 
         <FlowPane fx:id="categoryPane" alignment="CENTER" hgap="8" vgap="8" />
         </VBox>
     </top>
 
     <center>
-        <ScrollPane fx:id="scrollPane" fitToWidth="true" style="-fx-background-color: transparent;" styleClass="post-scroll">
+        <ScrollPane fx:id="scrollPane"
+                    fitToWidth="true"
+                    style="-fx-background-color: transparent;"
+                    styleClass="post-scroll">
 
-            <VBox alignment="TOP_CENTER" style="-fx-background-color: transparent; -fx-padding: 140 120 120 120;">
+            <VBox alignment="TOP_CENTER"
+                  style="-fx-background-color: transparent;
+                  -fx-padding: 140 120 120 120;">
 
-                <Label fx:id="messageLabel" maxWidth="600" styleClass="post-message" wrapText="true" />
+                <Label fx:id="messageLabel"
+                       maxWidth="600"
+                       styleClass="post-message"
+                       wrapText="true" />
             </VBox>
 
         </ScrollPane>
