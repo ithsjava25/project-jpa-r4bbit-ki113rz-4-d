@@ -105,7 +105,9 @@ public class PostRepositoryImpl implements PostRepository {
             WHERE p.postId = :id
         """, Post.class)
                 .setParameter("id", id)
-                .getSingleResult());
+                .getResultStream()
+                .findFirst()
+                .orElse(null));
     }
 
     @Override

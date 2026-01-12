@@ -22,10 +22,22 @@ import org.example.Services.PostService;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.example.UserSession;
-
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Controller connected to the PostItem.fxml.
+ *
+ * Represents a single post-it note displayed on the bulletin board.
+ * Responsible for rendering a summarized view of a post, including
+ * subject, message preview, author, categories, and post-it appearance.
+ *
+ * Handles user interactions such as hover actions, edit and delete buttons,
+ * and opening the post in a full-screen view.
+ *
+ * This controller communicates with PostService when a post needs to be
+ * updated or deleted, but does not contain any business or persistence logic itself.
+ */
 
 public class PostItemController {
     @FXML private StackPane root;
@@ -130,23 +142,14 @@ public class PostItemController {
             controller.setCategoryService(categoryService);
             controller.setPostToEdit(post);
 
-            controller.setOnPostSaved(() -> {
-                Post updated = postService.updatePost(post,
-                    post.getSubject(),
-                    post.getMessage(),
-                    post.getCategories()
-                        .stream()
-                        .map(c-> c.getCategoryId())
-                        .toList(),
-                    post.getUpdatedBy());
-
-                this.post = updated;
-                setPost(updated);
+            controller.setOnPostSaved(updatedPost -> {
+                this.post = updatedPost;
+                setPost(updatedPost);
 
                 if (onPostChanged != null) {
                     onPostChanged.run();
                 }
-                });
+            });
 
             Stage stage = new Stage();
             stage.setTitle("Update post");

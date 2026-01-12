@@ -129,7 +129,7 @@ public class Controller {
             NewNoteController controller = loader.getController();
             controller.setPostService(postService);
             controller.setCategoryService(categoryService);
-            controller.setOnPostSaved(() -> {
+            controller.setOnPostSaved(post -> {
                 try {
                     loadPosts();
                 } catch (IOException e) {

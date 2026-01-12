@@ -157,7 +157,7 @@ public class MyPostsController {
             controller.setPostService(postService);
             controller.setCategoryService(categoryService);
             controller.setPostToEdit(post);
-            controller.setOnPostSaved(this::loadMyPosts);
+            controller.setOnPostSaved(p -> loadMyPosts());
 
             Stage stage = new Stage();
             stage.setTitle("Update post");
