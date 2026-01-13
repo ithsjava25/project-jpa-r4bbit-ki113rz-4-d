@@ -18,6 +18,7 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.example.JPAUtil.emf;
 
 @DisabledOnOs(OS.LINUX)
@@ -42,9 +43,13 @@ public class CategoryServiceTest {
     }
 
     @AfterEach
-    public void tearDown()
-    {
-        emf.close();
+    public void tearDown() {
+        if (emf != null) {
+            emf.runInTransaction(em -> {
+                em.createQuery("DELETE FROM Category").executeUpdate();
+            });
+            emf.close();
+        }
     }
 
     @Test
@@ -67,8 +72,11 @@ public class CategoryServiceTest {
     }
 
     @Test
-    public void findAllCategories() {
-
+    void shouldNotCreateCategoryWhenNameIsBlank() {
+        assertThatThrownBy(() ->
+            categoryService.createCategory("")
+        ).isInstanceOf(IllegalArgumentException.class);
     }
+
 
 }
