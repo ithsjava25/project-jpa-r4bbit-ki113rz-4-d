@@ -4,6 +4,9 @@ package org.example.category;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.example.Entities.Category;
+import org.example.Entities.Post;
+import org.example.Entities.Profile;
+import org.example.Entities.User;
 import org.example.Repositories.CategoryRepositoryImpl;
 import org.example.Services.CategoryService;
 import org.example.Services.CategoryServiceImpl;
@@ -31,7 +34,7 @@ public class CategoryServiceTest {
             .jdbcUsername("root")
             .jdbcPassword("root")
             .property("hibernate.hbm2ddl.auto", "update")
-            .managedClasses(Category.class);
+            .managedClasses(Category.class, Post.class, User.class, Profile.class);
 
         emf = cfg.createEntityManagerFactory();
         categoryService = new CategoryServiceImpl(new CategoryRepositoryImpl(emf));
@@ -55,6 +58,11 @@ public class CategoryServiceTest {
 
     @Test
     public void findCategoryById() {
+        Category category = categoryService.createCategory("General");
+        Category id = categoryService.getCategoryById(category.getCategoryId());
+
+
+        assertThat(id.getCategoryId()).isEqualTo(category.getCategoryId());
 
     }
 
