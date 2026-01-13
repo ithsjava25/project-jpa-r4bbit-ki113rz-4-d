@@ -51,8 +51,6 @@ import static org.assertj.core.api.InstanceOfAssertFactories.CHAR_ARRAY;
  */
 //==========//==========//
 
-//todo: add, "deletedUserCannotLogin", "shouldNotUpdatePasswordWhenNewPasswordIsInvalid"
-
 /**
  * Integration tests require a local MySQL instance.
  * Tests are intended to be run locally and are skipped in CI.
@@ -280,6 +278,26 @@ public class UserServiceTest {
 
     /**
      * Verifies that
+     *      - if a user is deleted, user cannot log in.
+     */
+    @Test
+    void deletedUserCannotLogin () {
+        Optional<User> create = userService.createUser(
+            "Gunilla", "Persso", "TusseLulle","GunillaNo1", "TusseLulle"
+        );
+        assertThat(create).isPresent();
+        User user = create.get();
+        String password = user.getPassword();
+        Long id = user.getUserId();
+
+        boolean deleteUser = userService.deleteUser(id);
+
+        assertThat(deleteUser).isTrue();
+        assertThat(userService.login(user.getUsername(), password)).isEmpty();
+    }
+
+    /**
+     * Verifies that
      *      - the user is able to change password
      */
     @Test
@@ -307,5 +325,29 @@ public class UserServiceTest {
 
 
     }
+    /**
+     * Verifies that
+     *      - if a user tries to update password with incorrect old password information,
+     *      password should not change.
+     */
+    @Test
+    void shouldNotUpdatePasswordWhenOldPasswordIsInvalid () {
+        Optional<User> create = userService.createUser(
+            "Rolph", "Rolph", "Rolph123", "Rolph", "Rolph123"
+        );
+        assertThat(create).isPresent();
+        User user = create.get();
+        String wrongPassword = "AnnaBookIsCool";
+        String newPassword = "IChangedMyMind";
+
+        boolean updated = userService.updatePassword(
+            user.getUsername(),
+            wrongPassword,
+            newPassword,
+            newPassword
+        );
+        assertThat(updated).isFalse();
+    }
+
 }
 
