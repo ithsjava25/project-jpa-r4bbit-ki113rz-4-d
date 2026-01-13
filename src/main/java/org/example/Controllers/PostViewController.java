@@ -1,11 +1,14 @@
 package org.example.Controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
+import java.net.URL;
 import java.time.format.DateTimeFormatter;
 
 /**
@@ -27,9 +30,8 @@ public class PostViewController {
     @FXML private Label messageLabel;
     @FXML private Label metaLabel;
     @FXML private FlowPane categoryPane;
-    @FXML private BorderPane root;
-
-    private Post post;
+    @FXML private StackPane root;
+    @FXML ImageView backgroundImage;
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -51,13 +53,7 @@ public class PostViewController {
         }
 
         metaLabel.setText(metaText);
-
-        root.setStyle(
-            "-fx-background-image: url('" + post.getPostItColor() + "');" +
-            "-fx-background-size: contain;" +
-            "-fx-background-repeat: no-repeat;" +
-            "-fx-background-position: center;"
-        );
+        setPostItBackground(post.getPostItColor());
 
         categoryPane.getChildren().clear();
 
@@ -72,7 +68,6 @@ public class PostViewController {
                 """);
             categoryPane.getChildren().add(tag);
         }
-        setPostItBackground(post.getPostItColor());
     }
     @FXML
     private void handleClose() {
@@ -80,19 +75,37 @@ public class PostViewController {
     }
 
     private void setPostItBackground(String imagePath) {
+        if (imagePath.startsWith("/Images/")) {
+            imagePath = imagePath.replace("/Images/", "/images/");
+        }
+
+        URL imageUrl = getClass().getResource(imagePath);
+        if (imageUrl == null) {
+            System.out.println("Image not found " + imagePath);
+            return;
+        }
+
+        Image image = new Image(imageUrl.toExternalForm());
+
         BackgroundImage bg = new BackgroundImage(
-            new Image(imagePath),
+            image,
             BackgroundRepeat.NO_REPEAT,
             BackgroundRepeat.NO_REPEAT,
             BackgroundPosition.CENTER,
             new BackgroundSize(
-                100, 100,
+                1.0, 1.0,
                 true,
                 true,
                 false,
                 true
             )
         );
-        root.setBackground(new Background(bg));
+        backgroundImage.setImage(image);
+        backgroundImage.setPreserveRatio(true);
+        backgroundImage.setFitWidth(root.getWidth());
+        backgroundImage.setFitHeight(root.getHeight());
+
+        backgroundImage.fitWidthProperty().bind(root.widthProperty());
+        backgroundImage.fitHeightProperty().bind(root.heightProperty());
     }
 }

@@ -1,33 +1,20 @@
 package org.example.Controllers;
 
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.Dialog;
 import org.example.App;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.Entities.Post;
-import org.example.Entities.Profile;
-import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.Services.UserService;
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.ParallelTransition;
-import javafx.animation.Interpolator;
 import javafx.util.Duration;
 import java.io.IOException;
 import java.util.List;
@@ -74,23 +61,14 @@ public class Controller {
 
     @FXML
     private void initialize () {
-
     }
-
-    @FXML
-    private void handleUsers () {
-        System.out.println("Handle users clicked!");
-    }
-
 
     public void loadPosts () throws IOException {
         postContainer.getChildren().clear();
         List<Post> posts = postService.getAllPosts();
 
         for (Post post : posts) {
-
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/post_item.fxml"));
-
             Node postNode = loader.load();
 
             PostItemController controller = loader.getController();
@@ -105,36 +83,40 @@ public class Controller {
                 }
             });
             postContainer.getChildren().add(postNode);
-            animatePostIn(postNode);
-        }
-    }
-
-    private void reloadAfterSave() {
-        try {
-            loadPosts();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     @FXML
     private void newPost () {
-
         try {
-            FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/NewNote.fxml"));
-
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/NewNote.fxml"));
             Parent root = loader.load();
 
             NewNoteController controller = loader.getController();
             controller.setPostService(postService);
             controller.setCategoryService(categoryService);
+
             controller.setOnPostSaved(post -> {
-                try {
-                    loadPosts();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        FXMLLoader postLoader = new FXMLLoader(getClass().getResource("/post_item.fxml"));
+                        Node newPostNode = postLoader.load();
+
+                        PostItemController postController = postLoader.getController();
+                        postController.setPost(post);
+                        postController.setPostService(postService);
+                        postController.setCategoryService(categoryService);
+                        postController.setOnPostChanged(() -> {
+                            try {
+                                loadPosts();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                        postContainer.getChildren().add(0, newPostNode);
+                        animatePostIn(newPostNode);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
 
             Stage stage = new Stage();
@@ -166,25 +148,34 @@ public class Controller {
 
     private void animatePostIn(Node node) {
         node.setOpacity(0);
-        node.setTranslateY(-40);
-        node.setScaleX(0.95);
-        node.setScaleY(0.95);
+        node.setTranslateX(-400);
+        node.setTranslateY(-200);
+        node.setScaleX(0.8);
+        node.setScaleY(0.8);
+        node.setRotate(-15);
 
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(250), node);
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), node);
         fadeIn.setFromValue(0);
         fadeIn.setToValue(1);
 
-        TranslateTransition slideIn = new TranslateTransition(Duration.millis(350), node);
-        slideIn.setFromY(-40);
-        slideIn.setToY(0);
-        slideIn.setInterpolator(Interpolator.EASE_OUT);
+        TranslateTransition flyIn = new TranslateTransition(Duration.millis(800), node);
+        flyIn.setFromX(node.getTranslateX());
+        flyIn.setFromY(node.getTranslateY());
+        flyIn.setToX(0);
+        flyIn.setToY(0);
+        flyIn.setInterpolator(Interpolator.EASE_OUT);
 
-        ScaleTransition scale = new ScaleTransition(Duration.millis(250), node);
-        scale.setFromX(0.95);
-        scale.setFromY(0.95);
+        ScaleTransition scale = new ScaleTransition(Duration.millis(500), node);
+        scale.setFromX(0.8);
+        scale.setFromY(0.8);
         scale.setToX(1);
         scale.setToY(1);
 
-        new ParallelTransition(fadeIn, slideIn, scale).play();
+        RotateTransition rotate = new RotateTransition(Duration.millis(500), node);
+        rotate.setFromAngle(-15);
+        rotate.setToAngle(0);
+        rotate.setInterpolator(Interpolator.EASE_OUT);
+
+        new ParallelTransition(fadeIn, flyIn, scale, rotate).play();
     }
 }

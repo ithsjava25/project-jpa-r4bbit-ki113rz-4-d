@@ -46,7 +46,7 @@ public class Post {
     public Post(String subject, String message){
         this.subject = subject;
         this.message = message;
-        this.postItColor = "/Images/PostIt_Blue.jpg";
+        this.postItColor = "/images/PostIt_Blue.jpg";
     }
 
     /* Lifecycle callback ===== */
@@ -54,7 +54,7 @@ public class Post {
     void prePersist(){
         createdAt = LocalDateTime.now();
         if (postItColor == null || postItColor.isBlank()) {
-            postItColor = "/Images/PostIt_Blue.jpg";
+            postItColor = "/images/PostIt_Blue.jpg";
         }
     }
 
