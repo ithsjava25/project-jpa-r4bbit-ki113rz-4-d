@@ -35,7 +35,6 @@ public class NewNoteController {
     @FXML private TextField subjectField;
     @FXML private TextArea messageArea;
     @FXML private MenuButton categoryMenu;
-    @FXML private Button saveButton;
     @FXML private Label charCountLabel;
 
     private PostService postService;

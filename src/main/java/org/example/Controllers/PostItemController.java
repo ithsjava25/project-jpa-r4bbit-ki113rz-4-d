@@ -5,9 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-
 import java.time.format.DateTimeFormatter;
-
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -67,9 +65,6 @@ public class PostItemController {
 
         Tooltip.install(editButton, new Tooltip("Update Post"));
         Tooltip.install(deleteButton, new Tooltip("Delete Post"));
-
-        Tooltip editTip = new Tooltip("Update Post");
-        Tooltip deleteTip = new Tooltip("Delete Post");
 
         root.setOnMouseClicked(e-> {
             if (e.getTarget() instanceof Button) {
@@ -167,8 +162,6 @@ public class PostItemController {
     }
 
     @FXML public void handleDelete() {
-        //Ta bort post-it från databas
-
         if(!isCurrentUser(post)){
             return;
         }
@@ -207,6 +200,7 @@ public class PostItemController {
             stage.initModality(Modality.APPLICATION_MODAL);
 
             Scene scene = new Scene(root, 800, 800);
+            stage.setResizable(false);
             scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
 
             stage.setScene(scene);

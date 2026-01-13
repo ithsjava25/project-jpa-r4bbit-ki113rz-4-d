@@ -20,11 +20,11 @@ public class PostServiceImpl implements PostService {
     private final CategoryRepository categoryRepo;
 
     private static final List<String> POSTIT_IMAGES = List.of(
-        "/Images/PostIt_Yellow.jpg",
-        "/Images/PostIt_Blue.jpg",
-        "/Images/PostIt_LightGreen.jpg",
-        "/Images/PostIt_Pink.jpg",
-        "/Images/PostIt_Purple.jpg"
+        "/images/PostIt_Yellow.jpg",
+        "/images/PostIt_Blue.jpg",
+        "/images/PostIt_LightGreen.jpg",
+        "/images/PostIt_Pink.jpg",
+        "/images/PostIt_Purple.jpg"
     );
 
     private String randomPostItColor() {
