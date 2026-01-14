@@ -41,7 +41,7 @@ import static org.assertj.core.api.InstanceOfAssertFactories.CHAR_ARRAY;
  *     Username is provided by the user and must be unique
  *     Username length must be between 3 and 30 characters
  *     Password must not be null or blank
- *     Password lenght must be between 8 and 64 characters
+ *     Password lenght must be between 3 and 64 characters
  *     A user can authenticate using a valid username and password
  *     Password must be case-sensitive
  *     Username must be case-insensitive
@@ -146,7 +146,7 @@ public class UserServiceTest {
      *              - password input cannot be empty
      *              - username input cannot be empty
      *
-     *              - password cannot be under 8 characters
+     *              - password cannot be under 3 characters
      *              - password cannot be over 64 characters
      *              - username cannot be under 3 characters
      *              - username cannot be over 30 characters
@@ -177,7 +177,7 @@ public class UserServiceTest {
             Arguments.of("lastName input cannot be blank", "Fiffen", "", "secret123", "fiffen", "secret123"),
             Arguments.of("password input cannot be blank", "Fiffen", "Friberg", "", "fiffen", "secret123"),
             Arguments.of("username input cannot blank", "Fiffen", "Friberg", "secret123", "", "secret123"),
-            Arguments.of("password must be 8 or more characters", "Fiffen", "Friberg", "secret", "fiffen", "secret"),
+            Arguments.of("password must be 3 or more characters", "Fiffen", "Friberg", "se", "fiffen", "se"),
             Arguments.of("password must be a maximum of 64 characters", "Fiffen", "Friberg", "s".repeat(65), "fiffen", "s".repeat(65)),
             Arguments.of("username must be 3 or more characters", "Fiffen", "Friberg", "secret123", "Fi", "secret123"),
             Arguments.of("username must be a maximum of 30 characters", "Fiffen", "Friberg", "secret123", "f".repeat(31), "secret123"),
