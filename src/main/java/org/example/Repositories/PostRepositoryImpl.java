@@ -63,11 +63,16 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> getPostsByUser(User user) {
         return emf.callInTransaction(em ->
-            em.createQuery(
-                "select p from Post p JOIN FETCH p.author where p.author = :user order by p.createdAt desc",
-                Post.class
-            )
-            .setParameter("user", user)
+                em.createQuery(
+                        "select DISTINCT p from Post p " +
+                            "JOIN FETCH p.author a " +
+                            "LEFT JOIN FETCH a.profile " + // Hämtar profilen direkt
+                            "LEFT JOIN FETCH p.categories " + // Hämtar kategorierna direkt
+                            "where p.author = :user " +
+                            "order by p.createdAt desc",
+                        Post.class
+                    )
+                    .setParameter("user", user)
             .getResultList()
             );
     }
