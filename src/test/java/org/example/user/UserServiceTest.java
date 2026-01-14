@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.example.*;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
+import org.example.Entities.Profile;
 import org.example.Entities.User;
 import org.example.Repositories.UserRepositoryImpl;
 import org.example.Services.UserService;
@@ -50,8 +51,6 @@ import static org.assertj.core.api.InstanceOfAssertFactories.CHAR_ARRAY;
  */
 //==========//==========//
 
-//todo: add, "deletedUserCannotLogin", "shouldNotUpdatePasswordWhenNewPasswordIsInvalid"
-
 /**
  * Integration tests require a local MySQL instance.
  * Tests are intended to be run locally and are skipped in CI.
@@ -83,7 +82,7 @@ public class UserServiceTest {
                 .jdbcUsername("root")
                 .jdbcPassword("root")
                 .property("hibernate.hbm2ddl.auto", "update")
-                .managedClasses(User.class, Post.class, Category.class);
+                .managedClasses(User.class, Post.class, Category.class, Profile.class);
 
         emf = cfg.createEntityManagerFactory();
         var userRepo = new UserRepositoryImpl(emf);
@@ -101,6 +100,7 @@ public class UserServiceTest {
     void tearDown() {
         if (emf != null) {
             emf.runInTransaction(em -> {
+                em.createQuery("delete from Profile").executeUpdate();
                 em.createQuery("DELETE FROM User").executeUpdate();
             });
             emf.close();
@@ -122,11 +122,11 @@ public class UserServiceTest {
         String lastName = "Friberg";
         String username = "Fiffen_Biffen";
         String password = "ImAlwaysOneWeekBehind";
-        String email = "fiifen@Hot_MALE.com";
+        String confirmPassword = "ImAlwaysOneWeekBehind";
 
         //when
         Optional<User> optionalUser =
-            userService.createUser(firstName, lastName, password, username, email);
+            userService.createUser(firstName, lastName, password, username,  confirmPassword);
 
         //then
         assertThat(optionalUser).isPresent();
@@ -164,25 +164,25 @@ public class UserServiceTest {
         String lastName,
         String password,
         String username,
-        String email
+        String confirmPassword
     ) {
         Optional<User> result =
-            userService.createUser(firstName, lastName, password, username, email);
+            userService.createUser(firstName, lastName, password, username, confirmPassword);
 
         assertThat(result).isEmpty();
     }
     static Stream<Arguments> invalidUserInputs() {
         return Stream.of(
-            Arguments.of("firstName input cannot be blank", "", "Friberg", "secret123", "fiffen", "test@example.com"),
-            Arguments.of("lastName input cannot be blank", "Fiffen", "", "secret123", "fiffen", "test@example.com"),
-            Arguments.of("password input cannot be blank", "Fiffen", "Friberg", "", "fiffen", "test@example.com"),
-            Arguments.of("username input cannot blank", "Fiffen", "Friberg", "secret123", "", "test@example.com"),
-            Arguments.of("password must be 8 or more characters", "Fiffen", "Friberg", "secret", "fiffen", "test@example.com"),
-            Arguments.of("password must be a maximum of 64 characters", "Fiffen", "Friberg", "s".repeat(65), "fiffen", "test@example.com"),
-            Arguments.of("username must be 3 or more characters", "Fiffen", "Friberg", "secret123", "Fi", "test@example.com"),
-            Arguments.of("username must be a maximum of 30 characters", "Fiffen", "Friberg", "secret123", "f".repeat(31), "test@example.com"),
-            Arguments.of("password input cannot contain blank spaces", "Fiffen", "Friberg", "secret 123", "fiffen", "test@example.com"),
-            Arguments.of("username input cannot contain blank spaces", "Fiffen", "Friberg", "secret123", "f ifen", "test@example.com")
+            Arguments.of("firstName input cannot be blank", "", "Friberg", "secret123", "fiffen", "secret123"),
+            Arguments.of("lastName input cannot be blank", "Fiffen", "", "secret123", "fiffen", "secret123"),
+            Arguments.of("password input cannot be blank", "Fiffen", "Friberg", "", "fiffen", "secret123"),
+            Arguments.of("username input cannot blank", "Fiffen", "Friberg", "secret123", "", "secret123"),
+            Arguments.of("password must be 8 or more characters", "Fiffen", "Friberg", "secret", "fiffen", "secret"),
+            Arguments.of("password must be a maximum of 64 characters", "Fiffen", "Friberg", "s".repeat(65), "fiffen", "s".repeat(65)),
+            Arguments.of("username must be 3 or more characters", "Fiffen", "Friberg", "secret123", "Fi", "secret123"),
+            Arguments.of("username must be a maximum of 30 characters", "Fiffen", "Friberg", "secret123", "f".repeat(31), "secret123"),
+            Arguments.of("password input cannot contain blank spaces", "Fiffen", "Friberg", "secret 123", "fiffen", "secret123"),
+            Arguments.of("username input cannot contain blank spaces", "Fiffen", "Friberg", "secret123", "f ifen", "secret123")
         );
     }
 
@@ -204,9 +204,9 @@ public class UserServiceTest {
         String lastName = "Nelj";
         String username = "Sandra";
         String password = "ILoveHouseFlipper";
-        String email = "sandra@gheeMail.com";
+        String confirmPassword = "ILoveHouseFlipper";
 
-        Optional<User> create = userService.createUser(firstName, lastName, password, username, email);
+        Optional<User> create = userService.createUser(firstName, lastName, password, username, confirmPassword);
         assertThat(create).isPresent();
 
         String getUsername = create.get().getUsername();
@@ -225,7 +225,7 @@ public class UserServiceTest {
     @Test
     void passwordIsCaseSensitive() {
         Optional<User> create = userService.createUser(
-            "Daniel", "Mart", "ImNotDoingAnythingShadyWithThisDROPCommandIJustLearned", "Maxxer", "daniel@yeehaaw.com"
+            "Daniel", "Mart", "ImNotDoingAnythingShadyWithThisDROPCommandIJustLearned", "Maxxer", "ImNotDoingAnythingShadyWithThisDROPCommandIJustLearned"
         );
         assertThat(create).isPresent();
 
@@ -241,7 +241,7 @@ public class UserServiceTest {
     @Test
     void usernameIsNotCaseSensitive() {
         Optional<User> create = userService.createUser(
-            "Alban", "Nwapa", "SingHalleluja", "Dr.Alban", "thistimeimfree@helloafrica.tk"
+            "Alban", "Nwapa", "SingHalleluja", "Dr.Alban", "SingHalleluja"
         );
         assertThat(create).isPresent();
 
@@ -263,7 +263,7 @@ public class UserServiceTest {
     @Test
     void shouldDeleteUser() {
         Optional<User> create = userService.createUser
-            ("Edvin", "Karl", "HowDidIEndUpInAGroupProjectWithABunchOfMillenials", "RabbitDude", "edvin@utkolla.com");
+            ("Edvin", "Karl", "HowDidIEndUpInAGroupProjectWithABunchOfMillenials", "RabbitDude", "HowDidIEndUpInAGroupProjectWithABunchOfMillenials");
         assertThat(create).isPresent();
 
         User user = create.get();
@@ -278,12 +278,32 @@ public class UserServiceTest {
 
     /**
      * Verifies that
+     *      - if a user is deleted, user cannot log in.
+     */
+    @Test
+    void deletedUserCannotLogin () {
+        Optional<User> create = userService.createUser(
+            "Gunilla", "Persso", "TusseLulle","GunillaNo1", "TusseLulle"
+        );
+        assertThat(create).isPresent();
+        User user = create.get();
+        String password = user.getPassword();
+        Long id = user.getUserId();
+
+        boolean deleteUser = userService.deleteUser(id);
+
+        assertThat(deleteUser).isTrue();
+        assertThat(userService.login(user.getUsername(), password)).isEmpty();
+    }
+
+    /**
+     * Verifies that
      *      - the user is able to change password
      */
     @Test
     void shouldChangePassword() {
         Optional<User> create = userService.createUser(
-            "Linus","Torva", "talkIsCheapShowMeTheCode", "LinuxxUserNo1", "linus@linux.com"
+            "Linus","Torva", "talkIsCheapShowMeTheCode", "LinuxxUserNo1", "talkIsCheapShowMeTheCode"
         );
         assertThat(create).isPresent();
 
@@ -295,7 +315,7 @@ public class UserServiceTest {
             user.getUsername(),
             oldPassword,
             newPassword,
-            "linus@linux.com"
+            "givenEnoughEyeballsAllBugsAreShallow"
         );
 
 
@@ -305,5 +325,29 @@ public class UserServiceTest {
 
 
     }
+    /**
+     * Verifies that
+     *      - if a user tries to update password with incorrect old password information,
+     *      password should not change.
+     */
+    @Test
+    void shouldNotUpdatePasswordWhenOldPasswordIsInvalid () {
+        Optional<User> create = userService.createUser(
+            "Rolph", "Rolph", "Rolph123", "Rolph", "Rolph123"
+        );
+        assertThat(create).isPresent();
+        User user = create.get();
+        String wrongPassword = "AnnaBookIsCool";
+        String newPassword = "IChangedMyMind";
+
+        boolean updated = userService.updatePassword(
+            user.getUsername(),
+            wrongPassword,
+            newPassword,
+            newPassword
+        );
+        assertThat(updated).isFalse();
+    }
+
 }
 
