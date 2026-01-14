@@ -1,0 +1,45 @@
+User Story – The Bulletin Board:
+
+Imagine that you need to share information with your entire organization,
+but you don’t want to send an email to all your colleagues.
+
+Instead, you use a digital bulletin board where all information is collected in one central place.
+By logging in, users can read, create, and manage announcements in the form of digital post-it notes.
+The notes are displayed in chronological order and can be sorted and filtered by category,
+making it easy to quickly find relevant information.
+
+The system is built in Java using JavaFX for the user interface, JPA for database management
+and an SQL database for storing users and posts.
+
+Features:
+Create account:
+As a user, I want to be able to create my own account or create an account for a team member.
+
+Log in:
+As a user, I want to log in to the system in order to access and manage posts.
+
+View posts:
+As a user, I want to see all posts on the bulletin board in descending date order so
+that I can quickly get an overview of the latest information.
+
+Show posts in fullscreen:
+As a user, I want to be able to click on a specific post-it to show it in fullscreen to see all details.
+
+Create a new post:
+As a logged-in user, I want to create a new post with a title, message, and categories
+so that I can share information with other users.
+
+Update existing post:
+As the creator of a post, I want to update my post so that I can correct or change information when needed.
+
+Delete post:
+As the creator of a post, I want to delete my post in order to keep the bulletin board relevant and up to date.
+
+Profile-handling:
+As a logged in user, I want to be able to edit my account information such as bio, name, Username and Password.
+
+Profile – my notes:
+As a logged in user, I want to be able to show, edit and delete my own posted notes.
+
+Each post is associated with a user in the database (User, Post, and User_Post)
+and is stored together with a timestamp and category, enabling sorting and filtering functionality.
