@@ -15,8 +15,13 @@
         <Separator />
         <Button onAction="#handleProfile" text="Profile" />
 
-        <Separator />
-         <Region HBox.hgrow="ALWAYS" />
+        <Region HBox.hgrow="ALWAYS" />
+
+        <Label text="R4bbit-Ki113rz - Bulletin Board"
+               styleClass="board-title"/>
+
+        <Region HBox.hgrow="ALWAYS" />
+
         <Button onAction="#logout" text="Logout" />
     </ToolBar>
 </top>
@@ -29,9 +34,9 @@
             </padding>
 
             <ScrollPane fitToHeight="true" fitToWidth="true" pannable="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
-                <FlowPane fx:id="postContainer" hgap="20" prefWidth="440.0" vgap="20">
+                <FlowPane fx:id="postContainer" hgap="30" prefWidth="440.0" vgap="30">
                     <padding>
-                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                        <Insets bottom="20.0" right="20.0" top="40.0" left="100" />
                     </padding>
                 </FlowPane>
             </ScrollPane>
