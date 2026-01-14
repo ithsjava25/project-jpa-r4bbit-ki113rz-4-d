@@ -42,7 +42,9 @@ public class NewNoteController {
     private CategoryService categoryService;
     private Post postToEdit;
     private boolean categoriesLoaded = false;
-    private static final int MAX_LENGHT = 255;
+    private static final int MAX_LENGTH = 255;
+    private static final int MAX_LENGTH_SUBJECT = 25;
+
 
     private final Map<Long, CheckMenuItem> categoryItems = new HashMap<>();
 
@@ -189,14 +191,23 @@ public class NewNoteController {
         messageArea.setWrapText(true);
 
         messageArea.setTextFormatter(new TextFormatter<String>(change -> {
-            if (change.getControlNewText().length() <= MAX_LENGHT){
+            if (change.getControlNewText().length() <= MAX_LENGTH){
                 return change;
             }
             return null;
         }));
 
         messageArea.textProperty().addListener((obs, oldText, newText) -> {
-            charCountLabel.setText(newText.length() + " / " + MAX_LENGHT);
+            charCountLabel.setText(newText.length() + " / " + MAX_LENGTH);
         });
+
+
+        subjectField.setTextFormatter(new TextFormatter<String>(change -> {
+            if (change.getControlNewText().length() <= MAX_LENGTH_SUBJECT){
+                return change;
+            }
+            return null;
+        }));
+
     }
 }
