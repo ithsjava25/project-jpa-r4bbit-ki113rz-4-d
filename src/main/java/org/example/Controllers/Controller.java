@@ -31,9 +31,7 @@ import java.util.List;
  * (If needed, we can create a LoginController, UserController and a PostController)
  *
  */
-//TODO: Login, registration
-//TODO: Display posts, create posts, delete/edit posts
-//TODO: Filter by category, assign categories when posting
+
 public class Controller {
     private UserService userService;
     private PostService postService;

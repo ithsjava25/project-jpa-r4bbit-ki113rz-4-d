@@ -3,8 +3,6 @@ package org.example.Services;
 import org.example.Entities.Profile;
 import org.example.Entities.User;
 import org.example.Repositories.UserRepository;
-import org.example.UserSession;
-
 import java.util.Optional;
 
 /**

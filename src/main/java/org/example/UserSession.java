@@ -1,7 +1,6 @@
 package org.example;
 
 import org.example.Entities.User;
-
 import java.util.Optional;
 
 public final class UserSession {

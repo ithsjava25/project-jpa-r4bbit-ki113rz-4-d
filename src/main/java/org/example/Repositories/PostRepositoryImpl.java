@@ -1,8 +1,6 @@
 package org.example.Repositories;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
 import org.example.Entities.Category;
 import org.example.Entities.Post;
 import org.example.Entities.User;
@@ -10,7 +8,6 @@ import org.example.EntityManagerFactoryWrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Handles post data from database

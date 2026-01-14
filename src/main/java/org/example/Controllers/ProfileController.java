@@ -13,14 +13,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Circle;
 import org.example.App;
-import org.example.Entities.Post;
 import org.example.Entities.Profile;
 import org.example.Entities.User;
 import org.example.Services.CategoryService;
 import org.example.Services.PostService;
 import org.example.Services.UserService;
 import org.example.UserSession;
-
 import java.io.IOException;
 import java.util.Objects;
 
