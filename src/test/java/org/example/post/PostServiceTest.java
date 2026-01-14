@@ -147,7 +147,8 @@ public class PostServiceTest {
             post,
             "New subject",
             "New message",
-            List.of(testCategory.getCategoryId())
+            List.of(testCategory.getCategoryId()),
+            testUser
         );
 
         Optional<Post> updated =
