@@ -169,6 +169,7 @@ public class App extends Application {
             stage.setTitle("Bulletin Board");
             stage.setScene(scene);
             stage.centerOnScreen();
+            stage.setResizable(false);
             stage.getIcons().add(iconTopLeft);
 
         } catch (Exception e) {
@@ -191,6 +192,8 @@ public class App extends Application {
 
             stage.setTitle("Profile");
             stage.setScene(scene);
+            stage.centerOnScreen();
+            stage.setResizable(false);
             stage.getIcons().add(iconTopLeft);
 
         } catch (Exception e) {
