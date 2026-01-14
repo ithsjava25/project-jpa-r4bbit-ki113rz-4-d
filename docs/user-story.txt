@@ -36,10 +36,10 @@ Delete post:
 As the creator of a post, I want to delete my post in order to keep the bulletin board relevant and up to date.
 
 Profile-handling:
-As a logged in user, I want to be able to edit my account information such as bio, name, Username and Password.
+As a logged-in user, I want to be able to edit my account information such as bio, name, username and password.
 
 Profile – my notes:
-As a logged in user, I want to be able to show, edit and delete my own posted notes.
+As a logged-in user, I want to be able to show, edit and delete my own posted notes.
 
-Each post is associated with a user in the database (User, Post, and User_Post)
+Each post is associated with a user in the database (Userid, Postid)
 and is stored together with a timestamp and category, enabling sorting and filtering functionality.

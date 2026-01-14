@@ -5,7 +5,6 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import org.example.Entities.Category;
 import org.example.EntityManagerFactoryWrapper;
-
 import java.util.List;
 import java.util.Optional;
 

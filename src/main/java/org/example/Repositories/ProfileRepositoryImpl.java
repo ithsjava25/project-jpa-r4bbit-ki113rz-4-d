@@ -2,8 +2,6 @@ package org.example.Repositories;
 
 import jakarta.persistence.EntityManagerFactory;
 import org.example.Entities.Profile;
-import org.example.Entities.User;
-
 import java.util.Optional;
 
 public class ProfileRepositoryImpl implements ProfileRepository {
