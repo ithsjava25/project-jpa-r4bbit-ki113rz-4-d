@@ -39,6 +39,14 @@ public class UserServiceImpl implements UserService {
             return Optional.empty();
         }
 
+        if (username.contains(" ")) {
+            return Optional.empty();
+        }
+
+        if (password.length() <= 3 || password.length() >= 64){
+            return Optional.empty();
+        }
+
         if (!password.equals(confirmPassword)) {
             return Optional.empty();
         }
