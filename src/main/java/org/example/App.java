@@ -162,12 +162,13 @@ public class App extends Application {
             Controller controller = loader.getController();
             controller.setUserService(userService, postService, categoryService, app);
 
-            Scene scene = new Scene(root, 900, 600);
+            Scene scene = new Scene(root, 1600, 900);
             scene.getStylesheets()
                 .add(getClass().getResource("/css/board.css").toExternalForm());
 
             stage.setTitle("Bulletin Board");
             stage.setScene(scene);
+            stage.centerOnScreen();
             stage.getIcons().add(iconTopLeft);
 
         } catch (Exception e) {
@@ -184,7 +185,7 @@ public class App extends Application {
             ProfileController profileController = loader.getController();
             profileController.setUserService(userService, postService, categoryService, app);
 
-            Scene scene = new Scene(root, 900, 600);
+            Scene scene = new Scene(root, 1600, 900);
             scene.getStylesheets()
                 .add(getClass().getResource("/css/profile.css").toExternalForm());
 
